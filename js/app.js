@@ -1061,57 +1061,14 @@ function closeSuccessModal() {
 }
 
 // -------------------------------------------------------------
-// 10. SOCIAL PROOF LIVE ORDER TICKER
+// 10. SOCIAL PROOF LIVE ORDER TICKER (DISABLED AS REQUESTED)
 // -------------------------------------------------------------
-const realisticOrders = [
-  { name: 'সালমা বেগম', location: 'উত্তরা, ঢাকা', package: '১টি বেবি ফিডিং সেট', color: 'পিঙ্ক', time: '২ মিনিট আগে' },
-  { name: 'মোস্তাফিজুর রহমান', location: 'ধানমন্ডি, ঢাকা', package: '২টি কম্বো সেট (ফ্রি ডেলিভারি)', color: 'ব্লু', time: '৪ মিনিট আগে' },
-  { name: 'তাসলিমা জাহান', location: 'পাঁচলাইশ, চট্টগ্রাম', package: '১টি বেবি ফিডিং সেট', color: 'ইয়েলো', time: '৬ মিনিট আগে' },
-  { name: 'ফারজানা হক', location: 'উপশহর, সিলেট', package: '১টি বেবি ফিডিং সেট', color: 'গ্রিন', time: '৯ মিনিট আগে' },
-  { name: 'কবির হোসেন', location: 'বোয়ালিয়া, রাজশাহী', package: '২টি কম্বো সেট', color: 'ব্লু + পিঙ্ক', time: '১১ মিনিট আগে' },
-  { name: 'নাজমিন সুলতানা', location: 'খালিশপুর, খুলনা', package: '১টি বেবি ফিডিং সেট', color: 'পিঙ্ক', time: '১৪ মিনিট আগে' },
-  { name: 'রোকসানা পারভীন', location: 'টঙ্গী, গাজীপুর', package: '১টি বেবি ফিডিং সেট', color: 'স্কাই ব্লু', time: '১৭ মিনিট আগে' }
-];
-
-let socialPopupIndex = 0;
-let socialPopupInterval;
-
 function initSocialPopup() {
-  const popup = document.getElementById('social-proof-popup');
-  const nameEl = document.getElementById('popup-customer-name');
-  const itemEl = document.getElementById('popup-product-text');
-  const timeEl = document.getElementById('popup-time-text');
-
-  if (!popup) return;
-
-  function showNextPopup() {
-    // Don't distract user if they are in the checkout section
-    if (document.body.classList.contains('in-checkout-view')) return;
-
-    const item = realisticOrders[socialPopupIndex % realisticOrders.length];
-    socialPopupIndex++;
-
-    if (nameEl) nameEl.textContent = `${item.name} (${item.location})`;
-    if (itemEl) itemEl.textContent = `${item.package} অর্ডার করেছেন`;
-    if (timeEl) timeEl.textContent = item.time;
-
-    popup.classList.add('show');
-
-    setTimeout(() => {
-      popup.classList.remove('show');
-    }, 4500);
-  }
-
-  setTimeout(() => {
-    showNextPopup();
-    socialPopupInterval = setInterval(showNextPopup, 18000);
-  }, 4000);
+  // Disabled
 }
 
 function closeSocialPopup() {
-  const popup = document.getElementById('social-proof-popup');
-  if (popup) popup.classList.remove('show');
-  clearInterval(socialPopupInterval);
+  // Disabled
 }
 
 // -------------------------------------------------------------
@@ -1423,7 +1380,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initLocationDropdowns();
   setupFormValidation();
   setupMobileStickyJump();
-  initSocialPopup();
   initFAQ();
   initTrackingTriggers();
   updateOrderSummary();
