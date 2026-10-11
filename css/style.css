@@ -1888,6 +1888,10 @@ body.in-checkout-view .mobile-bottom-bar {
   pointer-events: none;
 }
 
+body.in-checkout-view .floating-whatsapp-btn {
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
 .bottom-bar-price {
   display: flex;
   flex-direction: column;
