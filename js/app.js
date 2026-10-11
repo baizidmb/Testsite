@@ -1118,6 +1118,9 @@ function initSocialPopup() {
   if (!popup) return;
 
   function showNextPopup() {
+    // Don't distract user if they are in the checkout section
+    if (document.body.classList.contains('in-checkout-view')) return;
+
     const item = realisticOrders[socialPopupIndex % realisticOrders.length];
     socialPopupIndex++;
 
@@ -1129,7 +1132,7 @@ function initSocialPopup() {
 
     setTimeout(() => {
       popup.classList.remove('show');
-    }, 5000);
+    }, 4500);
   }
 
   setTimeout(() => {
@@ -1363,10 +1366,10 @@ function clearAllOrders() {
 function setupMobileStickyJump() {
   const stickyBtn = document.getElementById('btn-sticky-order');
   const heroBtn = document.getElementById('btn-hero-order');
+  const orderSection = document.getElementById('order-section');
 
   function jumpToFormAndFocus(e) {
     e.preventDefault();
-    const orderSection = document.getElementById('order-section');
     const nameInput = document.getElementById('cust-name');
 
     if (orderSection) {
@@ -1380,6 +1383,21 @@ function setupMobileStickyJump() {
 
   if (stickyBtn) stickyBtn.addEventListener('click', jumpToFormAndFocus);
   if (heroBtn) heroBtn.addEventListener('click', jumpToFormAndFocus);
+
+  // Auto-hide mobile bottom bar when looking at checkout section
+  if (orderSection && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          document.body.classList.add('in-checkout-view');
+        } else {
+          document.body.classList.remove('in-checkout-view');
+        }
+      });
+    }, { threshold: 0.15 });
+
+    observer.observe(orderSection);
+  }
 }
 
 // -------------------------------------------------------------
