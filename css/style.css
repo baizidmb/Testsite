@@ -1300,191 +1300,54 @@ button, input, select, textarea {
 }
 
 /* -------------------------------------------------------------
-   8. LOCATION WIZARD (CLEAN, MODERN, NO UGLY CONTRAST)
+   8. CASCADING ADDRESS DROPDOWNS (CLEAN & PROGRESSIVE)
 ------------------------------------------------------------- */
-.location-wizard-card {
-  background: #F8FAFC;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-md);
-  padding: 14px 12px;
-  box-shadow: var(--shadow-xs);
-}
-
-/* Breadcrumb Progress */
-.location-progress-bar {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-  margin-bottom: 10px;
-  scrollbar-width: none;
-}
-
-.location-progress-bar::-webkit-scrollbar {
-  display: none;
-}
-
-.location-crumb {
-  font-size: 0.74rem;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: var(--radius-full);
-  background: #E2E8F0;
-  color: var(--text-muted);
-  white-space: nowrap;
-  transition: var(--transition);
-}
-
-.location-crumb.active {
-  background: var(--primary-tint);
-  color: var(--primary);
-  border: 1px solid #FDA4AF;
-}
-
-.location-crumb.completed {
-  background: var(--success-tint);
-  color: var(--success);
-  border: 1px solid #A7F3D0;
-}
-
-.crumb-separator {
-  color: #CBD5E1;
-  font-size: 0.72rem;
-}
-
-/* Live Clean Destination Badge */
-.live-address-badge {
-  background: #FFFFFF;
-  border: 1px solid var(--border-color);
-  color: var(--text-main);
-  padding: 8px 12px;
-  border-radius: var(--radius-sm);
-  font-size: 0.82rem;
-  font-weight: 600;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  box-shadow: var(--shadow-xs);
-  transition: var(--transition);
-}
-
-.live-address-badge strong {
-  color: var(--primary);
-}
-
-.live-address-badge.highlight {
-  animation: pulseBadge 0.4s ease;
-}
-
-@keyframes pulseBadge {
-  0% { transform: scale(0.99); background: #FFF1F2; }
-  100% { transform: scale(1); background: #FFFFFF; }
-}
-
-/* Division Grid */
-.division-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 7px;
-  margin-top: 4px;
-}
-
-@media (min-width: 600px) {
-  .division-grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-.division-card {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  padding: 8px 10px;
-  background: #FFFFFF;
-  border: 1.5px solid var(--border-color);
-  border-radius: var(--radius-sm);
+select.form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  background-size: 15px;
+  padding-right: 38px;
   cursor: pointer;
-  font-size: 0.84rem;
-  font-weight: 700;
-  color: var(--text-main);
-  transition: var(--transition);
-  min-height: 44px;
-  user-select: none;
+  background-color: #FFFFFF;
 }
 
-.division-card:hover {
-  border-color: #FDA4AF;
+select.form-select:disabled {
+  background-color: #F8FAFC;
+  color: #94A3B8;
+  cursor: not-allowed;
 }
 
-.division-card:active {
-  transform: scale(0.97);
-}
-
-.division-card.selected {
-  border-color: var(--primary);
-  background: var(--primary-tint);
-  color: var(--primary);
-}
-
-.division-card .div-icon {
-  font-size: 1.15rem;
-  flex-shrink: 0;
-}
-
-/* Cascading Containers */
-.cascading-step {
-  display: none;
-  animation: slideDownFade 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed var(--border-color);
-}
-
-.cascading-step.visible {
-  display: block;
+/* Smooth Slide Down for Each Revealed Field */
+.cascading-field {
+  animation: slideDownFade 0.26s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes slideDownFade {
-  0% { opacity: 0; transform: translateY(-8px); }
+  0% { opacity: 0; transform: translateY(-6px); }
   100% { opacity: 1; transform: translateY(0); }
 }
 
-/* Touch Pills for District & Upazila (No Clunky Scroll Trap) */
-.geo-pills-wrap {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  padding: 4px 1px;
-  margin-top: 6px;
-}
-
-.geo-pill-btn {
-  padding: 6px 11px;
-  border-radius: var(--radius-full);
-  background: #FFFFFF;
-  border: 1.5px solid var(--border-color);
-  font-size: 0.8rem;
-  font-weight: 600;
+/* Minimalist Clean Destination Confirmation */
+.destination-confirm-badge {
+  background: #F8FAFC;
+  border: 1px solid var(--border-color);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
   color: var(--text-main);
-  cursor: pointer;
-  transition: var(--transition);
-  display: inline-flex;
+  display: flex;
   align-items: center;
-  user-select: none;
-  min-height: 36px;
+  gap: 6px;
+  margin-top: 2px;
 }
 
-.geo-pill-btn:active {
-  transform: scale(0.95);
-}
-
-.geo-pill-btn.selected {
-  background: var(--primary);
-  border-color: var(--primary);
-  color: #FFFFFF;
-  box-shadow: 0 2px 6px rgba(225, 29, 72, 0.3);
+.destination-confirm-badge .pin {
+  color: var(--primary);
+  font-weight: 700;
+  font-size: 0.8rem;
 }
 
 /* Village Quick Helper Chips */

@@ -228,138 +228,139 @@ function initColorSync() {
 }
 
 // -------------------------------------------------------------
-// 4. ANIMATED 4-STEP LOCATION WIZARD (DIVISION -> DISTRICT -> UPAZILA -> VILLAGE)
+// 4. PROGRESSIVE CASCADING LOCATION DROPDOWNS (DIVISION -> DISTRICT -> UPAZILA -> VILLAGE)
 // -------------------------------------------------------------
-function initLocationWizard() {
-  const divContainer = document.getElementById('division-cards-container');
-  if (!divContainer || !window.BD_GEO) return;
+function initLocationDropdowns() {
+  const divSelect = document.getElementById('select-division');
+  if (!divSelect || !window.BD_GEO) return;
 
   const divisions = window.BD_GEO.getDivisions();
-  divContainer.innerHTML = '';
+  // Clear previous options except default
+  divSelect.innerHTML = '<option value="">বিভাগ বেছে নিন...</option>';
 
   divisions.forEach(divName => {
-    const icon = window.BD_GEO.icons ? (window.BD_GEO.icons[divName] || '📍') : '📍';
-    const card = document.createElement('div');
-    card.className = 'division-card';
-    card.setAttribute('data-division', divName);
-    card.innerHTML = `
-      <span class="div-icon">${icon}</span>
-      <span class="div-name">${divName}</span>
-    `;
-    card.addEventListener('click', () => selectDivision(divName));
-    divContainer.appendChild(card);
+    const opt = document.createElement('option');
+    opt.value = divName;
+    opt.textContent = divName;
+    divSelect.appendChild(opt);
   });
-
-  // Breadcrumbs click jump handlers
-  const crumbDiv = document.getElementById('crumb-division');
-  const crumbDist = document.getElementById('crumb-district');
-  const crumbUpz = document.getElementById('crumb-upazila');
-  const crumbVil = document.getElementById('crumb-village');
-
-  if (crumbDiv) {
-    crumbDiv.style.cursor = 'pointer';
-    crumbDiv.addEventListener('click', () => {
-      document.getElementById('step-division-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    });
-  }
-  if (crumbDist) {
-    crumbDist.style.cursor = 'pointer';
-    crumbDist.addEventListener('click', () => {
-      if (currentDivision) {
-        document.getElementById('step-district-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    });
-  }
-  if (crumbUpz) {
-    crumbUpz.style.cursor = 'pointer';
-    crumbUpz.addEventListener('click', () => {
-      if (currentDistrict) {
-        document.getElementById('step-upazila-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      }
-    });
-  }
-  if (crumbVil) {
-    crumbVil.style.cursor = 'pointer';
-    crumbVil.addEventListener('click', () => {
-      if (currentUpazila) {
-        document.getElementById('step-village-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        document.getElementById('cust-village')?.focus();
-      }
-    });
-  }
 }
 
-function selectDivision(divName) {
-  currentDivision = divName;
+window.handleDivisionSelect = function(divName) {
+  currentDivision = divName || '';
   currentDistrict = '';
   currentUpazila = '';
+  currentVillage = '';
+  currentStreet = '';
 
-  // Update division cards UI
-  document.querySelectorAll('.division-card').forEach(c => {
-    c.classList.toggle('selected', c.getAttribute('data-division') === divName);
-  });
+  const divSelect = document.getElementById('select-division');
+  const distSelect = document.getElementById('select-district');
+  const upzSelect = document.getElementById('select-upazila');
+  const vilInput = document.getElementById('cust-village');
+  const strInput = document.getElementById('cust-street');
 
-  // Clear errors
+  const distGroup = document.getElementById('field-district-group');
+  const upzGroup = document.getElementById('field-upazila-group');
+  const vilGroup = document.getElementById('field-village-group');
+  const lblDiv = document.getElementById('label-active-division');
   const divFeedback = document.getElementById('division-feedback');
+
+  // Reset inputs
+  if (vilInput) vilInput.value = '';
+  if (strInput) strInput.value = '';
+
+  if (distSelect) {
+    distSelect.innerHTML = '<option value="">জেলা বেছে নিন...</option>';
+    distSelect.value = '';
+    distSelect.classList.remove('is-valid', 'is-invalid');
+  }
+  if (upzSelect) {
+    upzSelect.innerHTML = '<option value="">উপজেলা / থানা বেছে নিন...</option>';
+    upzSelect.value = '';
+    upzSelect.classList.remove('is-valid', 'is-invalid');
+  }
+
+  // Hide deeper levels
+  if (upzGroup) upzGroup.style.display = 'none';
+  if (vilGroup) vilGroup.style.display = 'none';
+
+  if (!divName) {
+    if (distGroup) distGroup.style.display = 'none';
+    if (divSelect) divSelect.classList.remove('is-valid');
+    updateLiveAddressBadge();
+    updateWhatsAppDirectLink();
+    return;
+  }
+
+  if (divSelect) {
+    divSelect.classList.remove('is-invalid');
+    divSelect.classList.add('is-valid');
+  }
   if (divFeedback) divFeedback.className = 'field-feedback-msg';
+  if (lblDiv) lblDiv.textContent = divName;
 
-  // Update Breadcrumbs
-  updateBreadcrumbs(1);
-
-  // Update live address badge
-  updateLiveAddressBadge();
-
-  // Populate District Pills
-  const districtBox = document.getElementById('step-district-box');
-  const distPillsContainer = document.getElementById('district-pills-container');
-  const activeDivSpan = document.getElementById('active-div-name');
-
-  if (activeDivSpan) activeDivSpan.textContent = divName;
-
-  if (distPillsContainer && window.BD_GEO) {
-    distPillsContainer.innerHTML = '';
+  // Populate districts
+  if (distSelect && window.BD_GEO) {
     const districts = window.BD_GEO.getDistricts(divName);
-
-    districts.forEach(dist => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'geo-pill-btn';
-      btn.setAttribute('data-district', dist);
-      btn.textContent = dist;
-      btn.addEventListener('click', () => selectDistrict(dist));
-      distPillsContainer.appendChild(btn);
+    districts.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d;
+      opt.textContent = `${d} জেলা`;
+      distSelect.appendChild(opt);
     });
   }
 
-  // Show district box, hide further steps
-  if (districtBox) {
-    districtBox.classList.add('visible');
-    setTimeout(() => {
-      districtBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+  // Show district dropdown
+  if (distGroup) {
+    distGroup.style.display = 'block';
   }
 
-  const upazilaBox = document.getElementById('step-upazila-box');
-  if (upazilaBox) upazilaBox.classList.remove('visible');
-
-  const villageBox = document.getElementById('step-village-box');
-  if (villageBox) villageBox.classList.remove('visible');
-
+  updateLiveAddressBadge();
   updateWhatsAppDirectLink();
-}
+};
 
-function selectDistrict(distName) {
-  currentDistrict = distName;
+window.handleDistrictSelect = function(distName) {
+  currentDistrict = distName || '';
   currentUpazila = '';
+  currentVillage = '';
+  currentStreet = '';
 
-  // Update district pills UI
-  document.querySelectorAll('#district-pills-container .geo-pill-btn').forEach(b => {
-    b.classList.toggle('selected', b.getAttribute('data-district') === distName);
-  });
+  const distSelect = document.getElementById('select-district');
+  const upzSelect = document.getElementById('select-upazila');
+  const vilInput = document.getElementById('cust-village');
+  const strInput = document.getElementById('cust-street');
 
-  // Clear errors
+  const upzGroup = document.getElementById('field-upazila-group');
+  const vilGroup = document.getElementById('field-village-group');
+  const lblDist = document.getElementById('label-active-district');
   const distFeedback = document.getElementById('district-feedback');
+
+  if (vilInput) vilInput.value = '';
+  if (strInput) strInput.value = '';
+
+  if (upzSelect) {
+    upzSelect.innerHTML = '<option value="">উপজেলা / থানা বেছে নিন...</option>';
+    upzSelect.value = '';
+    upzSelect.classList.remove('is-valid', 'is-invalid');
+  }
+
+  // Hide village group
+  if (vilGroup) vilGroup.style.display = 'none';
+
+  if (!distName) {
+    if (upzGroup) upzGroup.style.display = 'none';
+    if (distSelect) distSelect.classList.remove('is-valid');
+    updateLiveAddressBadge();
+    updateWhatsAppDirectLink();
+    return;
+  }
+
+  if (distSelect) {
+    distSelect.classList.remove('is-invalid');
+    distSelect.classList.add('is-valid');
+  }
   if (distFeedback) distFeedback.className = 'field-feedback-msg';
+  if (lblDist) lblDist.textContent = distName;
 
   // Auto assign shipping: Dhaka vs Outside
   if (distName === 'ঢাকা') {
@@ -368,87 +369,67 @@ function selectDistrict(distName) {
     selectShipping('outside', 130);
   }
 
-  // Update Breadcrumbs
-  updateBreadcrumbs(2);
-
-  // Update Live Address Badge
-  updateLiveAddressBadge();
-
   // Update Summary badge
   const destBadge = document.getElementById('summary-meta-dest');
   if (destBadge) destBadge.textContent = `📍 ${distName}`;
 
   // Populate Upazilas
-  const upazilaBox = document.getElementById('step-upazila-box');
-  const upazilaContainer = document.getElementById('upazila-pills-container');
-  const activeDistSpan = document.getElementById('active-dist-name');
-
-  if (activeDistSpan) activeDistSpan.textContent = distName;
-
-  if (upazilaContainer && window.BD_GEO) {
-    upazilaContainer.innerHTML = '';
+  if (upzSelect && window.BD_GEO) {
     const upazilas = window.BD_GEO.getUpazilas(distName);
-
-    upazilas.forEach(upz => {
-      const btn = document.createElement('button');
-      btn.type = 'button';
-      btn.className = 'geo-pill-btn';
-      btn.setAttribute('data-upazila', upz);
-      btn.textContent = upz;
-      btn.addEventListener('click', () => selectUpazila(upz));
-      upazilaContainer.appendChild(btn);
+    upazilas.forEach(u => {
+      const opt = document.createElement('option');
+      opt.value = u;
+      opt.textContent = u;
+      upzSelect.appendChild(opt);
     });
   }
 
-  // Show upazila box, hide village box
-  if (upazilaBox) {
-    upazilaBox.classList.add('visible');
-    setTimeout(() => {
-      upazilaBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 100);
+  // Show upazila dropdown
+  if (upzGroup) {
+    upzGroup.style.display = 'block';
   }
 
-  const villageBox = document.getElementById('step-village-box');
-  if (villageBox) villageBox.classList.remove('visible');
-
-  updateWhatsAppDirectLink();
-}
-
-function selectUpazila(upzName) {
-  currentUpazila = upzName;
-
-  // Update upazila pills UI
-  document.querySelectorAll('#upazila-pills-container .geo-pill-btn').forEach(b => {
-    b.classList.toggle('selected', b.getAttribute('data-upazila') === upzName);
-  });
-
-  // Clear errors
-  const upzFeedback = document.getElementById('upazila-feedback');
-  if (upzFeedback) upzFeedback.className = 'field-feedback-msg';
-
-  // Update Breadcrumbs
-  updateBreadcrumbs(3);
-
-  // Update Live Address Badge
   updateLiveAddressBadge();
+  updateWhatsAppDirectLink();
+};
+
+window.handleUpazilaSelect = function(upzName) {
+  currentUpazila = upzName || '';
+
+  const upzSelect = document.getElementById('select-upazila');
+  const vilGroup = document.getElementById('field-village-group');
+  const upzFeedback = document.getElementById('upazila-feedback');
+
+  if (!upzName) {
+    if (vilGroup) vilGroup.style.display = 'none';
+    if (upzSelect) upzSelect.classList.remove('is-valid');
+    updateLiveAddressBadge();
+    updateWhatsAppDirectLink();
+    return;
+  }
+
+  if (upzSelect) {
+    upzSelect.classList.remove('is-invalid');
+    upzSelect.classList.add('is-valid');
+  }
+  if (upzFeedback) upzFeedback.className = 'field-feedback-msg';
 
   // Update Summary badge
   const destBadge = document.getElementById('summary-meta-dest');
   if (destBadge) destBadge.textContent = `📍 ${currentDistrict} > ${upzName}`;
 
-  // Show Village box
-  const villageBox = document.getElementById('step-village-box');
-  if (villageBox) {
-    villageBox.classList.add('visible');
+  // Show Village group
+  if (vilGroup) {
+    vilGroup.style.display = 'block';
     setTimeout(() => {
-      villageBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       const vilInput = document.getElementById('cust-village');
       if (vilInput && !vilInput.value) vilInput.focus();
-    }, 120);
+    }, 100);
   }
 
+  updateLiveAddressBadge();
   updateWhatsAppDirectLink();
-}
+};
 
 // Village quick helper chips
 window.insertVillageChip = function(tag) {
@@ -478,10 +459,6 @@ window.handleVillageInput = function(val) {
     if (feedback) feedback.className = 'field-feedback-msg';
   }
 
-  if (currentVillage.length >= 3) {
-    updateBreadcrumbs(4);
-  }
-
   updateLiveAddressBadge();
   updateWhatsAppDirectLink();
 };
@@ -492,67 +469,24 @@ window.handleStreetInput = function(val) {
   updateWhatsAppDirectLink();
 };
 
-function updateBreadcrumbs(stage) {
-  const cDiv = document.getElementById('crumb-division');
-  const cDist = document.getElementById('crumb-district');
-  const cUpz = document.getElementById('crumb-upazila');
-  const cVil = document.getElementById('crumb-village');
-
-  // reset all
-  [cDiv, cDist, cUpz, cVil].forEach(c => {
-    if (c) c.className = 'location-crumb';
-  });
-
-  if (stage === 1) {
-    if (cDiv) cDiv.className = 'location-crumb completed';
-    if (cDist) cDist.className = 'location-crumb active';
-  } else if (stage === 2) {
-    if (cDiv) cDiv.className = 'location-crumb completed';
-    if (cDist) cDist.className = 'location-crumb completed';
-    if (cUpz) cUpz.className = 'location-crumb active';
-  } else if (stage === 3) {
-    if (cDiv) cDiv.className = 'location-crumb completed';
-    if (cDist) cDist.className = 'location-crumb completed';
-    if (cUpz) cUpz.className = 'location-crumb completed';
-    if (cVil) cVil.className = 'location-crumb active';
-  } else if (stage === 4) {
-    if (cDiv) cDiv.className = 'location-crumb completed';
-    if (cDist) cDist.className = 'location-crumb completed';
-    if (cUpz) cUpz.className = 'location-crumb completed';
-    if (cVil) cVil.className = 'location-crumb completed';
-  } else {
-    if (cDiv) cDiv.className = 'location-crumb active';
-  }
-}
-
 function updateLiveAddressBadge() {
-  const badgeText = document.getElementById('live-address-text');
-  const badgeCard = document.getElementById('live-address-badge');
-  if (!badgeText) return;
+  const badgeWrap = document.getElementById('destination-confirm-badge');
+  const badgeText = document.getElementById('destination-confirm-text');
+  if (!badgeWrap || !badgeText) return;
 
-  let text = '';
-  if (!currentDivision) {
-    text = 'প্রথমে নিচের তালিকা থেকে আপনার বিভাগ বেছে নিন';
-  } else if (!currentDistrict) {
-    text = `${currentDivision} › জেলা বেছে নিন`;
-  } else if (!currentUpazila) {
-    text = `${currentDivision} › ${currentDistrict} › থানা/উপজেলা বেছে নিন`;
+  if (currentDivision && currentDistrict) {
+    const parts = [
+      currentDivision,
+      `${currentDistrict} জেলা`,
+      currentUpazila ? `${currentUpazila} থানা/উপজেলা` : null,
+      currentVillage ? currentVillage : null,
+      currentStreet ? `(${currentStreet})` : null
+    ].filter(Boolean);
+
+    badgeText.textContent = parts.join(' › ');
+    badgeWrap.style.display = 'flex';
   } else {
-    text = `${currentDistrict} › ${currentUpazila}`;
-    if (currentVillage) {
-      text += ` › ${currentVillage}`;
-    }
-    if (currentStreet) {
-      text += ` (${currentStreet})`;
-    }
-  }
-
-  badgeText.textContent = text;
-
-  if (badgeCard) {
-    badgeCard.classList.remove('highlight');
-    void badgeCard.offsetWidth; // trigger reflow for animation
-    badgeCard.classList.add('highlight');
+    badgeWrap.style.display = 'none';
   }
 }
 
@@ -873,37 +807,46 @@ function handleOrderSubmit(e) {
   }
 
   // Validate Division
+  const divSelect = document.getElementById('select-division');
   if (!currentDivision) {
+    if (divSelect) divSelect.classList.add('is-invalid');
     if (divisionFeedback) {
       divisionFeedback.textContent = '⚠️ অনুগ্রহ করে আপনার বিভাগ নির্বাচন করুন';
       divisionFeedback.className = 'field-feedback-msg show-error';
     }
-    if (!hasError) {
-      document.getElementById('step-division-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!hasError && divSelect) {
+      divSelect.focus();
+      divSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     hasError = true;
   }
 
   // Validate District
+  const distSelect = document.getElementById('select-district');
   if (!currentDistrict) {
+    if (distSelect) distSelect.classList.add('is-invalid');
     if (districtFeedback) {
       districtFeedback.textContent = '⚠️ অনুগ্রহ করে আপনার জেলা নির্বাচন করুন';
       districtFeedback.className = 'field-feedback-msg show-error';
     }
-    if (!hasError) {
-      document.getElementById('step-district-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!hasError && distSelect) {
+      distSelect.focus();
+      distSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     hasError = true;
   }
 
   // Validate Upazila
+  const upzSelect = document.getElementById('select-upazila');
   if (!currentUpazila) {
+    if (upzSelect) upzSelect.classList.add('is-invalid');
     if (upazilaFeedback) {
       upazilaFeedback.textContent = '⚠️ অনুগ্রহ করে আপনার উপজেলা বা থানা নির্বাচন করুন';
       upazilaFeedback.className = 'field-feedback-msg show-error';
     }
-    if (!hasError) {
-      document.getElementById('step-upazila-box')?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    if (!hasError && upzSelect) {
+      upzSelect.focus();
+      upzSelect.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
     hasError = true;
   }
@@ -915,7 +858,10 @@ function handleOrderSubmit(e) {
       villageFeedback.textContent = '⚠️ অনুগ্রহ করে আপনার গ্রাম, পাড়া বা এলাকার নাম লিখুন';
       villageFeedback.className = 'field-feedback-msg show-error';
     }
-    if (!hasError && villageInput) villageInput.focus();
+    if (!hasError && villageInput) {
+      villageInput.focus();
+      villageInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
     hasError = true;
   }
 
@@ -979,7 +925,7 @@ function handleOrderSubmit(e) {
     showSuccessReceipt(orderData);
     e.target.reset();
 
-    // Reset location wizard state
+    // Reset location cascading dropdowns state
     currentDivision = '';
     currentDistrict = '';
     currentUpazila = '';
@@ -988,15 +934,36 @@ function handleOrderSubmit(e) {
     currentCouponDiscount = 0;
     appliedCouponCode = '';
 
-    document.querySelectorAll('.division-card').forEach(c => c.classList.remove('selected'));
-    document.querySelectorAll('.geo-pill-btn').forEach(b => b.classList.remove('selected'));
-    document.getElementById('step-district-box')?.classList.remove('visible');
-    document.getElementById('step-upazila-box')?.classList.remove('visible');
-    document.getElementById('step-village-box')?.classList.remove('visible');
-    updateBreadcrumbs(0);
+    const divSelect = document.getElementById('select-division');
+    if (divSelect) divSelect.value = '';
+
+    const distSelect = document.getElementById('select-district');
+    if (distSelect) {
+      distSelect.innerHTML = '<option value="">জেলা বেছে নিন...</option>';
+      distSelect.value = '';
+    }
+
+    const upzSelect = document.getElementById('select-upazila');
+    if (upzSelect) {
+      upzSelect.innerHTML = '<option value="">উপজেলা / থানা বেছে নিন...</option>';
+      upzSelect.value = '';
+    }
+
+    const distGroup = document.getElementById('field-district-group');
+    if (distGroup) distGroup.style.display = 'none';
+
+    const upzGroup = document.getElementById('field-upazila-group');
+    if (upzGroup) upzGroup.style.display = 'none';
+
+    const vilGroup = document.getElementById('field-village-group');
+    if (vilGroup) vilGroup.style.display = 'none';
+
+    const destBadge = document.getElementById('destination-confirm-badge');
+    if (destBadge) destBadge.style.display = 'none';
+
     updateLiveAddressBadge();
 
-    document.querySelectorAll('.form-input, .form-textarea').forEach(el => {
+    document.querySelectorAll('.form-input, .form-textarea, .form-select').forEach(el => {
       el.classList.remove('is-valid');
       el.classList.remove('is-invalid');
     });
@@ -1453,7 +1420,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initGallery();
   initCountdown();
   initColorSync();
-  initLocationWizard();
+  initLocationDropdowns();
   setupFormValidation();
   setupMobileStickyJump();
   initSocialPopup();
