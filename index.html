@@ -23,6 +23,30 @@
 </head>
 <body>
 
+  <!-- Elegant Sticky Header -->
+  <header class="site-header-elegant">
+    <div class="container header-elegant-inner">
+      <a href="#" class="brand-brandmark" aria-label="LittleNest হোমপেইজ">
+        <span class="brand-icon">🍼</span>
+        <div class="brand-titles">
+          <span class="brand-title">LittleNest</span>
+          <span class="brand-subtitle">অফিসিয়াল বেবি স্টোর</span>
+        </div>
+      </a>
+
+      <div class="header-elegant-actions">
+        <a href="tel:+8801700000000" class="header-call-pill" id="btn-call-header" title="সরাসরি কল দিন">
+          <span class="call-icon">📞</span>
+          <span class="call-text">কল দিন</span>
+        </a>
+        <a href="#order-section" class="header-order-pill" id="btn-header-order">
+          <span>🛒</span>
+          <span>অর্ডার করুন</span>
+        </a>
+      </div>
+    </div>
+  </header>
+
   <!-- Hero Section -->
   <section class="hero-section">
     <div class="container hero-grid">
@@ -447,6 +471,38 @@
           <p class="order-header-subtitle">পণ্য হাতে পেয়ে দেখে টাকা পরিশোধ করুন। কোনো অগ্রিম পেমেন্ট লাগবে না।</p>
         </div>
 
+        <!-- Trust Guarantee Ribbon -->
+        <div class="order-guarantee-ribbon">
+          <div class="guarantee-pill">
+            <span class="g-icon">💵</span>
+            <div>
+              <div class="g-title">ক্যাশ অন ডেলিভারি</div>
+              <div class="g-desc">পণ্য দেখে মূল্য পরিশোধ</div>
+            </div>
+          </div>
+          <div class="guarantee-pill">
+            <span class="g-icon">⚡</span>
+            <div>
+              <div class="g-title">সুপারফাস্ট ডেলিভারি</div>
+              <div class="g-desc">২৪-৭২ ঘণ্টায় সারা দেশে</div>
+            </div>
+          </div>
+          <div class="guarantee-pill">
+            <span class="g-icon">🔄</span>
+            <div>
+              <div class="g-title">৭ দিনের রিপ্লেসমেন্ট</div>
+              <div class="g-desc">১০০% নিশ্চিন্ত কেনাকাটা</div>
+            </div>
+          </div>
+          <div class="guarantee-pill">
+            <span class="g-icon">🛡️</span>
+            <div>
+              <div class="g-title">ফুড গ্রেড সিলিকন</div>
+              <div class="g-desc">বিপিএ মুক্ত ও নিরাপদ</div>
+            </div>
+          </div>
+        </div>
+
         <div class="order-form-body">
           <form id="checkout-order-form" onsubmit="handleOrderSubmit(event)" novalidate>
             
@@ -527,7 +583,7 @@
               </div>
             </div>
 
-            <!-- Step 3: Customer Details & Interactive Location Wizard -->
+            <!-- Step 3: Customer Details & Dynamic Locked Location System -->
             <div class="form-step-title">
               <span class="form-step-badge">৩</span>
               <span>আপনার ডেলিভারির ঠিকানা ও তথ্য দিন:</span>
@@ -535,63 +591,125 @@
 
             <div class="form-grid">
               <div class="form-group">
-                <label class="form-label" for="cust-name">আপনার নাম <span class="req">*</span></label>
+                <label class="form-label" for="cust-name">👤 আপনার পুরো নাম <span class="req">*</span></label>
                 <input type="text" id="cust-name" class="form-input" placeholder="যেমন: মোছাঃ সালমা খাতুন" autocomplete="name" required>
                 <span class="field-feedback-msg" id="name-feedback">অনুগ্রহ করে আপনার পুরো নামটি লিখুন</span>
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="cust-phone">সচল মোবাইল নম্বর <span class="req">*</span></label>
+                <label class="form-label" for="cust-phone">📱 সচল মোবাইল নম্বর <span class="req">*</span></label>
                 <input type="tel" id="cust-phone" class="form-input" placeholder="যেমন: 017XXXXXXXX বা 018XXXXXXXX" autocomplete="tel" required>
                 <span class="field-feedback-msg" id="phone-feedback">১১ ডিজিটের সঠিক মোবাইল নম্বর লিখুন (যেমন: 017XXXXXXXX)</span>
               </div>
 
-              <!-- Level 1: Division Dropdown (Always visible first) -->
-              <div class="form-group" id="field-division-group">
-                <label class="form-label" for="select-division">বিভাগ নির্বাচন করুন <span class="req">*</span></label>
-                <select id="select-division" class="form-input form-select" onchange="handleDivisionSelect(this.value)">
-                  <option value="">বিভাগ বেছে নিন...</option>
-                </select>
-                <span class="field-feedback-msg" id="division-feedback">অনুগ্রহ করে আপনার বিভাগ নির্বাচন করুন</span>
-              </div>
-
-              <!-- Level 2: District Dropdown (Appears only when Division is selected) -->
-              <div class="form-group cascading-field" id="field-district-group" style="display: none;">
-                <label class="form-label" for="select-district">জেলা নির্বাচন করুন (<span id="label-active-division"></span>) <span class="req">*</span></label>
-                <select id="select-district" class="form-input form-select" onchange="handleDistrictSelect(this.value)">
-                  <option value="">জেলা বেছে নিন...</option>
-                </select>
-                <span class="field-feedback-msg" id="district-feedback">অনুগ্রহ করে আপনার জেলা নির্বাচন করুন</span>
-              </div>
-
-              <!-- Level 3: Upazila Dropdown (Appears only when District is selected) -->
-              <div class="form-group cascading-field" id="field-upazila-group" style="display: none;">
-                <label class="form-label" for="select-upazila">উপজেলা / থানা নির্বাচন করুন (<span id="label-active-district"></span>) <span class="req">*</span></label>
-                <select id="select-upazila" class="form-input form-select" onchange="handleUpazilaSelect(this.value)">
-                  <option value="">উপজেলা / থানা বেছে নিন...</option>
-                </select>
-                <span class="field-feedback-msg" id="upazila-feedback">অনুগ্রহ করে উপজেলা বা থানা নির্বাচন করুন</span>
-              </div>
-
-              <!-- Level 4: Village / Street / Area (Appears only when Upazila is selected) -->
-              <div class="form-group cascading-field" id="field-village-group" style="display: none;">
-                <label class="form-label" for="cust-village">গ্রাম / এলাকা / পাড়া ও হোল্ডিং নং <span class="req">*</span></label>
-                
-                <!-- Helper chips for quick insert -->
-                <div class="village-helper-chips">
-                  <span style="font-size: 0.74rem; color: #64748B;">সহজে বসাতে ট্যাপ করুন:</span>
-                  <button type="button" class="village-chip-tag" onclick="insertVillageChip('গ্রাম: ')">🏡 গ্রাম</button>
-                  <button type="button" class="village-chip-tag" onclick="insertVillageChip('পাড়া: ')">🏘️ পাড়া</button>
-                  <button type="button" class="village-chip-tag" onclick="insertVillageChip('ওয়ার্ড নং ')">📍 ওয়ার্ড</button>
-                  <button type="button" class="village-chip-tag" onclick="insertVillageChip('বাজার এলাকা')">🏬 বাজার</button>
-                  <button type="button" class="village-chip-tag" onclick="insertVillageChip('সেক্টর/ব্লক: ')">🏢 সেক্টর</button>
+              <!-- Level 1: Division (Always visible first, locks upon selection) -->
+              <div class="form-group dynamic-address-step" id="field-division-group">
+                <div class="step-input-box" id="box-division-input">
+                  <label class="form-label" for="select-division">
+                    <span class="step-num-circle">১</span>
+                    <span>বিভাগ নির্বাচন করুন</span> <span class="req">*</span>
+                  </label>
+                  <select id="select-division" class="form-input form-select" onchange="handleDivisionSelect(this.value)">
+                    <option value="">বিভাগ বেছে নিন...</option>
+                  </select>
+                  <span class="field-feedback-msg" id="division-feedback">অনুগ্রহ করে আপনার বিভাগ নির্বাচন করুন</span>
                 </div>
 
-                <input type="text" id="cust-village" class="form-input" placeholder="যেমন: কদমতলী গ্রাম / ৩ নং ওয়ার্ড / ব্লক বি" required oninput="handleVillageInput(this.value)">
-                <span class="field-feedback-msg" id="village-feedback">অনুগ্রহ করে আপনার গ্রাম, মহল্লা বা এলাকার নাম লিখুন</span>
+                <!-- Division Locked State Card -->
+                <div class="step-locked-card" id="box-division-locked" style="display: none;">
+                  <div class="locked-info">
+                    <span class="locked-check">✓</span>
+                    <div>
+                      <span class="locked-label">নির্বাচিত বিভাগ:</span>
+                      <strong class="locked-val" id="text-locked-division"></strong>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-unlock-edit" onclick="unlockDivision()" aria-label="বিভাগ পরিবর্তন">
+                    ✏️ পরিবর্তন
+                  </button>
+                </div>
+              </div>
 
-                <div style="margin-top: 8px;">
-                  <input type="text" id="cust-street" class="form-input" placeholder="বাসা নং, রোড নং বা পরিচিত ল্যান্ডমার্ক (ঐচ্ছিক)" oninput="handleStreetInput(this.value)">
+              <!-- Level 2: District (Opens when Division selected, locks upon selection) -->
+              <div class="form-group dynamic-address-step cascading-field" id="field-district-group" style="display: none;">
+                <div class="step-input-box" id="box-district-input">
+                  <label class="form-label" for="select-district">
+                    <span class="step-num-circle">২</span>
+                    <span>জেলা নির্বাচন করুন (<span id="label-active-division"></span>)</span> <span class="req">*</span>
+                  </label>
+                  <select id="select-district" class="form-input form-select" onchange="handleDistrictSelect(this.value)">
+                    <option value="">জেলা বেছে নিন...</option>
+                  </select>
+                  <span class="field-feedback-msg" id="district-feedback">অনুগ্রহ করে আপনার জেলা নির্বাচন করুন</span>
+                </div>
+
+                <!-- District Locked State Card -->
+                <div class="step-locked-card" id="box-district-locked" style="display: none;">
+                  <div class="locked-info">
+                    <span class="locked-check">✓</span>
+                    <div>
+                      <span class="locked-label">নির্বাচিত জেলা:</span>
+                      <strong class="locked-val" id="text-locked-district"></strong>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-unlock-edit" onclick="unlockDistrict()" aria-label="জেলা পরিবর্তন">
+                    ✏️ পরিবর্তন
+                  </button>
+                </div>
+              </div>
+
+              <!-- Level 3: Upazila (Opens when District selected, locks upon selection) -->
+              <div class="form-group dynamic-address-step cascading-field" id="field-upazila-group" style="display: none;">
+                <div class="step-input-box" id="box-upazila-input">
+                  <label class="form-label" for="select-upazila">
+                    <span class="step-num-circle">৩</span>
+                    <span>উপজেলা / থানা নির্বাচন করুন (<span id="label-active-district"></span>)</span> <span class="req">*</span>
+                  </label>
+                  <select id="select-upazila" class="form-input form-select" onchange="handleUpazilaSelect(this.value)">
+                    <option value="">উপজেলা / থানা বেছে নিন...</option>
+                  </select>
+                  <span class="field-feedback-msg" id="upazila-feedback">অনুগ্রহ করে উপজেলা বা থানা নির্বাচন করুন</span>
+                </div>
+
+                <!-- Upazila Locked State Card -->
+                <div class="step-locked-card" id="box-upazila-locked" style="display: none;">
+                  <div class="locked-info">
+                    <span class="locked-check">✓</span>
+                    <div>
+                      <span class="locked-label">থানা / উপজেলা:</span>
+                      <strong class="locked-val" id="text-locked-upazila"></strong>
+                    </div>
+                  </div>
+                  <button type="button" class="btn-unlock-edit" onclick="unlockUpazila()" aria-label="থানা বা উপজেলা পরিবর্তন">
+                    ✏️ পরিবর্তন
+                  </button>
+                </div>
+              </div>
+
+              <!-- Level 4: Village / Street / Area (Opens automatically when Upazila locked) -->
+              <div class="form-group dynamic-address-step cascading-field" id="field-village-group" style="display: none;">
+                <div class="step-input-box" id="box-village-input">
+                  <label class="form-label" for="cust-village">
+                    <span class="step-num-circle">৪</span>
+                    <span>গ্রাম / এলাকা / পাড়া ও হোল্ডিং নং</span> <span class="req">*</span>
+                  </label>
+                  
+                  <!-- Helper chips for quick insert -->
+                  <div class="village-helper-chips">
+                    <span style="font-size: 0.74rem; color: #64748B;">সহজে বসাতে ট্যাপ করুন:</span>
+                    <button type="button" class="village-chip-tag" onclick="insertVillageChip('গ্রাম: ')">🏡 গ্রাম</button>
+                    <button type="button" class="village-chip-tag" onclick="insertVillageChip('পাড়া: ')">🏘️ পাড়া</button>
+                    <button type="button" class="village-chip-tag" onclick="insertVillageChip('ওয়ার্ড নং ')">📍 ওয়ার্ড</button>
+                    <button type="button" class="village-chip-tag" onclick="insertVillageChip('বাজার এলাকা')">🏬 বাজার</button>
+                    <button type="button" class="village-chip-tag" onclick="insertVillageChip('সেক্টর/ব্লক: ')">🏢 সেক্টর</button>
+                  </div>
+
+                  <input type="text" id="cust-village" class="form-input" placeholder="যেমন: কদমতলী গ্রাম / ৩ নং ওয়ার্ড / ব্লক বি" required oninput="handleVillageInput(this.value)">
+                  <span class="field-feedback-msg" id="village-feedback">অনুগ্রহ করে আপনার গ্রাম, মহল্লা বা এলাকার নাম লিখুন</span>
+
+                  <div style="margin-top: 8px;">
+                    <input type="text" id="cust-street" class="form-input" placeholder="বাসা নং, রোড নং বা পরিচিত ল্যান্ডমার্ক (ঐচ্ছিক)" oninput="handleStreetInput(this.value)">
+                  </div>
                 </div>
               </div>
 
@@ -602,7 +720,7 @@
               </div>
 
               <div class="form-group">
-                <label class="form-label" for="cust-note">ডেলিভারি সংক্রান্ত বিশেষ অনুরোধ (ঐচ্ছিক)</label>
+                <label class="form-label" for="cust-note">📝 ডেলিভারি সংক্রান্ত বিশেষ অনুরোধ (ঐচ্ছিক)</label>
                 <input type="text" id="cust-note" class="form-input" placeholder="যেমন: বিকেলে ডেলিভারি দেওয়া বা কল দিয়ে আসা">
               </div>
             </div>
