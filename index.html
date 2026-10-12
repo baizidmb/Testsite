@@ -487,21 +487,24 @@
           </div>
         </div>
 
-        <!-- Color Selector Pills -->
-        <div class="color-selector-clean">
-          <label class="clean-field-label">পছন্দের কালার সিলেক্ট করুন:</label>
-          <div class="color-clean-buttons">
-            <button type="button" class="color-clean-pill selected" data-color="স্কাই ব্লু" onclick="selectCleanColor('স্কাই ব্লু', this)">
-              <span class="dot" style="background: #38bdf8;"></span> স্কাই ব্লু
+        <!-- Minimal Color Swatches -->
+        <div class="color-selector-minimal">
+          <div class="color-label-row">
+            <span class="color-title">পছন্দের কালার:</span>
+            <span class="selected-color-name" id="selected-color-label">স্কাই ব্লু</span>
+          </div>
+          <div class="color-swatches-row">
+            <button type="button" class="color-swatch-circle selected" data-color="স্কাই ব্লু" style="--swatch-color: #38bdf8;" title="স্কাই ব্লু" onclick="selectCleanColor('স্কাই ব্লু', this)" aria-label="স্কাই ব্লু">
+              <span class="swatch-check">✓</span>
             </button>
-            <button type="button" class="color-clean-pill" data-color="বেবি পিঙ্ক" onclick="selectCleanColor('বেবি পিঙ্ক', this)">
-              <span class="dot" style="background: #f472b6;"></span> বেবি পিঙ্ক
+            <button type="button" class="color-swatch-circle" data-color="বেবি পিঙ্ক" style="--swatch-color: #f472b6;" title="বেবি পিঙ্ক" onclick="selectCleanColor('বেবি পিঙ্ক', this)" aria-label="বেবি পিঙ্ক">
+              <span class="swatch-check">✓</span>
             </button>
-            <button type="button" class="color-clean-pill" data-color="সান ইয়েলো" onclick="selectCleanColor('সান ইয়েলো', this)">
-              <span class="dot" style="background: #fde047;"></span> সান ইয়েলো
+            <button type="button" class="color-swatch-circle" data-color="সান ইয়েলো" style="--swatch-color: #fde047;" title="সান ইয়েলো" onclick="selectCleanColor('সান ইয়েলো', this)" aria-label="সান ইয়েলো">
+              <span class="swatch-check">✓</span>
             </button>
-            <button type="button" class="color-clean-pill" data-color="মিন্ট গ্রিন" onclick="selectCleanColor('মিন্ট গ্রিন', this)">
-              <span class="dot" style="background: #4ade80;"></span> মিন্ট গ্রিন
+            <button type="button" class="color-swatch-circle" data-color="মিন্ট গ্রিন" style="--swatch-color: #4ade80;" title="মিন্ট গ্রিন" onclick="selectCleanColor('মিন্ট গ্রিন', this)" aria-label="মিন্ট গ্রিন">
+              <span class="swatch-check">✓</span>
             </button>
           </div>
         </div>
@@ -537,25 +540,6 @@
             <!-- Elegant Address Container Card -->
             <div class="address-card-box">
               
-              <!-- Quick City Shortcuts -->
-              <div class="address-quick-bar">
-                <span class="quick-title">⚡ দ্রুত নির্বাচন:</span>
-                <div class="quick-chips-wrapper">
-                  <button type="button" class="quick-city-chip" id="chip-dhaka" onclick="selectQuickCity('ঢাকা বিভাগ', 'ঢাকা')">
-                    🏛️ ঢাকা সিটি (৳৭০)
-                  </button>
-                  <button type="button" class="quick-city-chip" id="chip-ctg" onclick="selectQuickCity('চট্টগ্রাম বিভাগ', 'চট্টগ্রাম')">
-                    🚢 চট্টগ্রাম সিটি
-                  </button>
-                  <button type="button" class="quick-city-chip" id="chip-sylhet" onclick="selectQuickCity('সিলেট বিভাগ', 'সিলেট')">
-                    🍵 সিলেট
-                  </button>
-                  <button type="button" class="quick-city-chip" id="chip-rajshahi" onclick="selectQuickCity('রাজশাহী বিভাগ', 'রাজশাহী')">
-                    🌾 রাজশাহী
-                  </button>
-                </div>
-              </div>
-
               <!-- 3 Cascade Dropdowns: Division -> District -> Upazila/Thana -->
               <div class="address-cascading-grid">
                 

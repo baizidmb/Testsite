@@ -54,9 +54,12 @@ window.selectCleanPackage = function(qty, price, shipping) {
 
 window.selectCleanColor = function(colorName, el) {
   currentColor = colorName;
-  const pills = document.querySelectorAll('.color-clean-pill');
-  pills.forEach(pill => pill.classList.remove('selected'));
+  const swatches = document.querySelectorAll('.color-swatch-circle');
+  swatches.forEach(swatch => swatch.classList.remove('selected'));
   if (el) el.classList.add('selected');
+
+  const label = document.getElementById('selected-color-label');
+  if (label) label.textContent = colorName;
 };
 
 function recalculateShipping() {
@@ -99,54 +102,10 @@ function updateBillDisplay() {
 // -------------------------------------------------------------
 // 2. EASY & ELEGANT ADDRESS SELECTION LOGIC
 // -------------------------------------------------------------
-window.selectQuickCity = function(divisionName, districtName) {
-  // Clear and update quick chip active styling
-  document.querySelectorAll('.quick-city-chip').forEach(btn => btn.classList.remove('active'));
-
-  if (districtName === 'ঢাকা') {
-    const chip = document.getElementById('chip-dhaka');
-    if (chip) chip.classList.add('active');
-  } else if (districtName === 'চট্টগ্রাম') {
-    const chip = document.getElementById('chip-ctg');
-    if (chip) chip.classList.add('active');
-  } else if (districtName === 'সিলেট') {
-    const chip = document.getElementById('chip-sylhet');
-    if (chip) chip.classList.add('active');
-  } else if (districtName === 'রাজশাহী') {
-    const chip = document.getElementById('chip-rajshahi');
-    if (chip) chip.classList.add('active');
-  }
-
-  // 1. Set Division
-  selectedDivision = divisionName;
-  const divSelect = document.getElementById('addr-division');
-  if (divSelect) divSelect.value = divisionName;
-
-  // 2. Populate and select District
-  populateDistricts(divisionName, districtName);
-
-  // 3. Populate Thanas / Upazilas
-  populateUpazilas(districtName);
-
-  // 4. Update Shipping & Bill
-  recalculateShipping();
-  updateAddressUI();
-
-  // 5. Smoothly focus Upazila selector
-  const upazilaSelect = document.getElementById('addr-upazila');
-  if (upazilaSelect) {
-    upazilaSelect.focus();
-    highlightElement(upazilaSelect);
-  }
-};
-
 window.handleDivisionChange = function(divName) {
   selectedDivision = divName;
   selectedDistrict = '';
   selectedUpazila = '';
-
-  // Clear quick chip active states
-  document.querySelectorAll('.quick-city-chip').forEach(btn => btn.classList.remove('active'));
 
   populateDistricts(divName);
 
