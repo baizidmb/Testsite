@@ -523,11 +523,107 @@
             <span class="clean-field-error" id="phone-feedback">১১ ডিজিটের সঠিক মোবাইল নম্বর দিন</span>
           </div>
 
-          <!-- Field 3: Full Delivery Address -->
-          <div class="clean-form-group">
-            <label class="clean-field-label" for="cust-address">৩. সম্পূর্ণ ডেলিভারি ঠিকানা <span class="req">*</span></label>
-            <textarea id="cust-address" class="clean-form-input clean-form-textarea" rows="3" placeholder="জেলা, থানা/উপজেলা, গ্রাম বা এলাকা ও বাসা নম্বর লিখুন" required autocomplete="street-address"></textarea>
-            <span class="clean-field-error" id="address-feedback">অনুগ্রহ করে আপনার সম্পূর্ণ ঠিকানা লিখুন</span>
+          <!-- Field 3: Easy, Elegant & Clean Address Selection Section -->
+          <div class="clean-form-group address-selection-group">
+            <div class="address-group-header">
+              <label class="clean-field-label" style="margin-bottom: 0;">
+                ৩. ডেলিভারি এলাকা ও সম্পূর্ণ ঠিকানা <span class="req">*</span>
+              </label>
+              <span class="address-status-pill" id="address-status-pill">
+                <span class="status-dot"></span> <span id="status-pill-text">এলাকা বেছে নিন</span>
+              </span>
+            </div>
+
+            <!-- Elegant Address Container Card -->
+            <div class="address-card-box">
+              
+              <!-- Quick City Shortcuts -->
+              <div class="address-quick-bar">
+                <span class="quick-title">⚡ দ্রুত নির্বাচন:</span>
+                <div class="quick-chips-wrapper">
+                  <button type="button" class="quick-city-chip" id="chip-dhaka" onclick="selectQuickCity('ঢাকা বিভাগ', 'ঢাকা')">
+                    🏛️ ঢাকা সিটি (৳৭০)
+                  </button>
+                  <button type="button" class="quick-city-chip" id="chip-ctg" onclick="selectQuickCity('চট্টগ্রাম বিভাগ', 'চট্টগ্রাম')">
+                    🚢 চট্টগ্রাম সিটি
+                  </button>
+                  <button type="button" class="quick-city-chip" id="chip-sylhet" onclick="selectQuickCity('সিলেট বিভাগ', 'সিলেট')">
+                    🍵 সিলেট
+                  </button>
+                  <button type="button" class="quick-city-chip" id="chip-rajshahi" onclick="selectQuickCity('রাজশাহী বিভাগ', 'রাজশাহী')">
+                    🌾 রাজশাহী
+                  </button>
+                </div>
+              </div>
+
+              <!-- 3 Cascade Dropdowns: Division -> District -> Upazila/Thana -->
+              <div class="address-cascading-grid">
+                
+                <!-- 1. Division -->
+                <div class="addr-field-cell">
+                  <label class="addr-mini-label" for="addr-division">বিভাগ <span class="req">*</span></label>
+                  <div class="addr-select-shell">
+                    <select id="addr-division" class="addr-select" onchange="handleDivisionChange(this.value)">
+                      <option value="" disabled selected>বিভাগ বেছে নিন</option>
+                      <option value="ঢাকা বিভাগ">🏛️ ঢাকা বিভাগ</option>
+                      <option value="চট্টগ্রাম বিভাগ">🚢 চট্টগ্রাম বিভাগ</option>
+                      <option value="রাজশাহী বিভাগ">🌾 রাজশাহী বিভাগ</option>
+                      <option value="খুলনা বিভাগ">🌊 খুলনা বিভাগ</option>
+                      <option value="বরিশাল বিভাগ">🥥 বরিশাল বিভাগ</option>
+                      <option value="সিলেট বিভাগ">🍵 সিলেট বিভাগ</option>
+                      <option value="রংপুর বিভাগ">🌄 রংপুর বিভাগ</option>
+                      <option value="ময়মনসিংহ বিভাগ">🌿 ময়মনসিংহ বিভাগ</option>
+                    </select>
+                    <span class="addr-select-icon">▾</span>
+                  </div>
+                </div>
+
+                <!-- 2. District -->
+                <div class="addr-field-cell" id="cell-district">
+                  <label class="addr-mini-label" for="addr-district">জেলা <span class="req">*</span></label>
+                  <div class="addr-select-shell">
+                    <select id="addr-district" class="addr-select" disabled onchange="handleDistrictChange(this.value)">
+                      <option value="" disabled selected>আগে বিভাগ সিলেক্ট করুন</option>
+                    </select>
+                    <span class="addr-select-icon">▾</span>
+                  </div>
+                </div>
+
+                <!-- 3. Thana / Upazila -->
+                <div class="addr-field-cell" id="cell-upazila">
+                  <label class="addr-mini-label" for="addr-upazila">থানা / উপজেলা <span class="req">*</span></label>
+                  <div class="addr-select-shell">
+                    <select id="addr-upazila" class="addr-select" disabled onchange="handleUpazilaChange(this.value)">
+                      <option value="" disabled selected>আগে জেলা সিলেক্ট করুন</option>
+                    </select>
+                    <span class="addr-select-icon">▾</span>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- Detailed Street / House / Village Address -->
+              <div class="addr-detail-cell">
+                <label class="addr-mini-label" for="addr-detail">বাসা নং, রোড বা গ্রাম ও এলাকার বিস্তারিত ঠিকানা <span class="req">*</span></label>
+                <div class="addr-input-shell">
+                  <input type="text" id="addr-detail" class="addr-text-input" placeholder="যেমন: বাড়ি #১২, রোড #০৫, ব্লক-ডি অথবা গ্রামের নাম ও পোস্ট অফিস" oninput="handleDetailAddressChange(this.value)" autocomplete="street-address">
+                </div>
+              </div>
+
+              <!-- Live Confirmed Location Preview Strip -->
+              <div class="addr-confirmed-strip" id="addr-confirmed-strip" style="display: none;">
+                <span class="strip-icon">🚚</span>
+                <div class="strip-info">
+                  <span class="strip-label">ডেলিভারি গন্তব্য:</span>
+                  <span class="strip-path" id="strip-destination-text">ঢাকা বিভাগ > ঢাকা জেলা > মিরপুর</span>
+                </div>
+                <span class="strip-shipping-badge" id="strip-shipping-badge">ডেলিভারি চার্জ: ৳৭০</span>
+              </div>
+
+            </div>
+
+            <!-- Error message feedback -->
+            <span class="clean-field-error" id="address-feedback">অনুগ্রহ করে আপনার বিভাগ, জেলা, থানা এবং বিস্তারিত ঠিকানা পূরণ করুন</span>
           </div>
 
           <!-- Bill Summary -->
@@ -554,11 +650,6 @@
           <div class="clean-cod-reassurance">
             🛡️ কোনো অগ্রিম টাকা লাগবে না। পার্সেল হাতে পেয়ে দেখে ডেলিভারি ম্যানকে মূল্য পরিশোধ করবেন।
           </div>
-
-          <!-- 1-Click WhatsApp Quick Order -->
-          <a id="btn-whatsapp-direct-order" href="https://wa.me/+8801XXXXXXXXX?text=আসসালামু%20আলাইকুম,%20আমি%20সিলিকন%20ফিডিং%20সেট%20অর্ডার%20করতে%20চাই।" target="_blank" class="clean-wa-order-btn">
-            <span>💬 অথবা সরাসরি হোয়াটসঅ্যাপে অর্ডার করুন</span>
-          </a>
 
         </form>
 
@@ -628,9 +719,13 @@
           <!-- Populated by JS -->
         </div>
 
-        <a id="btn-whatsapp-receipt" href="#" target="_blank" class="btn-whatsapp-confirm">
-          <span>💬 হোয়াটসঅ্যাপে সরাসরি অর্ডার ট্র্যাক করুন</span>
-        </a>
+        <div class="receipt-support-notice">
+          <span class="support-icon">📞</span>
+          <div class="support-info">
+            <span class="support-label">যেকোনো তথ্যের জন্য আমাদের কাস্টমার কেয়ারে কল দিন:</span>
+            <a href="tel:+971567813203" class="support-phone">+৯৭১৫৬৭৮১৩২০৩</a>
+          </div>
+        </div>
 
         <button type="button" class="btn-modal-close-action" onclick="closeSuccessModal()">
           ঠিক আছে, পেজে ফিরে যান
@@ -700,6 +795,7 @@
     </div>
   </div>
 
+  <script src="js/bd-geo.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

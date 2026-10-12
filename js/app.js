@@ -15,6 +15,12 @@ let currentPackage = {
 let currentColor = 'স্কাই ব্লু';
 let checkoutInitiated = false;
 
+// Address Selection State
+let selectedDivision = '';
+let selectedDistrict = '';
+let selectedUpazila = '';
+let detailAddress = '';
+
 // Bengali Number Formatter
 function toBanglaNumber(num) {
   const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
@@ -27,7 +33,6 @@ function toBanglaNumber(num) {
 window.selectCleanPackage = function(qty, price, shipping) {
   currentPackage.quantity = qty;
   currentPackage.price = price;
-  currentPackage.shipping = shipping;
   currentPackage.name = qty === 2 ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)';
 
   const card1 = document.getElementById('pkg-card-1');
@@ -43,7 +48,8 @@ window.selectCleanPackage = function(qty, price, shipping) {
     }
   }
 
-  updateBillDisplay();
+  recalculateShipping();
+  updateAddressUI();
 };
 
 window.selectCleanColor = function(colorName, el) {
@@ -51,9 +57,20 @@ window.selectCleanColor = function(colorName, el) {
   const pills = document.querySelectorAll('.color-clean-pill');
   pills.forEach(pill => pill.classList.remove('selected'));
   if (el) el.classList.add('selected');
-
-  updateWhatsAppLink();
 };
+
+function recalculateShipping() {
+  if (currentPackage.quantity === 2) {
+    currentPackage.shipping = 0;
+  } else if (selectedDistrict === 'ঢাকা') {
+    currentPackage.shipping = 70;
+  } else if (selectedDistrict && selectedDistrict !== 'ঢাকা') {
+    currentPackage.shipping = 130;
+  } else {
+    currentPackage.shipping = 70;
+  }
+  updateBillDisplay();
+}
 
 function updateBillDisplay() {
   const subtotalEl = document.getElementById('bill-subtotal-text');
@@ -65,35 +82,231 @@ function updateBillDisplay() {
 
   if (subtotalEl) subtotalEl.textContent = `৳${toBanglaNumber(currentPackage.price)}`;
   if (shippingEl) {
-    shippingEl.textContent = currentPackage.shipping === 0 
-      ? 'ফ্রি ডেলিভারি 🎁' 
-      : '৳৭০ (ঢাকার ভেতরে) / ৳১৩০ (বাইরে)';
+    if (currentPackage.shipping === 0) {
+      shippingEl.textContent = 'ফ্রি ডেলিভারি 🎁';
+    } else if (selectedDistrict === 'ঢাকা') {
+      shippingEl.textContent = '৳৭০ (ঢাকার ভেতরে)';
+    } else if (selectedDistrict) {
+      shippingEl.textContent = `৳${toBanglaNumber(currentPackage.shipping)} (${selectedDistrict} জেলা)`;
+    } else {
+      shippingEl.textContent = '৳৭০ (ঢাকার ভেতরে) / ৳১৩০ (বাইরে)';
+    }
   }
   if (totalEl) totalEl.textContent = `৳${toBanglaNumber(total)}`;
-  if (stickyNowEl) stickyNowEl.textContent = `৳${toBanglaNumber(currentPackage.price)}`;
-
-  updateWhatsAppLink();
-}
-
-function updateWhatsAppLink() {
-  const waBtn = document.getElementById('btn-whatsapp-direct-order');
-  if (!waBtn) return;
-
-  const total = currentPackage.price + currentPackage.shipping;
-  const msg = `আসসালামু আলাইকুম LittleNest BD, আমি সরাসরি হোয়াটসঅ্যাপে অর্ডার করতে চাই:\n\n📦 প্যাকেজ: ${currentPackage.name}\n🎨 পছন্দের কালার: ${currentColor}\n💰 মোট মূল্য: ৳${total} (ক্যাশ অন ডেলিভারি)\n\nআমার নাম, মোবাইল নম্বর এবং সম্পূর্ণ ডেলিভারি ঠিকানা নিচে দিচ্ছি:`;
-
-  waBtn.href = `https://wa.me/+8801XXXXXXXXX?text=${encodeURIComponent(msg)}`;
+  if (stickyNowEl) stickyNowEl.textContent = `৳${toBanglaNumber(total)}`;
 }
 
 // -------------------------------------------------------------
-// 2. STREAMLINED 3-FIELD ORDER VALIDATION & SUBMISSION
+// 2. EASY & ELEGANT ADDRESS SELECTION LOGIC
+// -------------------------------------------------------------
+window.selectQuickCity = function(divisionName, districtName) {
+  // Clear and update quick chip active styling
+  document.querySelectorAll('.quick-city-chip').forEach(btn => btn.classList.remove('active'));
+
+  if (districtName === 'ঢাকা') {
+    const chip = document.getElementById('chip-dhaka');
+    if (chip) chip.classList.add('active');
+  } else if (districtName === 'চট্টগ্রাম') {
+    const chip = document.getElementById('chip-ctg');
+    if (chip) chip.classList.add('active');
+  } else if (districtName === 'সিলেট') {
+    const chip = document.getElementById('chip-sylhet');
+    if (chip) chip.classList.add('active');
+  } else if (districtName === 'রাজশাহী') {
+    const chip = document.getElementById('chip-rajshahi');
+    if (chip) chip.classList.add('active');
+  }
+
+  // 1. Set Division
+  selectedDivision = divisionName;
+  const divSelect = document.getElementById('addr-division');
+  if (divSelect) divSelect.value = divisionName;
+
+  // 2. Populate and select District
+  populateDistricts(divisionName, districtName);
+
+  // 3. Populate Thanas / Upazilas
+  populateUpazilas(districtName);
+
+  // 4. Update Shipping & Bill
+  recalculateShipping();
+  updateAddressUI();
+
+  // 5. Smoothly focus Upazila selector
+  const upazilaSelect = document.getElementById('addr-upazila');
+  if (upazilaSelect) {
+    upazilaSelect.focus();
+    highlightElement(upazilaSelect);
+  }
+};
+
+window.handleDivisionChange = function(divName) {
+  selectedDivision = divName;
+  selectedDistrict = '';
+  selectedUpazila = '';
+
+  // Clear quick chip active states
+  document.querySelectorAll('.quick-city-chip').forEach(btn => btn.classList.remove('active'));
+
+  populateDistricts(divName);
+
+  // Reset Upazila selector
+  const upazilaSelect = document.getElementById('addr-upazila');
+  if (upazilaSelect) {
+    upazilaSelect.innerHTML = '<option value="" disabled selected>আগে জেলা সিলেক্ট করুন</option>';
+    upazilaSelect.disabled = true;
+  }
+
+  recalculateShipping();
+  updateAddressUI();
+
+  const distSelect = document.getElementById('addr-district');
+  if (distSelect) {
+    distSelect.focus();
+    highlightElement(distSelect);
+  }
+};
+
+window.handleDistrictChange = function(distName) {
+  selectedDistrict = distName;
+  selectedUpazila = '';
+
+  populateUpazilas(distName);
+  recalculateShipping();
+  updateAddressUI();
+
+  const upazilaSelect = document.getElementById('addr-upazila');
+  if (upazilaSelect) {
+    upazilaSelect.focus();
+    highlightElement(upazilaSelect);
+  }
+};
+
+window.handleUpazilaChange = function(upazilaName) {
+  selectedUpazila = upazilaName;
+  updateAddressUI();
+
+  const detailInput = document.getElementById('addr-detail');
+  if (detailInput) {
+    detailInput.focus();
+    highlightElement(detailInput);
+  }
+};
+
+window.handleDetailAddressChange = function(val) {
+  detailAddress = val.trim();
+  updateAddressUI();
+};
+
+function populateDistricts(divName, preSelectDistrict = '') {
+  const distSelect = document.getElementById('addr-district');
+  if (!distSelect) return;
+
+  distSelect.innerHTML = '<option value="" disabled selected>জেলা বেছে নিন</option>';
+  distSelect.disabled = false;
+
+  let districts = [];
+  if (window.BD_GEO && typeof window.BD_GEO.getDistricts === 'function') {
+    districts = window.BD_GEO.getDistricts(divName);
+  }
+
+  districts.forEach(dist => {
+    const opt = document.createElement('option');
+    opt.value = dist;
+    opt.textContent = dist;
+    if (dist === preSelectDistrict) {
+      opt.selected = true;
+      selectedDistrict = dist;
+    }
+    distSelect.appendChild(opt);
+  });
+}
+
+function populateUpazilas(distName, preSelectUpazila = '') {
+  const upazilaSelect = document.getElementById('addr-upazila');
+  if (!upazilaSelect) return;
+
+  upazilaSelect.innerHTML = '<option value="" disabled selected>থানা / উপজেলা বেছে নিন</option>';
+  upazilaSelect.disabled = false;
+
+  let upazilas = [];
+  if (window.BD_GEO && typeof window.BD_GEO.getUpazilas === 'function') {
+    upazilas = window.BD_GEO.getUpazilas(distName);
+  }
+
+  upazilas.forEach(upz => {
+    const opt = document.createElement('option');
+    opt.value = upz;
+    opt.textContent = upz;
+    if (upz === preSelectUpazila) {
+      opt.selected = true;
+      selectedUpazila = upz;
+    }
+    upazilaSelect.appendChild(opt);
+  });
+}
+
+function highlightElement(el) {
+  if (!el) return;
+  el.classList.remove('is-highlighted');
+  void el.offsetWidth; // trigger reflow
+  el.classList.add('is-highlighted');
+  setTimeout(() => el.classList.remove('is-highlighted'), 1200);
+}
+
+function updateAddressUI() {
+  const statusPill = document.getElementById('address-status-pill');
+  const statusText = document.getElementById('status-pill-text');
+  const previewStrip = document.getElementById('addr-confirmed-strip');
+  const destinationText = document.getElementById('strip-destination-text');
+  const shippingBadge = document.getElementById('strip-shipping-badge');
+
+  const hasArea = selectedDivision && selectedDistrict;
+  const isComplete = hasArea && selectedUpazila && detailAddress.length >= 3;
+
+  if (statusPill && statusText) {
+    if (isComplete) {
+      statusPill.classList.add('ready');
+      statusText.textContent = 'ঠিকানা প্রস্তুত ✓';
+    } else if (hasArea) {
+      statusPill.classList.remove('ready');
+      statusText.textContent = `${selectedDistrict} জেলা নির্বাচিত`;
+    } else {
+      statusPill.classList.remove('ready');
+      statusText.textContent = 'এলাকা বেছে নিন';
+    }
+  }
+
+  if (previewStrip && destinationText && shippingBadge) {
+    if (hasArea) {
+      previewStrip.style.display = 'flex';
+      let path = `${selectedDivision} > ${selectedDistrict}`;
+      if (selectedUpazila) path += ` > ${selectedUpazila}`;
+      if (detailAddress) path = `${detailAddress}, ${path}`;
+      destinationText.textContent = path;
+
+      const fee = currentPackage.shipping === 0 
+        ? 'ডেলিভারি চার্জ: ফ্রি! 🎁' 
+        : `ডেলিভারি চার্জ: ৳${toBanglaNumber(currentPackage.shipping)}`;
+      shippingBadge.textContent = fee;
+    } else {
+      previewStrip.style.display = 'none';
+    }
+  }
+}
+
+// -------------------------------------------------------------
+// 3. STREAMLINED ORDER VALIDATION & SUBMISSION
 // -------------------------------------------------------------
 window.handleCleanOrderSubmit = function(e) {
   e.preventDefault();
 
   const nameInput = document.getElementById('cust-name');
   const phoneInput = document.getElementById('cust-phone');
-  const addressInput = document.getElementById('cust-address');
+  const divSelect = document.getElementById('addr-division');
+  const distSelect = document.getElementById('addr-district');
+  const upzSelect = document.getElementById('addr-upazila');
+  const detailInput = document.getElementById('addr-detail');
   const submitBtn = document.getElementById('btn-confirm-order');
 
   const nameFeedback = document.getElementById('name-feedback');
@@ -101,7 +314,7 @@ window.handleCleanOrderSubmit = function(e) {
   const addressFeedback = document.getElementById('address-feedback');
 
   // Reset errors
-  [nameInput, phoneInput, addressInput].forEach(inp => {
+  [nameInput, phoneInput, divSelect, distSelect, upzSelect, detailInput].forEach(inp => {
     if (inp) inp.classList.remove('is-invalid');
   });
   [nameFeedback, phoneFeedback, addressFeedback].forEach(fb => {
@@ -111,7 +324,7 @@ window.handleCleanOrderSubmit = function(e) {
   let hasError = false;
   const name = nameInput ? nameInput.value.trim() : '';
   const phone = phoneInput ? phoneInput.value.trim() : '';
-  const address = addressInput ? addressInput.value.trim() : '';
+  const detail = detailInput ? detailInput.value.trim() : '';
 
   // 1. Validate Name
   if (!name || name.length < 2) {
@@ -130,11 +343,26 @@ window.handleCleanOrderSubmit = function(e) {
     hasError = true;
   }
 
-  // 3. Validate Address
-  if (!address || address.length < 5) {
-    if (addressInput) addressInput.classList.add('is-invalid');
-    if (addressFeedback) addressFeedback.classList.add('show');
-    if (!hasError && addressInput) addressInput.focus();
+  // 3. Validate Address Cascades
+  if (!selectedDivision || !selectedDistrict || !selectedUpazila || !detail || detail.length < 3) {
+    if (addressFeedback) {
+      addressFeedback.textContent = 'অনুগ্রহ করে বিভাগ, জেলা, থানা এবং বিস্তারিত ঠিকানা সঠিকভাবে লিখুন';
+      addressFeedback.classList.add('show');
+    }
+
+    if (!selectedDivision && divSelect) {
+      divSelect.classList.add('is-invalid');
+      if (!hasError) divSelect.focus();
+    } else if (!selectedDistrict && distSelect) {
+      distSelect.classList.add('is-invalid');
+      if (!hasError) distSelect.focus();
+    } else if (!selectedUpazila && upzSelect) {
+      upzSelect.classList.add('is-invalid');
+      if (!hasError) upzSelect.focus();
+    } else if ((!detail || detail.length < 3) && detailInput) {
+      detailInput.classList.add('is-invalid');
+      if (!hasError) detailInput.focus();
+    }
     hasError = true;
   }
 
@@ -153,11 +381,17 @@ window.handleCleanOrderSubmit = function(e) {
     timeStyle: 'short'
   });
 
+  const fullAddress = `${detail}, ${selectedUpazila}, ${selectedDistrict}, ${selectedDivision}`;
+
   const orderData = {
     orderId: orderId,
     customerName: name,
     customerPhone: phone,
-    fullAddress: address,
+    fullAddress: fullAddress,
+    division: selectedDivision,
+    district: selectedDistrict,
+    upazila: selectedUpazila,
+    detailAddress: detail,
     packageTitle: currentPackage.name,
     quantity: currentPackage.quantity,
     selectedColor: currentColor,
@@ -187,26 +421,27 @@ window.handleCleanOrderSubmit = function(e) {
   // Render receipt and display modal
   showOrderSuccessModal(orderData);
 
-  // Reset form
+  // Reset form inputs & address state
   if (nameInput) nameInput.value = '';
   if (phoneInput) phoneInput.value = '';
-  if (addressInput) addressInput.value = '';
+  if (detailInput) detailInput.value = '';
+  detailAddress = '';
+
   if (submitBtn) {
     submitBtn.disabled = false;
     submitBtn.innerHTML = '<span>🛒 এখনই অর্ডার করুন (ক্যাশ অন ডেলিভারি)</span>';
   }
 };
 
-// Also route legacy call if needed
+// Route legacy call if needed
 window.handleOrderSubmit = window.handleCleanOrderSubmit;
 
 // -------------------------------------------------------------
-// 3. SUCCESS MODAL & RECEIPT DISPLAY
+// 4. SUCCESS MODAL & RECEIPT DISPLAY
 // -------------------------------------------------------------
 function showOrderSuccessModal(order) {
   const modal = document.getElementById('success-modal');
   const details = document.getElementById('receipt-details');
-  const waBtn = document.getElementById('btn-whatsapp-receipt');
 
   if (details) {
     details.innerHTML = `
@@ -224,24 +459,23 @@ function showOrderSuccessModal(order) {
       </div>
       <div style="display: flex; justify-content: space-between;">
         <span>ডেলিভারি ঠিকানা:</span>
-        <strong style="text-align: right; max-width: 200px;">${order.fullAddress}</strong>
+        <strong style="text-align: right; max-width: 220px;">${order.fullAddress}</strong>
       </div>
       <div style="display: flex; justify-content: space-between;">
         <span>প্যাকেজ:</span>
         <strong>${order.packageTitle} (${order.selectedColor})</strong>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
+        <span>ডেলিভারি চার্জ:</span>
+        <strong style="color: ${order.shippingCost === 0 ? '#059669' : '#0F172A'};">
+          ${order.shippingCost === 0 ? 'ফ্রি ডেলিভারি 🎁' : `৳${toBanglaNumber(order.shippingCost)}`}
+        </strong>
       </div>
       <div style="display: flex; justify-content: space-between; border-top: 1.5px dashed #CBD5E1; padding-top: 6px; font-weight: 700; color: var(--text-main);">
         <span>সর্বমোট বিল:</span>
         <span style="color: var(--primary); font-size: 1.15rem;">৳${toBanglaNumber(order.totalPrice)}</span>
       </div>
     `;
-  }
-
-  if (waBtn) {
-    const waText = encodeURIComponent(
-      `হ্যালো LittleNest BD, আমি সিলিকন ফিডিং সেটের একটি অর্ডার করেছি।\nঅর্ডার আইডি: #${order.orderId}\nনাম: ${order.customerName}\nফোন: ${order.customerPhone}\nঠিকানা: ${order.fullAddress}\nপ্যাকেজ: ${order.packageTitle} (${order.selectedColor})\nমোট বিল: ৳${order.totalPrice}`
-    );
-    waBtn.href = `https://wa.me/+8801XXXXXXXXX?text=${waText}`;
   }
 
   if (modal) modal.classList.add('open');
