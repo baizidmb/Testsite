@@ -757,7 +757,7 @@ function updateWhatsAppDirectLink() {
 
   const message = `আসসালামু আলাইকুম LittleNest BD, আমি সরাসরি হোয়াটসঅ্যাপে অর্ডার কনফার্ম করতে চাই:\n\n📦 প্যাকেজ: ${currentPackage.name}\n🎨 পছন্দের কালার: ${currentColor}\n📍 ডেলিভারি এলাকা: ${locationText}\n💰 সর্বমোট প্রদেয় বিল: ৳${grandTotal}\n🚚 ক্যাশ অন ডেলিভারি (পণ্য দেখে মূল্য পরিশোধ)\n\nআমার নাম, মোবাইল ও সম্পূর্ণ ঠিকানা নিচে দিচ্ছি:`;
 
-  waBtn.href = `https://wa.me/8801700000000?text=${encodeURIComponent(message)}`;
+  waBtn.href = `https://wa.me/+8801XXXXXXXXX?text=${encodeURIComponent(message)}`;
 }
 
 // -------------------------------------------------------------
@@ -1087,7 +1087,7 @@ function showSuccessReceipt(order) {
     const waText = encodeURIComponent(
       `হ্যালো LittleNest BD, আমি সিলিকন ফিডিং সেটের একটি অর্ডার করেছি।\nঅর্ডার আইডি: #${order.orderId}\nনাম: ${order.customerName}\nফোন: ${order.customerPhone}\nঠিকানা: ${order.fullAddress}\nপ্যাকেজ: ${order.packageTitle} (${order.selectedColor})\nমোট বিল: ৳${order.totalPrice}`
     );
-    waBtn.href = `https://wa.me/8801700000000?text=${waText}`;
+    waBtn.href = `https://wa.me/+8801XXXXXXXXX?text=${waText}`;
   }
 
   if (modal) modal.classList.add('open');
@@ -1140,7 +1140,7 @@ const policyTexts = {
       <li>ডেলিভারি পাওয়ার ৭ কার্যদিবসের মধ্যে পণ্যটিতে কোনো ত্রুটি (যেমন: কাটা, ছিঁড়া বা ডিফেক্ট) পাওয়া গেলে সাথে সাথে যোগাযোগ করুন।</li>
       <li>ভুল কালার বা ভিন্ন পণ্য চলে আসলে আমরা সম্পূর্ণ ফ্রিতে আপনাকে সঠিক পণ্য রিপ্লেস করে দেব।</li>
       <li>পণ্যটি অব্যবহৃত অবস্থায় মূল প্যাকেজিং সহ থাকতে হবে।</li>
-      <li>অভিযোগ জানাতে আমাদের হটলাইন (+8801700000000) বা হোয়াটসঅ্যাপে ছবি/ভিডিও সহ মেসেজ দিন।</li>
+      <li>অভিযোগ জানাতে আমাদের হটলাইন (+৯৭১৫৬৭৮১৩২০৩) বা হোয়াটসঅ্যাপে (+৮৮০১XXXXXXXXX) ছবি/ভিডিও সহ মেসেজ দিন।</li>
     </ul>
   `,
   privacy: `
