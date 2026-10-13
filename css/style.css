@@ -750,8 +750,9 @@ button, input, select, textarea {
 }
 
 /* =============================================================
-   6. SIMPLE & HIGHLY LEGIBLE CUSTOMER REVIEWS
+   6. HONEST BENEFITS: কেন বাবা-মায়েরা এটি পছন্দ করবেন
    ============================================================= */
+.benefits-section,
 .reviews-section {
   padding: 44px 0;
   background: var(--bg-pastel-mint);
@@ -759,22 +760,13 @@ button, input, select, textarea {
 }
 
 @media (min-width: 768px) {
+  .benefits-section,
   .reviews-section {
     padding: 60px 0;
   }
 }
 
-.reviews-score-pill {
-  display: inline-block;
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #065F46;
-  background: #D1FAE5;
-  padding: 4px 14px;
-  border-radius: var(--radius-full);
-  margin-top: 6px;
-}
-
+.benefits-clean-grid,
 .reviews-clean-grid {
   display: grid;
   grid-template-columns: 1fr;
@@ -782,6 +774,7 @@ button, input, select, textarea {
 }
 
 @media (min-width: 768px) {
+  .benefits-clean-grid,
   .reviews-clean-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
@@ -789,21 +782,48 @@ button, input, select, textarea {
   }
 }
 
+.benefit-clean-card,
 .review-clean-card {
   background: #FFFFFF;
   border: 1px solid #E2E8F0;
   border-radius: var(--radius-lg);
-  padding: 22px 18px;
+  padding: 24px 20px;
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   transition: var(--transition);
 }
 
+.benefit-clean-card:hover,
 .review-clean-card:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow-md);
+}
+
+.benefit-icon-circle {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: #ECFDF5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.35rem;
+}
+
+.benefit-clean-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-main);
+  line-height: 1.3;
+}
+
+.benefit-clean-text {
+  font-size: 0.9rem;
+  color: var(--text-body);
+  line-height: 1.65;
 }
 
 .review-user-row {

@@ -3,8 +3,10 @@
  * Designed for High-Conversion Facebook Ads Tracking
  */
 
-// Default Facebook Pixel ID (User can replace with their real Pixel ID or set in the Admin settings)
-let DEFAULT_PIXEL_ID = localStorage.getItem('fb_pixel_id') || 'YOUR_PIXEL_ID_HERE';
+// Default Facebook Pixel ID (from localStorage or centralized SITE_CONFIG)
+let DEFAULT_PIXEL_ID = localStorage.getItem('fb_pixel_id') || 
+  (typeof window !== 'undefined' && window.SITE_CONFIG && window.SITE_CONFIG.PIXEL_ID ? window.SITE_CONFIG.PIXEL_ID : '') || 
+  '';
 
 window.FACEBOOK_PIXEL_ID = DEFAULT_PIXEL_ID;
 

@@ -22,6 +22,9 @@
 
   <link rel="stylesheet" href="css/style.css">
 
+  <!-- Store Configuration (Centralized Contact & Pixel Settings) -->
+  <script src="js/config.js"></script>
+
   <!-- Meta Pixel Code -->
   <script src="js/pixel.js"></script>
 </head>
@@ -39,7 +42,7 @@
       </a>
 
       <div class="header-actions">
-        <a href="tel:+971567813203" class="btn-header-call" title="সরাসরি ফোন দিন">
+        <a href="tel:+971567813203" class="btn-header-call" id="btn-header-call" title="সরাসরি ফোন দিন">
           <span class="icon">📞</span>
           <span class="text">কল দিন</span>
         </a>
@@ -66,8 +69,6 @@
         <img src="images/product-main.jpg" alt="বাচ্চাদের প্রিমিয়াম ফুড গ্রেড সিলিকন ফিডিং ডিনারওয়্যার সেট (৬ পিস)" class="hero-large-image" loading="eager">
         <div class="hero-floating-pill">
           <span>৩৬% ছাড়</span>
-          <span class="pill-sep">•</span>
-          <span>৫২০+ রিভিউ ⭐ ৪.৯</span>
         </div>
       </div>
 
@@ -109,7 +110,7 @@
         <div class="feature-clean-card">
           <div class="feature-icon-circle">🌿</div>
           <h3 class="feature-clean-title">১০০% ফুড গ্রেড ও BPA মুক্ত</h3>
-          <p class="feature-clean-text">আন্তর্জাতিক FDA ও LFGB স্ট্যান্ডার্ড সার্টিফাইড খাঁটি সিলিকন। ক্ষতিকর লেড, থ্যালেট ও কেমিক্যালমুক্ত, শিশুর জন্য শতভাগ নিরাপদ।</p>
+          <p class="feature-clean-text">BPA-মুক্ত ফুড-গ্রেড খাঁটি সিলিকন। ক্ষতিকর লেড, থ্যালেট ও কেমিক্যালমুক্ত, শিশুর জন্য শতভাগ নিরাপদ।</p>
         </div>
 
         <div class="feature-clean-card">
@@ -301,7 +302,7 @@
               <span class="point-icon green">✅</span>
               <div class="point-text">
                 <strong>১০০% ফুড গ্রেড সিলিকন:</strong>
-                <span>আন্তর্জাতিক FDA মানের বিপিএ-মুক্ত খাঁটি সিলিকন, গরম খাবারেও সম্পূর্ণ নিরাপদ ও গন্ধহীন।</span>
+                <span>BPA-মুক্ত ফুড-গ্রেড খাঁটি সিলিকন, গরম খাবারেও সম্পূর্ণ নিরাপদ ও গন্ধহীন।</span>
               </div>
             </div>
 
@@ -319,56 +320,35 @@
     </div>
   </section>
 
-  <!-- 5. Simple & Highly Legible Customer Reviews -->
-  <section class="reviews-section">
+  <!-- 5. Honest Benefits: কেন বাবা-মায়েরা এটি পছন্দ করবেন -->
+  <section class="benefits-section">
     <div class="container">
       <div class="section-clean-header">
-        <span class="clean-section-tag">অভিভাবকদের বাস্তব অভিজ্ঞতা</span>
-        <h2 class="clean-section-title">আমাদের সন্তুষ্ট গ্রাহকদের রিভিউ</h2>
-        <div class="reviews-score-pill">⭐ ৪.৯/৫ (৫২০+ সচেতন অভিভাবক ইতিমধ্যে ব্যবহার করছেন)</div>
+        <span class="clean-section-tag">প্রকৃত সুবিধাসমূহ</span>
+        <h2 class="clean-section-title">কেন বাবা-মায়েরা এটি পছন্দ করবেন</h2>
+        <p class="clean-section-sub">প্রতিদিনের খাবারের সময়কে ঝামেলামুক্ত ও শিশুর জন্য নিরাপদ রাখতে ৩টি বিশেষ কারণ</p>
       </div>
 
-      <div class="reviews-clean-grid">
-        <!-- Review 1 -->
-        <div class="review-clean-card">
-          <div class="review-user-row">
-            <div class="user-avatar-circle pink-bg">তা</div>
-            <div>
-              <div class="user-name">তানজিলা আক্তার</div>
-              <div class="user-city">উত্তরা, ঢাকা • <span class="badge-ver">✔ ভেরিফায়েড ক্রেতা</span></div>
-            </div>
-          </div>
-          <div class="review-stars-row">★★★★★</div>
-          <p class="review-body">"আমার ৯ মাসের ছেলে আগে হাত দিয়ে টান মেরে বাটি ফেলে দিত। এই সাকশন বাটিটা টেবিলে এমনভাবে আটকে থাকে যে ও কিছুতেই সরাতে পারে না। বাটি ও প্লেটের কোয়ালিটি ১০০% খাঁটি ফুড-গ্রেড সিলিকন। অত্যন্ত সন্তুষ্ট!"</p>
-          <div class="review-time">অর্ডার করেছেন: ২ দিন আগে (পিঙ্ক সেট)</div>
+      <div class="benefits-clean-grid">
+        <!-- Benefit 1: strong suction base that babies cannot flip -->
+        <div class="benefit-clean-card">
+          <div class="benefit-icon-circle">🧲</div>
+          <h3 class="benefit-clean-title">শক্তিশালী সাকশন বেস</h3>
+          <p class="benefit-clean-text">বাটি ও প্লেটের নিচে রয়েছে বিশেষ ভ্যাকুয়াম সাকশন গ্রিপ, যা মসৃণ টেবিলে মজবুতভাবে আটকে থাকে। শিশু টানাহেঁচড়া করলেও বাটি উল্টাতে পারে না, ফলে খাবার মাটিতে পড়ে নষ্ট হয় না।</p>
         </div>
 
-        <!-- Review 2 -->
-        <div class="review-clean-card">
-          <div class="review-user-row">
-            <div class="user-avatar-circle blue-bg">আ</div>
-            <div>
-              <div class="user-name">মোহাম্মদ আরিফুর রহমান</div>
-              <div class="user-city">জিইসি, চট্টগ্রাম • <span class="badge-ver">✔ ভেরিফায়েড ক্রেতা</span></div>
-            </div>
-          </div>
-          <div class="review-stars-row">★★★★★</div>
-          <p class="review-body">"প্রোডাক্ট হাতে পেয়ে কোয়ালিটি দেখে মুগ্ধ হয়েছি। সিলিকনটা খুবই সফট ও প্রিমিয়াম, বিশেষ করে চামচগুলো বাচ্চার নরম মাড়ির জন্য একদম পারফেক্ট। সাকশন পাওয়ার খুব শক্তিশালী। কোনো অগ্রিম ছাড়াই দেখে ক্যাশ অন ডেলিভারিতে নিয়েছি।"</p>
-          <div class="review-time">অর্ডার করেছেন: ৫ দিন আগে (ব্লু সেট)</div>
+        <!-- Benefit 2: soft food-grade silicone gentle on gums -->
+        <div class="benefit-clean-card">
+          <div class="benefit-icon-circle">👶</div>
+          <h3 class="benefit-clean-title">কোমল ফুড-গ্রেড সিলিকন</h3>
+          <p class="benefit-clean-text">শিশুর নরম মাড়ি ও নতুন দাঁতের সুরক্ষায় অত্যন্ত মোলায়েম ও নমনীয়। চামচ ও ফর্কে কোনো ধারালো অংশ নেই, তাই নিজে নিজে খাওয়ার অভ্যাস গড়ে তুলতে শিশুর জন্য শতভাগ নিরাপদ।</p>
         </div>
 
-        <!-- Review 3 -->
-        <div class="review-clean-card">
-          <div class="review-user-row">
-            <div class="user-avatar-circle green-bg">ফা</div>
-            <div>
-              <div class="user-name">ফারহানা সুলতানা</div>
-              <div class="user-city">উপশহর, সিলেট • <span class="badge-ver">✔ ভেরিফায়েড ক্রেতা</span></div>
-            </div>
-          </div>
-          <div class="review-stars-row">★★★★★</div>
-          <p class="review-body">"অসাধারণ একটি কম্বো প্যাক! প্লেটের ৩টি আলাদা পার্টিশন থাকায় নানা ধরণের পুষ্টিকর খাবার একসাথে দেওয়া যায়। বাটি টেবিলে শক্তভাবে লেগে থাকে বলে এক ফোঁটা খাবারও মাটিতে পড়ে না। গরম পানিতে সহজেই সিদ্ধ করে জীবাণুমুক্ত করা যায়।"</p>
-          <div class="review-time">অর্ডার করেছেন: ১ সপ্তাহ আগে (গ্রিন সেট)</div>
+        <!-- Benefit 3: easy to sterilize in boiling water -->
+        <div class="benefit-clean-card">
+          <div class="benefit-icon-circle">🧼</div>
+          <h3 class="benefit-clean-title">ফুটন্ত পানিতে জীবাণুমুক্ত করার সুবিধা</h3>
+          <p class="benefit-clean-text">উচ্চ তাপমাত্রাপ্রতিরোধী খাঁটি সিলিকন হওয়ায় ফুটন্ত গরম পানিতে বা মাইক্রোওয়েভে সহজে ফুটিয়ে জীবাণুমুক্ত করা যায়। তেল ও মশলার দাগ সহজে পরিষ্কার হয় এবং কোনো দুর্গন্ধ জমে থাকে না।</p>
         </div>
       </div>
     </div>
@@ -402,7 +382,7 @@
             <span class="faq-arrow-icon">▼</span>
           </div>
           <div class="faq-clean-answer">
-            হ্যাঁ, এটি শতভাগ ফুড-গ্রেড ও BPA-মুক্ত সার্টিফাইড খাঁটি সিলিকন। এতে কোনো ক্ষতিকর কেমিক্যাল, লেড বা থ্যালেট নেই। এটি সম্পূর্ণ ব্যাকটেরিয়া-প্রতিরোধী এবং শিশুর নরম মাড়ি ও দাঁতের জন্য শতভাগ নিরাপদ ও অত্যন্ত মোলায়েম।
+            হ্যাঁ, এটি শতভাগ ফুড-গ্রেড ও BPA-মুক্ত খাঁটি সিলিকন। এতে কোনো ক্ষতিকর কেমিক্যাল, লেড বা থ্যালেট নেই। এটি সম্পূর্ণ ব্যাকটেরিয়া-প্রতিরোধী এবং শিশুর নরম মাড়ি ও দাঁতের জন্য শতভাগ নিরাপদ ও অত্যন্ত মোলায়েম।
           </div>
         </div>
 
@@ -413,7 +393,7 @@
             <span class="faq-arrow-icon">▼</span>
           </div>
           <div class="faq-clean-answer">
-            ডেলিভারি ম্যানের উপস্থিতিতেই আপনি পার্সেল খুলে চেক করে নিতে পারবেন। কোনো কারণে প্রোডাক্ট ড্যামেজ বা ত্রুটিযুক্ত থাকলে সাথে সাথে আমাদের হটলাইনে (+৯৭১৫৬৭৮১৩২০৩) বা হোয়াটসঅ্যাপে (+৮৮০১XXXXXXXXX) যোগাযোগ করবেন—আমরা ৭ দিনের মধ্যে সম্পূর্ণ ফ্রিতে নতুন প্রোডাক্ট রিপ্লেস করে দেব।
+            ডেলিভারি ম্যানের উপস্থিতিতেই আপনি পার্সেল খুলে চেক করে নিতে পারবেন। কোনো কারণে প্রোডাক্ট ড্যামেজ বা ত্রুটিযুক্ত থাকলে সাথে সাথে আমাদের হটলাইনে (<a href="tel:+971567813203" class="config-hotline-link" style="color: inherit; text-decoration: underline;"><span class="config-hotline-bn">+৯৭১৫৬৭৮১৩২০৩</span></a>) বা হোয়াটসঅ্যাপে (<a href="https://wa.me/971567813203" target="_blank" class="config-whatsapp-link" style="color: inherit; text-decoration: underline;"><span class="config-whatsapp-bn">+৯৭১৫৬৭৮১৩২০৩</span></a>) যোগাযোগ করবেন—আমরা ৭ দিনের মধ্যে সম্পূর্ণ ফ্রিতে নতুন প্রোডাক্ট রিপ্লেস করে দেব।
           </div>
         </div>
 
@@ -522,7 +502,7 @@
           <!-- Field 2: Phone Number -->
           <div class="clean-form-group">
             <label class="clean-field-label" for="cust-phone">২. আপনার মোবাইল নম্বর <span class="req">*</span></label>
-            <input type="tel" id="cust-phone" class="clean-form-input" placeholder="যেমন: 017XXXXXXXX বা 018XXXXXXXX" required autocomplete="tel">
+            <input type="tel" id="cust-phone" class="clean-form-input" placeholder="যেমন: 01712345678 বা 01812345678" required autocomplete="tel">
             <span class="clean-field-error" id="phone-feedback">১১ ডিজিটের সঠিক মোবাইল নম্বর দিন</span>
           </div>
 
@@ -651,8 +631,8 @@
       </div>
 
       <div class="footer-contact-col">
-        <div>📞 হটলাইন: <a href="tel:+971567813203" style="color: #38BDF8; font-weight: 600;">+৯৭১৫৬৭৮১৩২০৩</a></div>
-        <div>💬 হোয়াটসঅ্যাপ: <a href="https://wa.me/+8801XXXXXXXXX" target="_blank" style="color: #4ADE80; font-weight: 600;">+৮৮০১XXXXXXXXX</a></div>
+        <div>📞 হটলাইন: <a href="tel:+971567813203" id="footer-hotline-link" class="config-hotline-link" style="color: #38BDF8; font-weight: 600;"><span class="config-hotline-bn">+৯৭১৫৬৭৮১৩২০৩</span></a></div>
+        <div>💬 হোয়াটসঅ্যাপ: <a href="https://wa.me/971567813203" target="_blank" id="footer-whatsapp-link" class="config-whatsapp-link" style="color: #4ADE80; font-weight: 600;"><span class="config-whatsapp-bn">+৯৭১৫৬৭৮১৩২০৩</span></a></div>
         <div>📍 অফিস: বাড়ি #১২, রোড #০৫, ব্লক-ডি, ধানমন্ডি, ঢাকা - ১২০৯</div>
       </div>
 
@@ -683,7 +663,7 @@
   </div>
 
   <!-- 10. Floating WhatsApp Chat Button (Bottom-Right Corner) -->
-  <a href="https://wa.me/+8801XXXXXXXXX?text=আসসালামু%20আলাইকুম,%20আমি%20সিলিকন%20ফিডিং%20সেট%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="floating-whatsapp-widget" id="floating-wa-btn" title="হোয়াটসঅ্যাপে মেসেজ দিন" aria-label="হোয়াটসঅ্যাপে মেসেজ দিন">
+  <a href="https://wa.me/971567813203?text=আসসালামু%20আলাইকুম,%20আমি%20সিলিকন%20ফিডিং%20সেট%20সম্পর্কে%20জানতে%20চাই।" target="_blank" class="floating-whatsapp-widget" id="floating-wa-btn" title="হোয়াটসঅ্যাপে মেসেজ দিন" aria-label="হোয়াটসঅ্যাপে মেসেজ দিন">
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="26" height="26" fill="currentColor" aria-hidden="true">
       <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
     </svg>
@@ -707,7 +687,7 @@
           <span class="support-icon">📞</span>
           <div class="support-info">
             <span class="support-label">যেকোনো তথ্যের জন্য আমাদের কাস্টমার কেয়ারে কল দিন:</span>
-            <a href="tel:+971567813203" class="support-phone">+৯৭১৫৬৭৮১৩২০৩</a>
+            <a href="tel:+971567813203" class="support-phone" id="modal-hotline-link"><span class="config-hotline-bn">+৯৭১৫৬৭৮১৩২০৩</span></a>
           </div>
         </div>
 
@@ -779,6 +759,7 @@
     </div>
   </div>
 
+  <script src="js/config.js"></script>
   <script src="js/bd-geo.js"></script>
   <script src="js/app.js"></script>
 </body>
