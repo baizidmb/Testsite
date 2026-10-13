@@ -943,23 +943,23 @@
       <!-- Mode Switcher -->
       <div class="pnl-mode-switch-card">
         <div class="mode-switch-inner">
-          <button type="button" class="btn-mode-tab active" id="tab-mode-live" onclick="switchPnlMode('live')">
+          <button type="button" class="btn-mode-tab active" id="tab-mode-forecast" onclick="switchPnlMode('forecast')">
+            <span>📈 প্রফিট সিমুলেটর (Forecasting)</span>
+          </button>
+          <button type="button" class="btn-mode-tab" id="tab-mode-live" onclick="switchPnlMode('live')">
             <span class="pulse-dot"></span>
-            <span>🟢 লাইভ স্টোর ডাটা সিঙ্ক (Real Store Orders)</span>
+            <span>📦 লাইভ স্টোর P&L (Actual Orders)</span>
             <span class="live-orders-pill" id="live-orders-count-pill">০ অর্ডার</span>
           </button>
-          <button type="button" class="btn-mode-tab" id="tab-mode-forecast" onclick="switchPnlMode('forecast')">
-            <span>⚡ ফোরকাস্টিং ও সিমুলেশন (Forecasting Mode)</span>
-          </button>
         </div>
-        <div class="mode-sync-actions">
+        <div class="mode-sync-actions" id="mode-sync-actions" style="display: none;">
           <button type="button" class="btn-pnl-sync" onclick="syncLiveOrdersFromStore()">🔄 ডাটা সিঙ্ক করুন</button>
           <button type="button" class="btn-pnl-test" onclick="createPnlTestOrder()">🧪 টেস্ট অর্ডার যোগ করুন</button>
         </div>
       </div>
 
     <!-- 2. Campaign Quick Presets -->
-    <div class="pnl-presets-card">
+    <div class="pnl-presets-card" id="pnl-presets-card" style="display: flex;">
       <div class="presets-label">
         <span>⚡ দ্রুত ক্যাম্পেইন প্রিসেট:</span>
         <small style="color: #64748B; font-weight: normal;">(এক ক্লিকে বাস্তবসম্মত ডাটা লোড করুন)</small>
@@ -996,20 +996,20 @@
       <div class="metric-hero-card card-expense">
         <div class="metric-label-row">
           <span class="metric-title">মোট ব্যয় (Total Expenses)</span>
-          <span class="metric-badge badge-red" id="disp-expense-ratio">৬৫.৪% খরচ</span>
+          <span class="metric-badge badge-red" id="disp-expense-ratio">৮১.৩% খরচ</span>
         </div>
-        <div class="metric-number-big" id="disp-total-expense" style="color: #DC2626;">৳৭২,৫৬০</div>
-        <div class="metric-footnote" id="disp-cogs-sub">পণ্য ও প্যাকিং: ৳৪৮,৫০০ | এড: ৳১৫,০০০</div>
+        <div class="metric-number-big" id="disp-total-expense" style="color: #DC2626;">৳৯০,১৩৪</div>
+        <div class="metric-footnote" id="disp-cogs-sub">পণ্য ও প্যাকিং: ৳৪৮,৭৬০ | এড: ৳২৭,৫০০</div>
       </div>
 
       <!-- 3. Net Profit -->
       <div class="metric-hero-card card-profit">
         <div class="metric-label-row">
           <span class="metric-title">চূড়ান্ত নিট মুনাফা (Net Profit)</span>
-          <span class="metric-badge badge-green" id="disp-profit-margin">৩৪.৬% মার্জিন</span>
+          <span class="metric-badge badge-green" id="disp-profit-margin">১৮.৭% মার্জিন</span>
         </div>
-        <div class="metric-number-big" id="disp-net-profit">৳৩৮,৩২০</div>
-        <div class="metric-footnote" id="disp-profit-per-order">প্রতি সফল অর্ডারে লাভ: ৳৪৩৫.৪৫</div>
+        <div class="metric-number-big" id="disp-net-profit">৳২০,৭৪৬</div>
+        <div class="metric-footnote" id="disp-profit-per-order">প্রতি সফল অর্ডারে লাভ: ৳২৩৫.৭৫</div>
       </div>
 
       <!-- 4. ROAS & Break-Even -->
@@ -1018,8 +1018,8 @@
           <span class="metric-title">মার্কেটিং ROAS ও ব্রেক-ইভেন</span>
           <span class="metric-badge badge-purple" id="disp-roas-status">লাভজনক</span>
         </div>
-        <div class="metric-number-big" id="disp-roas-val">৭.৩৯x</div>
-        <div class="metric-footnote" id="disp-breakeven-info">ব্রেক-ইভেন ROAS: ১.৯৩x | ম্যাক্স CPP: ৳৫৮২</div>
+        <div class="metric-number-big" id="disp-roas-val">৪.০৩x</div>
+        <div class="metric-footnote" id="disp-breakeven-info">ব্রেক-ইভেন ROAS: ২.৩০x | ম্যাক্স CPP: ৳৫৪৮ ($৪.৩৯)</div>
       </div>
     </div>
 
@@ -1030,18 +1030,18 @@
         <span style="font-size: 0.8rem; color: #64748B;">প্রতি ১০০ টাকার আয়ে ব্যয়ের ভাগ</span>
       </div>
       <div class="breakdown-progress-track">
-        <div class="progress-segment seg-cogs" id="bar-seg-cogs" style="width: 41%;" title="পণ্য ও প্যাকেজিং"></div>
-        <div class="progress-segment seg-ads" id="bar-seg-ads" style="width: 20%;" title="ফেসবুক এড"></div>
-        <div class="progress-segment seg-courier" id="bar-seg-courier" style="width: 11%;" title="কুরিয়ার ও রিটার্ন লস"></div>
-        <div class="progress-segment seg-ops" id="bar-seg-ops" style="width: 3%;" title="অপারেশন ও কলিং"></div>
-        <div class="progress-segment seg-profit" id="bar-seg-profit" style="width: 25%;" title="নিট প্রফিট"></div>
+        <div class="progress-segment seg-cogs" id="bar-seg-cogs" style="width: 41.27%;" title="পণ্য সোর্সিং"></div>
+        <div class="progress-segment seg-ads" id="bar-seg-ads" style="width: 24.80%;" title="ফেসবুক এড"></div>
+        <div class="progress-segment seg-courier" id="bar-seg-courier" style="width: 9.69%;" title="কুরিয়ার ও রিটার্ন লস"></div>
+        <div class="progress-segment seg-ops" id="bar-seg-ops" style="width: 5.52%;" title="প্যাকিং ও অন্যান্য ওভারহেড"></div>
+        <div class="progress-segment seg-profit" id="bar-seg-profit" style="width: 18.72%;" title="নিট প্রফিট"></div>
       </div>
       <div class="breakdown-legend">
         <div class="legend-item"><span class="legend-dot seg-cogs"></span><span>পণ্য সোর্সিং (<span id="pct-cogs">৪১%</span>)</span></div>
-        <div class="legend-item"><span class="legend-dot seg-ads"></span><span>ফেসবুক এড (<span id="pct-ads">২০%</span>)</span></div>
-        <div class="legend-item"><span class="legend-dot seg-courier"></span><span>কুরিয়ার ও রিটার্ন (<span id="pct-courier">১১%</span>)</span></div>
-        <div class="legend-item"><span class="legend-dot seg-ops"></span><span>প্যাকিং ও অন্যান্য (<span id="pct-ops">৩%</span>)</span></div>
-        <div class="legend-item"><span class="legend-dot seg-profit"></span><strong style="color: #059669;">নিট প্রফিট (<span id="pct-profit">২৫%</span>)</strong></div>
+        <div class="legend-item"><span class="legend-dot seg-ads"></span><span>ফেসবুক এড (<span id="pct-ads">২৫%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-courier"></span><span>কুরিয়ার ও রিটার্ন (<span id="pct-courier">১০%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-ops"></span><span>প্যাকিং ও অন্যান্য (<span id="pct-ops">৫%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-profit"></span><strong style="color: #059669;">নিট প্রফিট (<span id="pct-profit">১৯%</span>)</strong></div>
       </div>
     </div>
 
@@ -1237,7 +1237,7 @@
               <!-- Expenses Section -->
               <tr class="row-expense-head">
                 <td>২. মোট অপারেটিং ব্যয় (Operating Costs)</td>
-                <td id="tbl-exp-total" style="color: #DC2626;">৳৭২,৫৬০</td>
+                <td id="tbl-exp-total" style="color: #DC2626;">৳৯০,১৩৪</td>
               </tr>
               <tr>
                 <td style="padding-left: 14px; color: #475569;">• পণ্য ক্রয় ব্যয় (COGS - সফল ডেলিভারি)</td>
@@ -1275,7 +1275,7 @@
               <!-- Net Profit Bottom Line -->
               <tr class="row-total-profit" id="row-final-profit">
                 <td>🏆 চূড়ান্ত নিট মুনাফা (Net Profit)</td>
-                <td id="tbl-final-profit">৳৩৮,৩২০</td>
+                <td id="tbl-final-profit">৳২০,৭৪৬</td>
               </tr>
             </tbody>
           </table>
@@ -1429,7 +1429,7 @@
     // ========================================================
     const ADMIN_PASSWORD = "admin123";
 
-    let currentPnlMode = 'live'; // 'live' (real store data) or 'forecast' (manual projection)
+    let currentPnlMode = 'forecast'; // 'forecast' (forecasting simulator) or 'live' (real store orders)
     let pnlActiveFilter = 'ALL';
     let pnlPendingCancelOrderId = null;
 
@@ -1499,21 +1499,24 @@
     }
 
     function initPnlDashboard() {
-      // Default to live store data
-      syncLiveOrdersFromStore();
+      // Default to simulator / forecast mode
+      switchPnlMode(currentPnlMode || 'forecast');
 
-      // Poll cloud API every 12 seconds in live mode
+      // Pre-fetch cloud API orders silently in the background
+      syncLiveOrdersFromStore(false);
+
+      // Poll cloud API every 15 seconds in live mode
       if (!window._pnlPollInterval) {
         window._pnlPollInterval = setInterval(() => {
           if (sessionStorage.getItem('littlenest_admin_auth') === 'true' && currentPnlMode === 'live') {
             syncLiveOrdersFromStore(false);
           }
-        }, 12000);
+        }, 15000);
       }
     }
 
     // --------------------------------------------------------
-    // 2. Mode Switching: Live Store Sync vs Forecasting
+    // 2. Mode Switching: Forecasting vs Live Store P&L
     // --------------------------------------------------------
     function switchPnlMode(mode) {
       currentPnlMode = mode;
@@ -1524,12 +1527,26 @@
       const presetsCard = document.getElementById('pnl-presets-card');
       const syncActions = document.getElementById('mode-sync-actions');
 
+      const inpTotal = document.getElementById('inp-total-orders');
+      const sliderSuccess = document.getElementById('inp-success-rate-slider');
+
       if (mode === 'live') {
         if (tabLive) tabLive.classList.add('active');
         if (tabForecast) tabForecast.classList.remove('active');
         if (ordersCard) ordersCard.style.display = 'block';
         if (presetsCard) presetsCard.style.display = 'none';
         if (syncActions) syncActions.style.display = 'flex';
+
+        if (inpTotal) {
+          inpTotal.readOnly = true;
+          inpTotal.style.background = '#F1F5F9';
+          inpTotal.title = 'লাইভ স্টোরের অর্ডার সংখ্যা অনুযায়ী লক করা';
+        }
+        if (sliderSuccess) {
+          sliderSuccess.disabled = true;
+          sliderSuccess.title = 'লাইভ স্টোরের সফল ডেলিভারি অনুপাত অনুযায়ী লক করা';
+        }
+
         syncLiveOrdersFromStore();
       } else {
         if (tabLive) tabLive.classList.remove('active');
@@ -1537,8 +1554,20 @@
         if (ordersCard) ordersCard.style.display = 'none';
         if (presetsCard) presetsCard.style.display = 'flex';
         if (syncActions) syncActions.style.display = 'none';
+
+        if (inpTotal) {
+          inpTotal.readOnly = false;
+          inpTotal.style.background = '#FFFFFF';
+          inpTotal.title = '';
+        }
+        if (sliderSuccess) {
+          sliderSuccess.disabled = false;
+          sliderSuccess.title = '';
+        }
+
         const cancelAnalysis = document.getElementById('pnl-cancel-analysis');
         if (cancelAnalysis) cancelAnalysis.style.display = 'none';
+
         calculatePNL();
       }
     }
@@ -1550,9 +1579,84 @@
       calculatePNL();
     }
 
-    // Main Dynamic P&L Calculation Engine
+    // -------------------------------------------------------------
+    // REVENUE SPLIT PROGRESS BAR (Always sums to EXACTLY 100%)
+    // -------------------------------------------------------------
+    function updateRevenueSplitBar({ grossRevenue, totalExpenses, netProfit, cogs, ads, courier, ops }) {
+      const barCogs = document.getElementById('bar-seg-cogs');
+      const barAds = document.getElementById('bar-seg-ads');
+      const barCourier = document.getElementById('bar-seg-courier');
+      const barOps = document.getElementById('bar-seg-ops');
+      const barProfit = document.getElementById('bar-seg-profit');
+
+      const txtCogs = document.getElementById('pct-cogs');
+      const txtAds = document.getElementById('pct-ads');
+      const txtCourier = document.getElementById('pct-courier');
+      const txtOps = document.getElementById('pct-ops');
+      const txtProfit = document.getElementById('pct-profit');
+
+      if (!barCogs || grossRevenue <= 0) return;
+
+      if (netProfit >= 0) {
+        // 5 segments: cogs, ads, courier, ops, profit
+        // All 5 sum EXACTLY to grossRevenue!
+        const values = [cogs, ads, courier, ops, netProfit];
+        const exactPcts = values.map(v => (v / grossRevenue) * 100);
+
+        // Largest remainder method (Hare-Niemeyer) for integers that sum to 100%
+        const floorPcts = exactPcts.map(Math.floor);
+        let remainder = 100 - floorPcts.reduce((a, b) => a + b, 0);
+        const diffs = exactPcts.map((raw, idx) => ({ idx, diff: raw - floorPcts[idx] }));
+        diffs.sort((a, b) => b.diff - a.diff);
+        for (let i = 0; i < remainder; i++) {
+          floorPcts[diffs[i % diffs.length].idx]++;
+        }
+
+        barCogs.style.width = exactPcts[0] + '%';
+        barAds.style.width = exactPcts[1] + '%';
+        barCourier.style.width = exactPcts[2] + '%';
+        barOps.style.width = exactPcts[3] + '%';
+        barProfit.style.width = exactPcts[4] + '%';
+
+        if (txtCogs) txtCogs.textContent = toBanglaNumber(floorPcts[0]) + '%';
+        if (txtAds) txtAds.textContent = toBanglaNumber(floorPcts[1]) + '%';
+        if (txtCourier) txtCourier.textContent = toBanglaNumber(floorPcts[2]) + '%';
+        if (txtOps) txtOps.textContent = toBanglaNumber(floorPcts[3]) + '%';
+        if (txtProfit) txtProfit.textContent = toBanglaNumber(floorPcts[4]) + '%';
+      } else {
+        // Loss case: expenses exceed 100% of revenue
+        // Scale expenses to 100% of bar width, profit is 0%
+        const base = totalExpenses > 0 ? totalExpenses : 1;
+        const values = [cogs, ads, courier, ops];
+        const exactPcts = values.map(v => (v / base) * 100);
+        const floorPcts = exactPcts.map(Math.floor);
+        let remainder = 100 - floorPcts.reduce((a, b) => a + b, 0);
+        const diffs = exactPcts.map((raw, idx) => ({ idx, diff: raw - floorPcts[idx] }));
+        diffs.sort((a, b) => b.diff - a.diff);
+        for (let i = 0; i < remainder; i++) {
+          floorPcts[diffs[i % diffs.length].idx]++;
+        }
+
+        barCogs.style.width = exactPcts[0] + '%';
+        barAds.style.width = exactPcts[1] + '%';
+        barCourier.style.width = exactPcts[2] + '%';
+        barOps.style.width = exactPcts[3] + '%';
+        barProfit.style.width = '0%';
+
+        if (txtCogs) txtCogs.textContent = toBanglaNumber(floorPcts[0]) + '%';
+        if (txtAds) txtAds.textContent = toBanglaNumber(floorPcts[1]) + '%';
+        if (txtCourier) txtCourier.textContent = toBanglaNumber(floorPcts[2]) + '%';
+        if (txtOps) txtOps.textContent = toBanglaNumber(floorPcts[3]) + '%';
+        if (txtProfit) txtProfit.textContent = '০% (লোকসান)';
+      }
+    }
+
+    // -------------------------------------------------------------
+    // Main Dynamic P&L Calculation Engine (Simulator / Forecasting)
+    // -------------------------------------------------------------
     function calculatePNL() {
       if (currentPnlMode === 'live') return;
+
       // 1. Get input values
       const sellPrice = parseFloat(document.getElementById('inp-sell-price').value) || 0;
       const totalOrders = parseFloat(document.getElementById('inp-total-orders').value) || 0;
@@ -1575,37 +1679,44 @@
 
       // Update Slider Display Text
       const returnRate = 100 - successRate;
-      document.getElementById('label-return-pct').textContent = `রিটার্ন রেট: ${toBanglaFloat(returnRate, 0)}%`;
+      const labelReturn = document.getElementById('label-return-pct');
+      if (labelReturn) labelReturn.textContent = `রিটার্ন রেট: ${toBanglaFloat(returnRate, 0)}%`;
 
+      // Exact Bangladeshi COD e-commerce formulas
       const deliveredOrders = Math.round(totalOrders * (successRate / 100));
       const returnedOrders = Math.max(0, totalOrders - deliveredOrders);
 
-      document.getElementById('disp-calc-delivered').textContent = `${toBanglaNumber(deliveredOrders)}টি ডেলিভারি`;
-      document.getElementById('disp-calc-returned').textContent = `${toBanglaNumber(returnedOrders)}টি রিটার্ন`;
+      const dispDeliv = document.getElementById('disp-calc-delivered');
+      const dispRet = document.getElementById('disp-calc-returned');
+      if (dispDeliv) dispDeliv.textContent = `${toBanglaNumber(deliveredOrders)}টি ডেলিভারি`;
+      if (dispRet) dispRet.textContent = `${toBanglaNumber(returnedOrders)}টি রিটার্ন`;
 
       // Update BDT CPP preview
       const cppBdt = adCppUsd * usdRate;
-      document.getElementById('disp-bdt-cpp').value = `৳${toBanglaFloat(cppBdt, 2)}`;
+      const dispBdtCpp = document.getElementById('disp-bdt-cpp');
+      if (dispBdtCpp) dispBdtCpp.value = `৳${toBanglaFloat(cppBdt, 2)}`;
 
       // -------------------------------------------------------------
       // REVENUE CALCULATIONS
+      // Gross Revenue = Delivered Orders * (Selling Price + Customer Delivery Fee)
       // -------------------------------------------------------------
       const productSalesRevenue = deliveredOrders * sellPrice;
       const shippingCollected = deliveredOrders * custShipping;
       const grossRevenue = productSalesRevenue + shippingCollected;
 
       // -------------------------------------------------------------
-      // EXPENSES CALCULATIONS
+      // EXPENSES CALCULATIONS (Bangladeshi COD Standard)
       // -------------------------------------------------------------
       const totalProductCost = deliveredOrders * productCost;
       const totalPackagingCost = totalOrders * packagingCost; // consumed on every shipped order
       const totalCourierDelivered = deliveredOrders * courierFee;
-      const totalCodCharge = grossRevenue * (codPct / 100);
+      const totalCodCharge = Math.round(grossRevenue * (codPct / 100));
       const totalReturnLoss = returnedOrders * returnFee;
-      const totalTransitDamage = returnedOrders * productCost * (damagePct / 100);
-      const totalAdSpend = totalOrders * cppBdt;
-      const totalStaffOps = totalOrders * (staffCost + miscCost);
+      const totalTransitDamage = Math.round(returnedOrders * productCost * (damagePct / 100));
+      const totalAdSpend = Math.round(totalOrders * cppBdt);
+      const totalStaffOps = Math.round(totalOrders * (staffCost + miscCost));
 
+      // Total Expenses = Product COGS + Packaging + Forward Courier + COD Fee + Return Courier Loss + Damage Cost + Meta Ad Cost + Staff/Overhead
       const totalExpenses = totalProductCost + totalPackagingCost + totalCourierDelivered + 
                             totalCodCharge + totalReturnLoss + totalTransitDamage + 
                             totalAdSpend + totalStaffOps;
@@ -1615,117 +1726,156 @@
       // -------------------------------------------------------------
       const netProfit = grossRevenue - totalExpenses;
       const profitMarginPct = grossRevenue > 0 ? (netProfit / grossRevenue) * 100 : 0;
+      const expenseRatioPct = grossRevenue > 0 ? (totalExpenses / grossRevenue) * 100 : 0;
       const profitPerDelivered = deliveredOrders > 0 ? (netProfit / deliveredOrders) : 0;
 
-      // Marketing ROAS
+      // Marketing ROAS = Gross Revenue / Meta Ad Cost
       const roas = totalAdSpend > 0 ? (grossRevenue / totalAdSpend) : 0;
 
-      // Non-ad expenses
+      // Break-Even ROAS = Gross Revenue / (Net Profit + Meta Ad Cost)
+      const breakEvenRoas = (netProfit + totalAdSpend) > 0 
+        ? (grossRevenue / (netProfit + totalAdSpend)) 
+        : 0;
+
+      // Max CPP (BDT) = (Gross Revenue - (Total Expenses - Meta Ad Cost)) / Delivered Orders
       const nonAdExpenses = totalExpenses - totalAdSpend;
-      // Break-even calculations
-      const breakEvenRoas = (grossRevenue - nonAdExpenses) > 0 
-        ? (grossRevenue / (grossRevenue - nonAdExpenses)) 
+      const maxAllowableCppBdt = deliveredOrders > 0 
+        ? Math.max(0, (grossRevenue - nonAdExpenses) / deliveredOrders) 
         : 0;
-      const maxAllowableCppBdt = totalOrders > 0 
-        ? Math.max(0, (grossRevenue - nonAdExpenses) / totalOrders) 
-        : 0;
+      const maxAllowableCppUsd = maxAllowableCppBdt / usdRate;
 
       // -------------------------------------------------------------
-      // UPDATE TOP METRIC CARDS
+      // UPDATE TOP KEY PERFORMANCE METRIC CARDS
       // -------------------------------------------------------------
-      document.getElementById('badge-total-orders').textContent = `${toBanglaNumber(totalOrders)} অর্ডার`;
-      document.getElementById('disp-gross-revenue').textContent = `৳${toBanglaNumber(grossRevenue)}`;
-      document.getElementById('disp-revenue-sub').textContent = `পণ্য বিক্রয়: ৳${toBanglaNumber(productSalesRevenue)} | ডেলিভারি ফি: ৳${toBanglaNumber(shippingCollected)}`;
+      const badgeOrders = document.getElementById('badge-total-orders');
+      if (badgeOrders) badgeOrders.textContent = `${toBanglaNumber(totalOrders)} অর্ডার`;
 
-      document.getElementById('disp-total-expense').textContent = `৳${toBanglaNumber(totalExpenses)}`;
-      const expRatio = grossRevenue > 0 ? (totalExpenses / grossRevenue) * 100 : 0;
-      document.getElementById('disp-expense-ratio').textContent = `${toBanglaFloat(expRatio, 1)}% খরচ`;
-      document.getElementById('disp-cogs-sub').textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(totalProductCost + totalPackagingCost)} | এড: ৳${toBanglaNumber(totalAdSpend)}`;
+      const dispRev = document.getElementById('disp-gross-revenue');
+      if (dispRev) dispRev.textContent = `৳${toBanglaNumber(grossRevenue)}`;
+
+      const dispRevSub = document.getElementById('disp-revenue-sub');
+      if (dispRevSub) dispRevSub.textContent = `পণ্য বিক্রয়: ৳${toBanglaNumber(productSalesRevenue)} | ডেলিভারি ফি: ৳${toBanglaNumber(shippingCollected)}`;
+
+      const dispExp = document.getElementById('disp-total-expense');
+      if (dispExp) dispExp.textContent = `৳${toBanglaNumber(totalExpenses)}`;
+
+      const dispExpRatio = document.getElementById('disp-expense-ratio');
+      if (dispExpRatio) dispExpRatio.textContent = `${toBanglaFloat(expenseRatioPct, 1)}% খরচ`;
+
+      const dispCogsSub = document.getElementById('disp-cogs-sub');
+      if (dispCogsSub) dispCogsSub.textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(totalProductCost + totalPackagingCost)} | এড: ৳${toBanglaNumber(totalAdSpend)}`;
 
       const profitEl = document.getElementById('disp-net-profit');
-      const profitCard = document.getElementById('row-final-profit');
-      profitEl.textContent = `৳${toBanglaNumber(netProfit)}`;
-      if (netProfit < 0) {
-        profitEl.style.color = '#DC2626';
-        if (profitCard) profitCard.classList.add('neg-profit');
-      } else {
-        profitEl.style.color = '#059669';
-        if (profitCard) profitCard.classList.remove('neg-profit');
+      const profitCard = document.querySelector('.card-profit');
+      if (profitEl) {
+        profitEl.textContent = `৳${toBanglaNumber(netProfit)}`;
+        profitEl.style.color = netProfit >= 0 ? '#059669' : '#DC2626';
+      }
+      if (profitCard) {
+        if (netProfit < 0) profitCard.classList.add('neg-profit');
+        else profitCard.classList.remove('neg-profit');
       }
 
-      document.getElementById('disp-profit-margin').textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
-      document.getElementById('disp-profit-per-order').textContent = `প্রতি সফল অর্ডারে লাভ: ৳${toBanglaFloat(profitPerDelivered, 2)}`;
+      const dispMargin = document.getElementById('disp-profit-margin');
+      if (dispMargin) {
+        dispMargin.textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
+        dispMargin.className = 'metric-badge ' + (netProfit >= 0 ? 'badge-green' : 'badge-red');
+      }
 
-      document.getElementById('disp-roas-val').textContent = `${toBanglaFloat(roas, 2)}x`;
-      document.getElementById('disp-roas-status').textContent = roas >= breakEvenRoas ? 'লাভজনক' : 'লোকসান';
-      document.getElementById('disp-roas-status').className = 'metric-badge ' + (roas >= breakEvenRoas ? 'badge-green' : 'badge-red');
-      document.getElementById('disp-breakeven-info').textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x | ম্যাক্স CPP: ৳${toBanglaNumber(maxAllowableCppBdt)}`;
+      const dispProfitPerOrder = document.getElementById('disp-profit-per-order');
+      if (dispProfitPerOrder) {
+        dispProfitPerOrder.textContent = `প্রতি সফল অর্ডারে লাভ: ৳${toBanglaFloat(profitPerDelivered, 2)}`;
+      }
 
-      // -------------------------------------------------------------
-      // UPDATE PROGRESS BREAKDOWN BAR
-      // -------------------------------------------------------------
-      if (grossRevenue > 0) {
-        const pctCogs = Math.max(0, ((totalProductCost + totalPackagingCost) / grossRevenue) * 100);
-        const pctAds = Math.max(0, (totalAdSpend / grossRevenue) * 100);
-        const pctCourier = Math.max(0, ((totalCourierDelivered + totalReturnLoss + totalCodCharge) / grossRevenue) * 100);
-        const pctOps = Math.max(0, ((totalStaffOps + totalTransitDamage) / grossRevenue) * 100);
-        const pctProfit = Math.max(0, profitMarginPct);
+      const dispRoasVal = document.getElementById('disp-roas-val');
+      if (dispRoasVal) dispRoasVal.textContent = `${toBanglaFloat(roas, 2)}x`;
 
-        document.getElementById('bar-seg-cogs').style.width = pctCogs + '%';
-        document.getElementById('bar-seg-ads').style.width = pctAds + '%';
-        document.getElementById('bar-seg-courier').style.width = pctCourier + '%';
-        document.getElementById('bar-seg-ops').style.width = pctOps + '%';
-        document.getElementById('bar-seg-profit').style.width = pctProfit + '%';
+      const dispRoasStatus = document.getElementById('disp-roas-status');
+      if (dispRoasStatus) {
+        const isProfitable = roas >= breakEvenRoas && netProfit >= 0;
+        dispRoasStatus.textContent = isProfitable ? 'লাভজনক' : 'লোকসান';
+        dispRoasStatus.className = 'metric-badge ' + (isProfitable ? 'badge-green' : 'badge-red');
+      }
 
-        document.getElementById('pct-cogs').textContent = toBanglaFloat(pctCogs, 0) + '%';
-        document.getElementById('pct-ads').textContent = toBanglaFloat(pctAds, 0) + '%';
-        document.getElementById('pct-courier').textContent = toBanglaFloat(pctCourier, 0) + '%';
-        document.getElementById('pct-ops').textContent = toBanglaFloat(pctOps, 0) + '%';
-        document.getElementById('pct-profit').textContent = toBanglaFloat(pctProfit, 0) + '%';
+      const dispBreakevenInfo = document.getElementById('disp-breakeven-info');
+      if (dispBreakevenInfo) {
+        dispBreakevenInfo.textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x | ম্যাক্স CPP: ৳${toBanglaNumber(Math.round(maxAllowableCppBdt))} ($${toBanglaFloat(maxAllowableCppUsd, 2)})`;
       }
 
       // -------------------------------------------------------------
-      // UPDATE DETAILED STATEMENT TABLE
+      // UPDATE REVENUE SPLIT BAR (Percentages sum to EXACTLY 100%)
       // -------------------------------------------------------------
-      document.getElementById('stmt-batch-tag').textContent = `ব্যাচ: ${toBanglaNumber(totalOrders)} অর্ডার`;
-      document.getElementById('tbl-rev-total').textContent = `৳${toBanglaNumber(grossRevenue)}`;
-      document.getElementById('tbl-delivered-count').textContent = toBanglaNumber(deliveredOrders);
-      document.getElementById('tbl-rev-product').textContent = `৳${toBanglaNumber(productSalesRevenue)}`;
-      document.getElementById('tbl-rev-shipping').textContent = `৳${toBanglaNumber(shippingCollected)}`;
+      updateRevenueSplitBar({
+        grossRevenue,
+        totalExpenses,
+        netProfit,
+        cogs: totalProductCost,
+        ads: totalAdSpend,
+        courier: totalCourierDelivered + totalReturnLoss + totalCodCharge,
+        ops: totalPackagingCost + totalStaffOps + totalTransitDamage
+      });
 
-      document.getElementById('tbl-exp-total').textContent = `৳${toBanglaNumber(totalExpenses)}`;
-      document.getElementById('tbl-exp-product').textContent = `৳${toBanglaNumber(totalProductCost)}`;
-      document.getElementById('tbl-exp-packaging').textContent = `৳${toBanglaNumber(totalPackagingCost)}`;
-      document.getElementById('tbl-exp-courier').textContent = `৳${toBanglaNumber(totalCourierDelivered)}`;
-      document.getElementById('tbl-cod-pct-text').textContent = `${codPct}%`;
-      document.getElementById('tbl-exp-cod').textContent = `৳${toBanglaNumber(totalCodCharge)}`;
-      document.getElementById('tbl-return-count').textContent = toBanglaNumber(returnedOrders);
-      document.getElementById('tbl-exp-return').textContent = `৳${toBanglaNumber(totalReturnLoss)}`;
-      document.getElementById('tbl-exp-damage').textContent = `৳${toBanglaNumber(totalTransitDamage)}`;
-      document.getElementById('tbl-exp-ads').textContent = `৳${toBanglaNumber(totalAdSpend)}`;
-      document.getElementById('tbl-exp-ops').textContent = `৳${toBanglaNumber(totalStaffOps)}`;
+      // -------------------------------------------------------------
+      // UPDATE DETAILED STATEMENT TABLE (Sums to exact total expenses)
+      // -------------------------------------------------------------
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTxt('stmt-batch-tag', `ব্যাচ: ${toBanglaNumber(totalOrders)} অর্ডার`);
+      setTxt('tbl-rev-total', `৳${toBanglaNumber(grossRevenue)}`);
+      setTxt('tbl-delivered-count', toBanglaNumber(deliveredOrders));
+      setTxt('tbl-rev-product', `৳${toBanglaNumber(productSalesRevenue)}`);
+      setTxt('tbl-rev-shipping', `৳${toBanglaNumber(shippingCollected)}`);
 
-      document.getElementById('tbl-final-profit').textContent = `৳${toBanglaNumber(netProfit)}`;
+      setTxt('tbl-exp-total', `৳${toBanglaNumber(totalExpenses)}`);
+      setTxt('tbl-exp-product', `৳${toBanglaNumber(totalProductCost)}`);
+      setTxt('tbl-exp-packaging', `৳${toBanglaNumber(totalPackagingCost)}`);
+      setTxt('tbl-exp-courier', `৳${toBanglaNumber(totalCourierDelivered)}`);
+      setTxt('tbl-cod-pct-text', `${codPct}%`);
+      setTxt('tbl-exp-cod', `৳${toBanglaNumber(totalCodCharge)}`);
+      setTxt('tbl-return-count', toBanglaNumber(returnedOrders));
+      setTxt('tbl-exp-return', `৳${toBanglaNumber(totalReturnLoss)}`);
+      setTxt('tbl-exp-damage', `৳${toBanglaNumber(totalTransitDamage)}`);
+      setTxt('tbl-exp-ads', `৳${toBanglaNumber(totalAdSpend)}`);
+      setTxt('tbl-exp-ops', `৳${toBanglaNumber(totalStaffOps)}`);
+
+      const tblFinalProfit = document.getElementById('tbl-final-profit');
+      const rowFinalProfit = document.getElementById('row-final-profit');
+      if (tblFinalProfit) {
+        tblFinalProfit.textContent = `৳${toBanglaNumber(netProfit)}`;
+        tblFinalProfit.style.color = netProfit >= 0 ? '#059669' : '#DC2626';
+      }
+      if (rowFinalProfit) {
+        if (netProfit < 0) rowFinalProfit.classList.add('neg-profit');
+        else rowFinalProfit.classList.remove('neg-profit');
+      }
 
       // -------------------------------------------------------------
       // SMART INSIGHTS RECOMMENDATION
       // -------------------------------------------------------------
       const insightsText = document.getElementById('insights-text');
       const insightsBox = document.getElementById('pnl-insights-box');
-      if (netProfit < 0) {
-        insightsBox.style.borderLeftColor = '#DC2626';
-        insightsText.innerHTML = `<strong style="color: #DC2626;">🚨 সতর্কতা: বর্তমান সেটিংসে ব্যবসা লোকসানে চলছে!</strong><br>আপনার ফেসবুক এড খরচ বা রিটার্ন লস আয়ের চেয়ে বেশি। লাভজনক হতে হলে এড CPP সর্বোচ্চ <strong>৳${toBanglaNumber(maxAllowableCppBdt)}</strong> ($${toBanglaFloat(maxAllowableCppBdt / usdRate, 2)}) এ নামিয়ে আনতে হবে অথবা বিক্রয়মূল্য বৃদ্ধি করতে হবে।`;
-      } else if (returnRate > 18) {
-        insightsBox.style.borderLeftColor = '#EA580C';
-        insightsText.innerHTML = `<strong style="color: #EA580C;">⚠️ রিটার্ন রেট ${toBanglaFloat(returnRate, 0)}% যা ঝুঁকিপূর্ণ!</strong><br>রিটার্ন পার্সেলের কারণে আপনার <strong>৳${toBanglaNumber(totalReturnLoss)}</strong> কুরিয়ার ফি ক্ষতি হচ্ছে। অর্ডার কনফার্মেশনের সময় কাস্টমারের মোবাইল নম্বর ও ঠিকানা ভালো করে যাচাই করুন।`;
-      } else if (profitMarginPct >= 28) {
-        insightsBox.style.borderLeftColor = '#059669';
-        insightsText.innerHTML = `<strong style="color: #059669;">🌟 চমৎকার স্বাস্থ্যকর প্রফিট মার্জিন (${toBanglaFloat(profitMarginPct, 1)}%)!</strong><br>প্রতি সফল ডেলিভারিতে আপনি গড়ে <strong>৳${toBanglaNumber(profitPerDelivered)}</strong> প্রকৃত লাভ করছেন। এই ক্যাম্পেইনটি মেটা এডসে বাজেট বাড়িয়ে নিরাপদে স্কেল করার জন্য আদর্শ।`;
-      } else {
-        insightsBox.style.borderLeftColor = '#0284C7';
-        insightsText.innerHTML = `ব্যবসা লাভজনক পর্যায়ে রয়েছে (নিট মার্জিন ${toBanglaFloat(profitMarginPct, 1)}%)। প্রফিট আরও বাড়াতে প্যাকেজিং সোর্সিং খরচ কমান এবং কুরিয়ারের সাথে স্পেশাল রেটের জন্য আলোচনা করুন।`;
+      if (insightsText && insightsBox) {
+        if (netProfit < 0) {
+          insightsBox.style.borderLeftColor = '#DC2626';
+          insightsText.innerHTML = `<strong style="color: #DC2626;">🚨 সতর্কতা: বর্তমান সেটিংসে ব্যবসা লোকসানে চলছে!</strong><br>আপনার ফেসবুক এড খরচ বা রিটার্ন লস আয়ের চেয়ে বেশি। লাভজনক হতে হলে এড CPP সর্বোচ্চ <strong>৳${toBanglaNumber(Math.round(maxAllowableCppBdt))}</strong> ($${toBanglaFloat(maxAllowableCppUsd, 2)}) এ নামিয়ে আনতে হবে অথবা বিক্রয়মূল্য বৃদ্ধি করতে হবে।`;
+        } else if (returnRate > 18) {
+          insightsBox.style.borderLeftColor = '#EA580C';
+          insightsText.innerHTML = `<strong style="color: #EA580C;">⚠️ রিটার্ন রেট ${toBanglaFloat(returnRate, 0)}% যা ঝুঁকিপূর্ণ!</strong><br>রিটার্ন পার্সেলের কারণে আপনার <strong>৳${toBanglaNumber(totalReturnLoss)}</strong> কুরিয়ার ফি ক্ষতি হচ্ছে। অর্ডার কনফার্মেশনের সময় কাস্টমারের মোবাইল নম্বর ও ঠিকানা ভালো করে যাচাই করুন।`;
+        } else if (profitMarginPct >= 25) {
+          insightsBox.style.borderLeftColor = '#059669';
+          insightsText.innerHTML = `<strong style="color: #059669;">🌟 চমৎকার স্বাস্থ্যকর প্রফিট মার্জিন (${toBanglaFloat(profitMarginPct, 1)}%)!</strong><br>প্রতি সফল ডেলিভারিতে আপনি গড়ে <strong>৳${toBanglaNumber(Math.round(profitPerDelivered))}</strong> প্রকৃত লাভ করছেন। এই ক্যাম্পেইনটি মেটা এডসে বাজেট বাড়িয়ে নিরাপদে স্কেল করার জন্য আদর্শ।`;
+        } else {
+          insightsBox.style.borderLeftColor = '#0284C7';
+          insightsText.innerHTML = `ব্যবসা লাভজনক পর্যায়ে রয়েছে (নিট মার্জিন ${toBanglaFloat(profitMarginPct, 1)}%)। প্রফিট আরও বাড়াতে প্যাকেজিং সোর্সিং খরচ কমান এবং কুরিয়ারের সাথে স্পেশাল রেটের জন্য আলোচনা করুন।`;
+        }
       }
     }
+
+    // Alias for calculatePnL
+    function calculatePnL() {
+      return calculatePNL();
+    }
+    window.calculatePnL = calculatePNL;
+    window.calculatePNL = calculatePNL;
 
     // Preset Configurations
     const PRESETS = {
@@ -1787,23 +1937,25 @@
       const activeBtn = document.getElementById(`preset-btn-${key}`);
       if (activeBtn) activeBtn.classList.add('active');
 
-      document.getElementById('inp-sell-price').value = p.sellPrice;
-      document.getElementById('inp-total-orders').value = p.totalOrders;
-      document.getElementById('inp-customer-shipping').value = p.custShipping;
-      document.getElementById('inp-product-cost').value = p.productCost;
-      document.getElementById('inp-packaging-cost').value = p.packagingCost;
+      const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+      setVal('inp-sell-price', p.sellPrice);
+      setVal('inp-total-orders', p.totalOrders);
+      setVal('inp-customer-shipping', p.custShipping);
+      setVal('inp-product-cost', p.productCost);
+      setVal('inp-packaging-cost', p.packagingCost);
+      setVal('inp-success-rate-slider', p.successRate);
       
-      document.getElementById('inp-success-rate-slider').value = p.successRate;
-      document.getElementById('disp-slider-val').textContent = p.successRate + '%';
+      const sliderVal = document.getElementById('disp-slider-val');
+      if (sliderVal) sliderVal.textContent = p.successRate + '%';
 
-      document.getElementById('inp-courier-fee').value = p.courierFee;
-      document.getElementById('inp-return-fee').value = p.returnFee;
-      document.getElementById('inp-cod-charge').value = p.codCharge;
-      document.getElementById('inp-ad-cpp').value = p.adCpp;
-      document.getElementById('inp-usd-rate').value = p.usdRate;
-      document.getElementById('inp-staff-cost').value = p.staffCost;
-      document.getElementById('inp-damage-pct').value = p.damagePct;
-      document.getElementById('inp-misc-cost').value = p.miscCost;
+      setVal('inp-courier-fee', p.courierFee);
+      setVal('inp-return-fee', p.returnFee);
+      setVal('inp-cod-charge', p.codCharge);
+      setVal('inp-ad-cpp', p.adCpp);
+      setVal('inp-usd-rate', p.usdRate);
+      setVal('inp-staff-cost', p.staffCost);
+      setVal('inp-damage-pct', p.damagePct);
+      setVal('inp-misc-cost', p.miscCost);
 
       calculatePNL();
     }
@@ -1826,6 +1978,9 @@
       // Render local immediate data
       if (currentPnlMode === 'live') {
         calculateLivePNL(orders);
+      } else {
+        const pillCount = document.getElementById('live-orders-count-pill');
+        if (pillCount) pillCount.textContent = `${toBanglaNumber(orders.length)} অর্ডার`;
       }
 
       // Fetch cloud serverless orders
@@ -1842,6 +1997,9 @@
             localStorage.setItem('littlenest_orders', JSON.stringify(merged));
             if (currentPnlMode === 'live') {
               calculateLivePNL(merged);
+            } else {
+              const pillCount = document.getElementById('live-orders-count-pill');
+              if (pillCount) pillCount.textContent = `${toBanglaNumber(merged.length)} অর্ডার`;
             }
           }
         }
@@ -1870,115 +2028,186 @@
 
       // Real Collected Revenue from Delivered Orders
       const realDeliveredRevenue = deliveredOrders.reduce((sum, o) => sum + (Number(o.totalPrice) || 1260), 0);
-      const realProductSales = deliveredOrders.reduce((sum, o) => {
-        const ship = Number(o.shippingCost) !== undefined ? Number(o.shippingCost) : 70;
-        return sum + Math.max(0, (Number(o.totalPrice) || 1260) - ship);
-      }, 0);
-      const realShippingCollected = Math.max(0, realDeliveredRevenue - realProductSales);
+      const realShippingCollected = deliveredOrders.reduce((sum, o) => sum + (Number(o.shippingCost) !== undefined ? Number(o.shippingCost) : 70), 0);
+      const realProductSales = Math.max(0, realDeliveredRevenue - realShippingCollected);
+
+      // Unit parameters
+      const sourcingCost = parseFloat(document.getElementById('inp-product-cost')?.value) || DEFAULT_COGS_PER_SET;
+      const packagingCostUnit = parseFloat(document.getElementById('inp-packaging-cost')?.value) || DEFAULT_PACKAGING_COST;
+      const courierFeeDelivered = parseFloat(document.getElementById('inp-courier-fee')?.value) || DEFAULT_DELIVERED_COURIER_FEE;
+      const returnFeeUnit = parseFloat(document.getElementById('inp-return-fee')?.value) || DEFAULT_RETURN_COURIER_FEE;
+      const codPct = parseFloat(document.getElementById('inp-cod-charge')?.value) || 1.0;
+      const adCppUsd = parseFloat(document.getElementById('inp-ad-cpp')?.value) || 2.20;
+      const usdRate = parseFloat(document.getElementById('inp-usd-rate')?.value) || 125;
+      const staffCostUnit = parseFloat(document.getElementById('inp-staff-cost')?.value) || DEFAULT_CALL_STAFF_COST;
+      const damagePct = parseFloat(document.getElementById('inp-damage-pct')?.value) || 2.0;
+      const miscCostUnit = parseFloat(document.getElementById('inp-misc-cost')?.value) || 10;
 
       // Real Operating Costs
-      const realCOGS = deliveredOrders.reduce((sum, o) => sum + (DEFAULT_COGS_PER_SET * (o.quantity || 1)), 0);
-      const realDeliveredCourierFee = deliveredOrders.reduce((sum, o) => {
-        return sum + (Number(o.shippingCost) || DEFAULT_DELIVERED_COURIER_FEE);
-      }, 0);
-      const realReturnCourierFee = numReturned * DEFAULT_RETURN_COURIER_FEE;
-      const realWastedPackaging = numReturned * DEFAULT_PACKAGING_COST;
-      const realUsedPackaging = (numDelivered + numReturned) * DEFAULT_PACKAGING_COST;
-      const realCodCharge = Math.round(realDeliveredRevenue * 0.01);
-      const realCallingStaff = (numDelivered + numReturned + numCancelled) * DEFAULT_CALL_STAFF_COST;
-      const realAdsSpend = totalOrders * DEFAULT_AD_CPP_BDT;
-      const realDamage = Math.round(realCOGS * 0.02);
+      // 1. Product COGS: on delivered orders
+      const realCOGS = deliveredOrders.reduce((sum, o) => sum + (sourcingCost * (o.quantity || 1)), 0);
 
-      const totalRealExpenses = realCOGS + realUsedPackaging + realDeliveredCourierFee + realReturnCourierFee + realCodCharge + realCallingStaff + realAdsSpend + realDamage;
+      // 2. Packaging: on dispatched orders (Delivered + Returned). Cancelled orders incur ৳0 packaging loss.
+      const realUsedPackaging = (numDelivered + numReturned) * packagingCostUnit;
+
+      // 3. Forward courier fee: on delivered orders
+      const realDeliveredCourierFee = deliveredOrders.reduce((sum, o) => {
+        return sum + (Number(o.shippingCost) || courierFeeDelivered);
+      }, 0);
+
+      // 4. Return courier loss: on returned parcels
+      const realReturnCourierFee = numReturned * returnFeeUnit;
+
+      // 5. Courier COD charge (1% of delivered revenue)
+      const realCodCharge = Math.round(realDeliveredRevenue * (codPct / 100));
+
+      // 6. Calling & staff overheads: confirmed/attempted orders
+      const realCallingStaff = (numDelivered + numReturned + numCancelled) * (staffCostUnit + miscCostUnit);
+
+      // 7. Meta Ad Spend: Total orders placed * CPP BDT
+      const realCppBdt = adCppUsd * usdRate;
+      const realAdsSpend = Math.round(totalOrders * realCppBdt);
+
+      // 8. Damage cost
+      const realDamage = Math.round(numReturned * sourcingCost * (damagePct / 100));
+
+      const totalRealExpenses = realCOGS + realUsedPackaging + realDeliveredCourierFee + 
+                                realReturnCourierFee + realCodCharge + realCallingStaff + 
+                                realAdsSpend + realDamage;
+
       const realNetProfit = realDeliveredRevenue - totalRealExpenses;
       const profitMarginPct = realDeliveredRevenue > 0 ? (realNetProfit / realDeliveredRevenue) * 100 : 0;
       const expenseRatioPct = realDeliveredRevenue > 0 ? (totalRealExpenses / realDeliveredRevenue) * 100 : 0;
       const realRoas = realAdsSpend > 0 ? (realDeliveredRevenue / realAdsSpend) : 0;
+
       const nonAdCosts = totalRealExpenses - realAdsSpend;
-      const breakEvenRoas = (realDeliveredRevenue - nonAdCosts) > 0 ? (realDeliveredRevenue / (realDeliveredRevenue - nonAdCosts)) : 0;
-      const maxAllowableCpp = totalOrders > 0 ? Math.max(0, (realDeliveredRevenue - nonAdCosts) / totalOrders) : 0;
+      const breakEvenRoas = (realNetProfit + realAdsSpend) > 0 
+        ? (realDeliveredRevenue / (realNetProfit + realAdsSpend)) 
+        : 0;
+
+      const maxAllowableCppBdt = numDelivered > 0 
+        ? Math.max(0, (realDeliveredRevenue - nonAdCosts) / numDelivered) 
+        : 0;
+      const maxAllowableCppUsd = maxAllowableCppBdt / usdRate;
+
+      // Sync Left inputs to lock them to real store counts
+      const inpTotal = document.getElementById('inp-total-orders');
+      if (inpTotal) inpTotal.value = totalOrders;
+      const sliderSuccess = document.getElementById('inp-success-rate-slider');
+      const successRatePct = (numDelivered + numReturned) > 0 
+        ? Math.round((numDelivered / (numDelivered + numReturned)) * 100) 
+        : (totalOrders > 0 ? Math.round((numDelivered / totalOrders) * 100) : 0);
+      if (sliderSuccess) sliderSuccess.value = successRatePct;
+      const dispSliderVal = document.getElementById('disp-slider-val');
+      if (dispSliderVal) dispSliderVal.textContent = successRatePct + '%';
+
+      const labelReturn = document.getElementById('label-return-pct');
+      if (labelReturn) labelReturn.textContent = `রিটার্ন: ${toBanglaNumber(numReturned)}টি (${toBanglaNumber(100 - successRatePct)}%)`;
+
+      const dispDeliv = document.getElementById('disp-calc-delivered');
+      const dispRet = document.getElementById('disp-calc-returned');
+      if (dispDeliv) dispDeliv.textContent = `${toBanglaNumber(numDelivered)}টি ডেলিভার্ড`;
+      if (dispRet) dispRet.textContent = `${toBanglaNumber(numReturned)}টি রিটার্নড`;
 
       // Update Top Key Performance Metric Cards
-      document.getElementById('badge-total-orders').textContent = `${toBanglaNumber(totalOrders)}টি লাইভ অর্ডার`;
-      document.getElementById('disp-gross-revenue').textContent = `৳${toBanglaNumber(realDeliveredRevenue)}`;
-      document.getElementById('disp-revenue-sub').textContent = `ডেলিভার্ড: ${toBanglaNumber(numDelivered)}টি | রিটার্নড: ${toBanglaNumber(numReturned)}টি | বাতিল: ${toBanglaNumber(numCancelled)}টি`;
+      const badgeOrders = document.getElementById('badge-total-orders');
+      if (badgeOrders) badgeOrders.textContent = `${toBanglaNumber(totalOrders)}টি লাইভ অর্ডার`;
 
-      document.getElementById('disp-expense-ratio').textContent = `${toBanglaFloat(expenseRatioPct, 1)}% ব্যয়`;
-      document.getElementById('disp-total-expense').textContent = `৳${toBanglaNumber(totalRealExpenses)}`;
-      document.getElementById('disp-cogs-sub').textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(realCOGS + realUsedPackaging)} | কুরিয়ার ও রিটার্ন লস: ৳${toBanglaNumber(realDeliveredCourierFee + realReturnCourierFee)}`;
+      const dispRev = document.getElementById('disp-gross-revenue');
+      if (dispRev) dispRev.textContent = `৳${toBanglaNumber(realDeliveredRevenue)}`;
+
+      const dispRevSub = document.getElementById('disp-revenue-sub');
+      if (dispRevSub) dispRevSub.textContent = `ডেলিভার্ড: ${toBanglaNumber(numDelivered)}টি | রিটার্নড: ${toBanglaNumber(numReturned)}টি | বাতিল: ${toBanglaNumber(numCancelled)}টি`;
+
+      const dispExp = document.getElementById('disp-total-expense');
+      if (dispExp) dispExp.textContent = `৳${toBanglaNumber(totalRealExpenses)}`;
+
+      const dispExpRatio = document.getElementById('disp-expense-ratio');
+      if (dispExpRatio) dispExpRatio.textContent = `${toBanglaFloat(expenseRatioPct, 1)}% ব্যয়`;
+
+      const dispCogsSub = document.getElementById('disp-cogs-sub');
+      if (dispCogsSub) dispCogsSub.textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(realCOGS + realUsedPackaging)} | এড: ৳${toBanglaNumber(realAdsSpend)}`;
 
       const profitCard = document.querySelector('.card-profit');
       const profitDisp = document.getElementById('disp-net-profit');
       const marginBadge = document.getElementById('disp-profit-margin');
 
-      profitDisp.textContent = `৳${toBanglaNumber(realNetProfit)}`;
-      marginBadge.textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
-
-      if (realNetProfit >= 0) {
-        if (profitCard) profitCard.classList.remove('neg-profit');
-        profitDisp.style.color = '#059669';
-        marginBadge.className = 'metric-badge badge-green';
-        document.getElementById('disp-profit-sub').textContent = `সফল ডেলিভারির পর অর্জিত প্রকৃত ক্যাশ প্রফিট`;
-      } else {
-        if (profitCard) profitCard.classList.add('neg-profit');
-        profitDisp.style.color = '#DC2626';
-        marginBadge.className = 'metric-badge badge-red';
-        document.getElementById('disp-profit-sub').textContent = `⚠️ লোকসান! রিটার্ন বা এড খরচ কমাতে পদক্ষেপ নিন`;
+      if (profitDisp) {
+        profitDisp.textContent = `৳${toBanglaNumber(realNetProfit)}`;
+        profitDisp.style.color = realNetProfit >= 0 ? '#059669' : '#DC2626';
+      }
+      if (marginBadge) {
+        marginBadge.textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
+        marginBadge.className = 'metric-badge ' + (realNetProfit >= 0 ? 'badge-green' : 'badge-red');
+      }
+      if (profitCard) {
+        if (realNetProfit < 0) profitCard.classList.add('neg-profit');
+        else profitCard.classList.remove('neg-profit');
       }
 
-      document.getElementById('disp-roas-val').textContent = `${toBanglaFloat(realRoas, 2)}x`;
-      document.getElementById('disp-break-even-roas').textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x`;
-      document.getElementById('disp-max-cpp-usd').textContent = `$${toBanglaFloat(maxAllowableCpp / 125, 2)}`;
-      document.getElementById('disp-max-cpp-bdt').textContent = `সর্বোচ্চ ৳${toBanglaNumber(maxAllowableCpp)} / অর্ডার`;
-
-      // Update Visual Progress Breakdown Bar
-      if (realDeliveredRevenue > 0) {
-        const cogsPct = Math.min(100, Math.max(0, (realCOGS / realDeliveredRevenue) * 100));
-        const adsPct = Math.min(100, Math.max(0, (realAdsSpend / realDeliveredRevenue) * 100));
-        const courierPct = Math.min(100, Math.max(0, ((realDeliveredCourierFee + realReturnCourierFee + realUsedPackaging + realCodCharge) / realDeliveredRevenue) * 100));
-        const opsPct = Math.min(100, Math.max(0, ((realCallingStaff + realDamage) / realDeliveredRevenue) * 100));
-        const profitBarPct = Math.min(100, Math.max(0, profitMarginPct));
-
-        document.getElementById('bar-cogs').style.width = cogsPct + '%';
-        document.getElementById('bar-ads').style.width = adsPct + '%';
-        document.getElementById('bar-courier').style.width = courierPct + '%';
-        document.getElementById('bar-ops').style.width = opsPct + '%';
-        document.getElementById('bar-profit').style.width = profitBarPct + '%';
-
-        document.getElementById('legend-cogs-pct').textContent = toBanglaFloat(cogsPct, 1) + '%';
-        document.getElementById('legend-ads-pct').textContent = toBanglaFloat(adsPct, 1) + '%';
-        document.getElementById('legend-courier-pct').textContent = toBanglaFloat(courierPct, 1) + '%';
-        document.getElementById('legend-ops-pct').textContent = toBanglaFloat(opsPct, 1) + '%';
-        document.getElementById('legend-profit-pct').textContent = toBanglaFloat(profitBarPct, 1) + '%';
+      const dispProfitPerOrder = document.getElementById('disp-profit-per-order');
+      if (dispProfitPerOrder) {
+        const profitPerDeliv = numDelivered > 0 ? (realNetProfit / numDelivered) : 0;
+        dispProfitPerOrder.textContent = numDelivered > 0 
+          ? `প্রতি সফল অর্ডারে লাভ: ৳${toBanglaFloat(profitPerDeliv, 2)}` 
+          : 'ডেলিভারি সম্পন্ন হলে লাভ হিসাব হবে';
       }
+
+      const dispRoasVal = document.getElementById('disp-roas-val');
+      if (dispRoasVal) dispRoasVal.textContent = `${toBanglaFloat(realRoas, 2)}x`;
+
+      const dispRoasStatus = document.getElementById('disp-roas-status');
+      if (dispRoasStatus) {
+        const isProfitable = realRoas >= breakEvenRoas && realNetProfit >= 0;
+        dispRoasStatus.textContent = isProfitable ? 'লাভজনক' : 'লোকসান';
+        dispRoasStatus.className = 'metric-badge ' + (isProfitable ? 'badge-green' : 'badge-red');
+      }
+
+      const dispBreakevenInfo = document.getElementById('disp-breakeven-info');
+      if (dispBreakevenInfo) {
+        dispBreakevenInfo.textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x | ম্যাক্স CPP: ৳${toBanglaNumber(Math.round(maxAllowableCppBdt))} ($${toBanglaFloat(maxAllowableCppUsd, 2)})`;
+      }
+
+      // Update Revenue Split Bar (Percentages sum to EXACTLY 100%)
+      updateRevenueSplitBar({
+        grossRevenue: realDeliveredRevenue,
+        totalExpenses: totalRealExpenses,
+        netProfit: realNetProfit,
+        cogs: realCOGS,
+        ads: realAdsSpend,
+        courier: realDeliveredCourierFee + realReturnCourierFee + realCodCharge,
+        ops: realUsedPackaging + realCallingStaff + realDamage
+      });
 
       // Update P&L Financial Statement Table
-      document.getElementById('tbl-rev-total').textContent = `৳${toBanglaNumber(realDeliveredRevenue)}`;
-      document.getElementById('tbl-delivered-count').textContent = toBanglaNumber(numDelivered);
-      document.getElementById('tbl-rev-product').textContent = `৳${toBanglaNumber(realProductSales)}`;
-      document.getElementById('tbl-rev-shipping').textContent = `৳${toBanglaNumber(realShippingCollected)}`;
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+      setTxt('stmt-batch-tag', `লাইভ: ${toBanglaNumber(totalOrders)} অর্ডার`);
+      setTxt('tbl-rev-total', `৳${toBanglaNumber(realDeliveredRevenue)}`);
+      setTxt('tbl-delivered-count', toBanglaNumber(numDelivered));
+      setTxt('tbl-rev-product', `৳${toBanglaNumber(realProductSales)}`);
+      setTxt('tbl-rev-shipping', `৳${toBanglaNumber(realShippingCollected)}`);
 
-      document.getElementById('tbl-exp-total').textContent = `৳${toBanglaNumber(totalRealExpenses)}`;
-      document.getElementById('tbl-exp-product').textContent = `৳${toBanglaNumber(realCOGS)}`;
-      document.getElementById('tbl-exp-packaging').textContent = `৳${toBanglaNumber(realUsedPackaging)}`;
-      document.getElementById('tbl-exp-courier').textContent = `৳${toBanglaNumber(realDeliveredCourierFee)}`;
-      document.getElementById('tbl-exp-cod').textContent = `৳${toBanglaNumber(realCodCharge)}`;
-      document.getElementById('tbl-return-count').textContent = toBanglaNumber(numReturned);
-      document.getElementById('tbl-exp-return').textContent = `৳${toBanglaNumber(realReturnCourierFee + realWastedPackaging)}`;
-      document.getElementById('tbl-exp-damage').textContent = `৳${toBanglaNumber(realDamage)}`;
-      document.getElementById('tbl-exp-ads').textContent = `৳${toBanglaNumber(realAdsSpend)}`;
-      document.getElementById('tbl-exp-ops').textContent = `৳${toBanglaNumber(realCallingStaff)}`;
+      setTxt('tbl-exp-total', `৳${toBanglaNumber(totalRealExpenses)}`);
+      setTxt('tbl-exp-product', `৳${toBanglaNumber(realCOGS)}`);
+      setTxt('tbl-exp-packaging', `৳${toBanglaNumber(realUsedPackaging)}`);
+      setTxt('tbl-exp-courier', `৳${toBanglaNumber(realDeliveredCourierFee)}`);
+      setTxt('tbl-cod-pct-text', `${codPct}%`);
+      setTxt('tbl-exp-cod', `৳${toBanglaNumber(realCodCharge)}`);
+      setTxt('tbl-return-count', toBanglaNumber(numReturned));
+      setTxt('tbl-exp-return', `৳${toBanglaNumber(realReturnCourierFee)}`);
+      setTxt('tbl-exp-damage', `৳${toBanglaNumber(realDamage)}`);
+      setTxt('tbl-exp-ads', `৳${toBanglaNumber(realAdsSpend)}`);
+      setTxt('tbl-exp-ops', `৳${toBanglaNumber(realCallingStaff)}`);
 
       const finalProfitEl = document.getElementById('tbl-final-profit');
       const finalProfitRow = document.getElementById('row-final-profit');
-      finalProfitEl.textContent = `৳${toBanglaNumber(realNetProfit)}`;
-
-      if (realNetProfit >= 0) {
-        if (finalProfitRow) finalProfitRow.classList.remove('neg-profit');
-        finalProfitEl.style.color = '#059669';
-      } else {
-        if (finalProfitRow) finalProfitRow.classList.add('neg-profit');
-        finalProfitEl.style.color = '#DC2626';
+      if (finalProfitEl) {
+        finalProfitEl.textContent = `৳${toBanglaNumber(realNetProfit)}`;
+        finalProfitEl.style.color = realNetProfit >= 0 ? '#059669' : '#DC2626';
+      }
+      if (finalProfitRow) {
+        if (realNetProfit < 0) finalProfitRow.classList.add('neg-profit');
+        else finalProfitRow.classList.remove('neg-profit');
       }
 
       // Business Insights Text
@@ -2068,18 +2297,19 @@
           sub: 'হাতে প্রাপ্ত মুনাফা'
         };
       } else if (status === 'Returned') {
-        const netLoss = DEFAULT_RETURN_COURIER_FEE + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
+        const forwardCourier = Number(ord.shippingCost) !== undefined ? Number(ord.shippingCost) : (ord.district === 'ঢাকা' ? 70 : 130);
+        const netLoss = forwardCourier + DEFAULT_RETURN_COURIER_FEE + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
         return {
           className: 'pnl-badge-loss',
           label: `-৳${toBanglaNumber(netLoss)} ক্ষতি 🔴`,
-          sub: 'রিটার্ন ও প্যাকিং লস'
+          sub: `কুরিয়ার (৳${toBanglaNumber(forwardCourier)}+৳৭০) + প্যাকিং (৳২৫)`
         };
       } else if (status === 'Cancelled') {
         const netLoss = DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
         return {
           className: 'pnl-badge-adloss',
           label: `-৳${toBanglaNumber(netLoss)} এড লস ⚠️`,
-          sub: 'বিজ্ঞাপন ও কল খরচ'
+          sub: '৳০ কুরিয়ার ও প্যাকিং ক্ষতি'
         };
       } else {
         const projected = totalRev - (cogs + shipping + cod + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT);
@@ -2395,6 +2625,7 @@
     // Page Load & Initialization
     document.addEventListener('DOMContentLoaded', () => {
       checkPnlAuth();
+      calculatePNL();
     });
   </script>
 </body>
