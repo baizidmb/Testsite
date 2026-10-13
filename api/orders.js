@@ -28,12 +28,13 @@ module.exports = async (req, res) => {
         return res.status(200).json({ success: true, count: 0, orders: [] });
       }
 
-      // Handle Update Status & Cancel Reason
+      // Handle Update Status & Cancel/Return Reason
       if (payload && payload.action === 'updateStatus' && payload.orderId) {
         const item = ordersCache.find(o => o.orderId === payload.orderId);
         if (item) {
           item.status = payload.status || item.status;
-          item.cancelReason = payload.cancelReason !== undefined ? payload.cancelReason : (item.cancelReason || '');
+          if (payload.cancelReason !== undefined) item.cancelReason = payload.cancelReason;
+          if (payload.returnReason !== undefined) item.returnReason = payload.returnReason;
           item.updatedAt = Date.now();
           return res.status(200).json({ success: true, count: ordersCache.length, order: item, orders: ordersCache });
         }

@@ -404,6 +404,508 @@
       from { transform: translateY(20px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
     }
+
+    /* Search & Filter Toolbar */
+    .orders-toolbar-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .search-input-shell {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+    }
+    .search-input-shell .search-icon {
+      position: absolute;
+      left: 14px;
+      font-size: 0.95rem;
+      color: #64748B;
+      pointer-events: none;
+    }
+    .order-search-input {
+      width: 100%;
+      padding: 10px 38px 10px 40px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 0.88rem;
+      background: #FFFFFF;
+      color: var(--text-main);
+      outline: none;
+      font-family: inherit;
+      transition: all 0.2s ease;
+    }
+    .order-search-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 87, 34, 0.15);
+    }
+    .btn-clear-search {
+      position: absolute;
+      right: 12px;
+      background: #E2E8F0;
+      border: none;
+      border-radius: 50%;
+      width: 22px;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: #475569;
+      cursor: pointer;
+    }
+    .toolbar-filters-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .date-filter-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .toolbar-label {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #475569;
+    }
+    .date-pill-group {
+      display: flex;
+      gap: 4px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 3px;
+      border-radius: 9999px;
+    }
+    .date-pill {
+      border: none;
+      background: transparent;
+      color: #64748B;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: inherit;
+    }
+    .date-pill:hover {
+      color: var(--text-main);
+    }
+    .date-pill.active {
+      background: #0F172A;
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+    .status-quick-filter {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .toolbar-select {
+      padding: 6px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      background: #FFFFFF;
+      color: var(--text-main);
+      outline: none;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .filter-count-badge {
+      font-size: 0.8rem;
+      color: #64748B;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 5px 12px;
+      border-radius: 8px;
+      margin-left: auto;
+    }
+
+    /* Customer History Badges */
+    .cust-history-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 6px;
+      width: fit-content;
+      margin-top: 3px;
+      line-height: 1.3;
+    }
+    .cust-history-badge.badge-warning {
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+      animation: pulseWarning 2s infinite ease-in-out;
+    }
+    @keyframes pulseWarning {
+      0%, 100% { border-color: #FECACA; }
+      50% { border-color: #F87171; box-shadow: 0 0 6px rgba(239, 68, 68, 0.25); }
+    }
+    .cust-history-badge.badge-repeat {
+      background: #ECFDF5;
+      color: #047857;
+      border: 1px solid #A7F3D0;
+    }
+    .cust-history-badge.badge-repeat-pending {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+    }
+    .cust-history-badge.badge-new {
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #E2E8F0;
+    }
+
+    /* Return Reason Tag & Modal */
+    .return-reason-tag {
+      font-size: 0.72rem;
+      background: #FFF1F2;
+      color: #BE123C;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px dashed #FDA4AF;
+      line-height: 1.3;
+      margin-top: 2px;
+    }
+    .return-reason-tag:hover {
+      background: #FFE4E6;
+    }
+
+    /* Print Invoice Button */
+    .btn-invoice-print {
+      background: #FFFFFF;
+      border: 1.5px solid #CBD5E1;
+      color: #0F172A;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .btn-invoice-print:hover {
+      background: #F8FAFC;
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Printable Invoice Modal */
+    .invoice-modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 99999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+    }
+    .invoice-modal-overlay.open {
+      display: flex;
+    }
+    .printable-invoice-card {
+      background: #FFFFFF;
+      width: 100%;
+      max-width: 650px;
+      border-radius: 16px;
+      padding: 28px 30px;
+      box-shadow: 0 25px 30px -5px rgba(0,0,0,0.2);
+      margin: auto;
+      position: relative;
+      font-family: 'Hind Siliguri', 'Anek Bangla', sans-serif;
+      color: #0F172A;
+    }
+    .invoice-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: #F1F5F9;
+      border: none;
+      border-radius: 50%;
+      width: 32px;
+      height: 32px;
+      font-size: 1rem;
+      color: #64748B;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+    .invoice-close-btn:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .invoice-logo {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .invoice-subtitle {
+      font-size: 0.85rem;
+      color: #64748B;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+    .invoice-contact-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.78rem;
+      color: #475569;
+      margin-top: 6px;
+    }
+    .invoice-badge-block {
+      text-align: right;
+    }
+    .invoice-pill-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      background: #EFF6FF;
+      color: #1D4ED8;
+      padding: 3px 10px;
+      border-radius: 9999px;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+    .invoice-id-big {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #0F172A;
+      font-family: 'Inter', sans-serif;
+    }
+    .invoice-date-text {
+      font-size: 0.8rem;
+      color: #64748B;
+      margin-top: 2px;
+    }
+    .inv-divider {
+      border: none;
+      border-top: 1.5px solid #E2E8F0;
+      margin: 14px 0;
+    }
+    .invoice-details-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .inv-box-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      border-bottom: 1px dashed #CBD5E1;
+      padding-bottom: 4px;
+    }
+    .inv-box-row {
+      font-size: 0.82rem;
+      color: #475569;
+      margin-bottom: 3px;
+      line-height: 1.4;
+    }
+    .inv-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 16px;
+      font-size: 0.84rem;
+    }
+    .inv-table th {
+      background: #F1F5F9;
+      color: #334155;
+      font-weight: 700;
+      padding: 8px 10px;
+      border: 1px solid #E2E8F0;
+    }
+    .inv-table td {
+      padding: 10px;
+      border: 1px solid #E2E8F0;
+      color: #334155;
+    }
+    .inv-color-badge {
+      background: #F1F5F9;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-size: 0.76rem;
+      font-weight: 600;
+      border: 1px solid #CBD5E1;
+    }
+    .inv-summary-container {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .inv-notes-box {
+      flex: 1;
+      font-size: 0.78rem;
+      color: #64748B;
+      background: #FEF9C3;
+      border: 1px solid #FEF08A;
+      border-radius: 8px;
+      padding: 10px 12px;
+      line-height: 1.5;
+    }
+    .inv-bill-totals {
+      width: 240px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 0.85rem;
+    }
+    .inv-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 3px 0;
+      color: #475569;
+    }
+    .inv-total-row.inv-grand-total {
+      border-top: 1.5px solid #0F172A;
+      margin-top: 4px;
+      padding-top: 6px;
+      font-weight: 800;
+      color: #0F172A;
+      font-size: 0.95rem;
+    }
+    .inv-grand-price {
+      font-size: 1.25rem;
+      color: var(--primary);
+      font-weight: 800;
+      font-family: 'Inter', sans-serif;
+    }
+    .inv-signatures-row {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 28px;
+      padding-top: 10px;
+    }
+    .inv-sig-cell {
+      text-align: center;
+      font-size: 0.78rem;
+      color: #64748B;
+      font-weight: 600;
+      width: 180px;
+    }
+    .inv-sig-line {
+      border-top: 1px dashed #94A3B8;
+      margin-bottom: 6px;
+    }
+    .invoice-modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+      padding-top: 14px;
+      border-top: 1px solid #E2E8F0;
+    }
+    .btn-inv-print {
+      background: #0F172A;
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    .btn-inv-print:hover {
+      background: #1E293B;
+    }
+    .btn-inv-close {
+      background: #F1F5F9;
+      color: #475569;
+      border: 1px solid #CBD5E1;
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    /* Print Media Queries */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+      .admin-page-wrap,
+      .admin-nav-bar,
+      .admin-card,
+      .admin-toast,
+      .cancel-modal-overlay,
+      .return-modal-overlay {
+        display: none !important;
+      }
+      .invoice-modal-overlay {
+        display: block !important;
+        position: static !important;
+        background: transparent !important;
+        padding: 0 !important;
+      }
+      .printable-invoice-card {
+        box-shadow: none !important;
+        border: none !important;
+        max-width: 100% !important;
+        padding: 6mm !important;
+        margin: 0 !important;
+      }
+      .invoice-modal-actions,
+      .invoice-close-btn {
+        display: none !important;
+      }
+      @page {
+        size: auto;
+        margin: 10mm;
+      }
+    }
   </style>
 </head>
 <body>
@@ -473,8 +975,9 @@
             </div>
             <div style="display: flex; gap: 8px; flex-wrap: wrap;">
               <button type="button" class="btn-admin-action" style="background: #ECFDF5; color: #059669; border-color: #A7F3D0; font-weight: 700;" onclick="createSampleTestOrder()">🧪 টেস্ট অর্ডার যোগ করুন</button>
+              <button type="button" class="btn-admin-action" style="background: #10B981; color: #FFFFFF; border-color: #059669; font-weight: 700;" onclick="exportCourierBulkCSV()">📥 Courier CSV Export</button>
               <button type="button" class="btn-admin-action" onclick="renderAdminOrders()">🔄 রিফ্রেশ</button>
-              <button type="button" class="btn-admin-action" onclick="exportOrdersToCSV()">📥 CSV ডাউনলোড</button>
+              <button type="button" class="btn-admin-action" onclick="exportOrdersToCSV()">📥 সব ডেটা CSV</button>
               <button type="button" class="btn-admin-action" style="color: #DC2626;" onclick="clearAllOrders()">🗑️ মুছে ফেলুন</button>
             </div>
           </div>
@@ -512,6 +1015,44 @@
             <button type="button" class="filter-pill" id="pill-Cancelled" onclick="filterOrdersBy('Cancelled')">🔴 বাতিল (<span id="pill-count-cancelled">০</span>)</button>
           </div>
 
+          <!-- Search & Filter Bar -->
+          <div class="orders-toolbar-card">
+            <div class="search-input-shell">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="order-search-input" class="order-search-input" placeholder="গ্রাহকের নাম, মোবাইল নম্বর (যেমন: 017...) বা অর্ডার আইডি দিয়ে খুঁজুন..." oninput="handleSearchInput(this.value)">
+              <button type="button" class="btn-clear-search" id="btn-clear-search" onclick="clearSearchInput()" title="মুছে ফেলুন" style="display: none;">✕</button>
+            </div>
+
+            <div class="toolbar-filters-row">
+              <div class="date-filter-group">
+                <span class="toolbar-label">📅 সময়কাল:</span>
+                <div class="date-pill-group">
+                  <button type="button" class="date-pill active" id="date-pill-all" onclick="filterByDate('all')">সব</button>
+                  <button type="button" class="date-pill" id="date-pill-today" onclick="filterByDate('today')">আজ</button>
+                  <button type="button" class="date-pill" id="date-pill-week" onclick="filterByDate('week')">গত ৭ দিন</button>
+                  <button type="button" class="date-pill" id="date-pill-month" onclick="filterByDate('month')">এই মাস</button>
+                </div>
+              </div>
+
+              <div class="status-quick-filter">
+                <span class="toolbar-label">📌 স্ট্যাটাস ফিল্টার:</span>
+                <select id="status-filter-select" class="toolbar-select" onchange="filterByStatusDropdown(this.value)">
+                  <option value="ALL">সব স্ট্যাটাস</option>
+                  <option value="New">🟡 New (নতুন)</option>
+                  <option value="Confirmed">🔵 Confirmed (কনফার্মড)</option>
+                  <option value="Shipped">🟣 Shipped (ট্রানজিটে)</option>
+                  <option value="Delivered">🟢 Delivered (সফল)</option>
+                  <option value="Returned">🟠 Returned (রিটার্নড)</option>
+                  <option value="Cancelled">🔴 Cancelled (বাতিলকৃত)</option>
+                </select>
+              </div>
+
+              <div class="filter-count-badge" id="filter-count-badge">
+                প্রদর্শিত: <strong id="filter-count-val" style="color: var(--primary);">০</strong> / মোট <span id="total-count-val">০</span>
+              </div>
+            </div>
+          </div>
+
           <div class="table-responsive">
             <table class="admin-table">
               <thead>
@@ -521,13 +1062,14 @@
                   <th>ঠিকানা</th>
                   <th>প্যাকেজ ও কালার</th>
                   <th>মোট বিল</th>
-                  <th style="min-width: 150px;">স্ট্যাটাস পরিবর্তন</th>
-                  <th style="min-width: 110px;">অর্ডার P&L</th>
+                  <th style="min-width: 155px;">স্ট্যাটাস পরিবর্তন</th>
+                  <th style="min-width: 120px;">অর্ডার P&L</th>
+                  <th style="min-width: 90px; text-align: center;">অ্যাকশন</th>
                 </tr>
               </thead>
               <tbody id="admin-orders-tbody">
                 <tr>
-                  <td colspan="7" style="text-align: center; color: #94A3B8; padding: 24px;">এখনও কোনো অর্ডার আসেনি।</td>
+                  <td colspan="8" style="text-align: center; color: #94A3B8; padding: 24px;">এখনও কোনো অর্ডার আসেনি।</td>
                 </tr>
               </tbody>
             </table>
@@ -588,6 +1130,174 @@
         <button type="button" class="btn-cancel-modal-back" onclick="closeCancelReasonModal()">ফিরে যান</button>
         <button type="button" class="btn-cancel-modal-confirm" onclick="confirmCancelReasonModal()">বাতিল কনফার্ম করুন</button>
       </div>
+    </div>
+  </div>
+
+  <!-- Return Reason Modal (Post-Dispatch Return) -->
+  <div class="cancel-modal-overlay" id="return-reason-modal">
+    <div class="cancel-modal-card">
+      <div class="cancel-modal-title" style="color: #BE123C;">
+        <span>📦 পার্সেল রিটার্নের কারণ (Post-Dispatch Return)</span>
+      </div>
+      <p class="cancel-modal-sub" id="return-modal-order-desc">কুরিয়ারে পার্সেল হ্যান্ডওভারের পর রিটার্ন আসার সঠিক কারণ নির্বাচন করুন (এতে কুরিয়ার ও প্যাকেজিং লস হিসাব হবে):</p>
+      
+      <div class="cancel-radio-group">
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="ডেলিভারির সময় গ্রাহক রিসিভ করতে অস্বীকৃতি জানিয়েছে (Refused at door)" checked onchange="toggleCustomReturnReason(false)">
+          <span>ডেলিভারির সময় গ্রাহক রিসিভ করতে অস্বীকৃতি জানিয়েছে (Refused at door)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="কুরিয়ার ডেলিভারি রাইডার কল দেয়নি / লোকেশনে যায়নি (Courier failed attempt)" onchange="toggleCustomReturnReason(false)">
+          <span>কুরিয়ার ডেলিভারি রাইডার কল দেয়নি / লোকেশনে যায়নি (Courier failed attempt)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="দেরিতে পৌঁছানোর কারণে গ্রাহক ফেরত পাঠিয়েছে (Late delivery refusal)" onchange="toggleCustomReturnReason(false)">
+          <span>দেরিতে পৌঁছানোর কারণে গ্রাহক ফেরত পাঠিয়েছে (Late delivery refusal)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="ডেলিভারি ম্যানের সামনে পার্সেল খুলতে দেয়নি (Check before pay disallowed)" onchange="toggleCustomReturnReason(false)">
+          <span>ডেলিভারি ম্যানের সামনে পার্সেল খুলতে দেয়নি (Check before pay disallowed)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="গ্রাহক পার্সেল গ্রহণে আনরিচেবল / ফোন বন্ধ (Unreachable by rider)" onchange="toggleCustomReturnReason(false)">
+          <span>গ্রাহক পার্সেল গ্রহণে আনরিচেবল / ফোন বন্ধ (Unreachable by rider)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="প্যাকেটের ভেতর ভুল কালার বা ত্রুটি পাওয়া গেছে (Wrong item/defect)" onchange="toggleCustomReturnReason(false)">
+          <span>প্যাকেটের ভেতর ভুল কালার বা ত্রুটি পাওয়া গেছে (Wrong item/defect)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="অন্য কোথা থেকে আগেই কিনে ফেলেছে (Bought elsewhere)" onchange="toggleCustomReturnReason(false)">
+          <span>অন্য কোথা থেকে আগেই কিনে ফেলেছে (Bought elsewhere)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="return-reason-opt" value="অন্যান্য রিটার্ন কারণ (Other)" onchange="toggleCustomReturnReason(true)">
+          <span>অন্যান্য রিটার্ন কারণ (Other)</span>
+        </label>
+      </div>
+
+      <input type="text" id="return-custom-reason" class="clean-form-input" placeholder="কাস্টম রিটার্ন কারণ বা কুরিয়ার নোট লিখুন..." style="margin-bottom: 14px; display: none;">
+
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn-cancel-modal-back" onclick="closeReturnReasonModal()">ফিরে যান</button>
+        <button type="button" class="btn-cancel-modal-confirm" style="background: #BE123C;" onclick="confirmReturnReasonModal()">রিটার্ন কনফার্ম করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Printable Invoice Modal -->
+  <div class="invoice-modal-overlay" id="invoice-modal">
+    <div class="printable-invoice-card" id="invoice-printable-card">
+      <button type="button" class="invoice-close-btn" onclick="closeInvoiceModal()" title="বন্ধ করুন">✕</button>
+      
+      <!-- Invoice Header -->
+      <div class="invoice-header">
+        <div class="invoice-brand">
+          <div class="invoice-logo">🍼 LittleNest BD</div>
+          <div class="invoice-subtitle">অফিসিয়াল বেবি ডিনারওয়্যার স্টোর</div>
+          <div class="invoice-contact-meta">
+            <span>📍 বাড়ি #১২, রোড #০৫, ব্লক-ডি, ধানমন্ডি, ঢাকা - ১২০৯</span>
+            <span>📞 হটলাইন: +৮৮০১৭০০০০০০০০ | 💬 হোয়াটসঅ্যাপ: +৮৮০১৭০০০০০০০০</span>
+            <span>🌐 testsite-opal-one.vercel.app</span>
+          </div>
+        </div>
+        <div class="invoice-badge-block">
+          <div class="invoice-pill-title">ক্যাশ অন ডেলিভারি (COD) চালান</div>
+          <div class="invoice-id-big" id="inv-order-id">#LN-000000</div>
+          <div class="invoice-date-text" id="inv-order-date">তারিখ: --</div>
+        </div>
+      </div>
+
+      <hr class="inv-divider">
+
+      <!-- Customer & Shipping Details Grid -->
+      <div class="invoice-details-grid">
+        <div class="inv-detail-box">
+          <div class="inv-box-title">👤 গ্রাহকের বিবরণ:</div>
+          <div class="inv-box-row"><strong>নাম:</strong> <span id="inv-cust-name">--</span></div>
+          <div class="inv-box-row"><strong>মোবাইল:</strong> <span id="inv-cust-phone">--</span></div>
+          <div class="inv-box-row"><strong>গ্রাহক প্রোফাইল:</strong> <span id="inv-cust-type">--</span></div>
+        </div>
+        <div class="inv-detail-box">
+          <div class="inv-box-title">🚚 ডেলিভারি ও কুরিয়ার তথ্য:</div>
+          <div class="inv-box-row"><strong>ঠিকানা:</strong> <span id="inv-cust-addr">--</span></div>
+          <div class="inv-box-row"><strong>কুরিয়ার পার্টনার:</strong> <span>Steadfast / Pathao Courier</span></div>
+          <div class="inv-box-row"><strong>পেমেন্ট মেথড:</strong> <span>ক্যাশ অন ডেলিভারি (হাতে পেয়ে মূল্য পরিশোধ)</span></div>
+        </div>
+      </div>
+
+      <!-- Invoice Items Table -->
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>পণ্য ও বিবরণ</th>
+            <th style="text-align: center;">কালার</th>
+            <th style="text-align: center;">পরিমাণ</th>
+            <th style="text-align: right;">রেগুলার মূল্য</th>
+            <th style="text-align: right;">মোট টাকা</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <strong id="inv-item-name">বাচ্চাদের ৬ পিস সম্পূর্ণ ফুড গ্রেড সিলিকন ফিডিং সেট</strong>
+              <div style="font-size: 0.74rem; color: #64748B; margin-top: 2px;">১০০% খাঁটি ফুড গ্রেড সিলিকন ও BPA-মুক্ত নিরাপদ ডিনারওয়্যার</div>
+            </td>
+            <td style="text-align: center;">
+              <span class="inv-color-badge" id="inv-item-color">স্কাই ব্লু</span>
+            </td>
+            <td style="text-align: center;" id="inv-item-qty">১</td>
+            <td style="text-align: right;" id="inv-item-price">৳১,১৯০</td>
+            <td style="text-align: right;" id="inv-item-subtotal">৳১,১৯০</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Calculations Summary -->
+      <div class="inv-summary-container">
+        <div class="inv-notes-box">
+          <div style="font-weight: 700; margin-bottom: 4px; color: #854D0E;">🛡️ গ্রাহকের জন্য জরুরি নির্দেশিকা:</div>
+          <div>• পার্সেল রিসিভ করার সময় ডেলিভারি ম্যানের সামনে প্রোডাক্ট দেখে মূল্য পরিশোধ করুন।</div>
+          <div>• কোনো সমস্যা বা ত্রুটি থাকলে সাথে সাথে হটলাইনে কল দিয়ে ফ্রি রিপ্লেসমেন্ট সুবিধা নিন।</div>
+        </div>
+        <div class="inv-bill-totals">
+          <div class="inv-total-row">
+            <span>প্যাকেজ মূল্য:</span>
+            <strong id="inv-subtotal-val">৳১,১৯০</strong>
+          </div>
+          <div class="inv-total-row">
+            <span>ডেলিভারি চার্জ:</span>
+            <strong id="inv-shipping-val">৳৭০</strong>
+          </div>
+          <div class="inv-total-row inv-grand-total">
+            <span>সর্বমোট প্রদেয় টাকা (COD):</span>
+            <span class="inv-grand-price" id="inv-grand-val">৳১,২৬০</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signature & Footer -->
+      <div class="inv-signatures-row">
+        <div class="inv-sig-cell">
+          <div class="inv-sig-line"></div>
+          <div>অনুমোদিত স্টোর ম্যানেজার (LittleNest BD)</div>
+        </div>
+        <div class="inv-sig-cell">
+          <div class="inv-sig-line"></div>
+          <div>গ্রাহকের স্বাক্ষর ও প্রাপ্তিস্বীকার</div>
+        </div>
+      </div>
+
+      <!-- Action buttons (Hidden during print) -->
+      <div class="invoice-modal-actions">
+        <button type="button" class="btn-inv-print" onclick="window.print()">
+          🖨️ প্রিন্ট করুন / PDF সেভ করুন
+        </button>
+        <button type="button" class="btn-inv-close" onclick="closeInvoiceModal()">
+          ✕ বন্ধ করুন
+        </button>
+      </div>
+
     </div>
   </div>
 
@@ -722,7 +1432,10 @@
     }
 
     let currentActiveFilter = 'ALL';
+    let currentDateFilter = 'all';
+    let currentSearchTerm = '';
     let pendingCancelOrderId = null;
+    let pendingReturnOrderId = null;
 
     // Financial defaults for Unit P&L calculation
     const DEFAULT_COGS_PER_SET = 480;
@@ -731,6 +1444,48 @@
     const DEFAULT_AD_CPP_BDT = 250;
     const DEFAULT_RETURN_COURIER_FEE = 70;
 
+    // Phone normalizer for customer history & search (converts Bengali numerals & strips prefixes)
+    function normalizePhone(p) {
+      if (!p) return '';
+      const bnToEn = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+      let v = p.toString().replace(/[০-৯]/g, d => bnToEn[d]);
+      v = v.replace(/\D/g, '');
+      if (v.startsWith('880')) v = v.substring(2);
+      else if (v.startsWith('88')) v = v.substring(2);
+      return v;
+    }
+
+    // Customer History Detection
+    function getCustomerHistoryBadge(custPhone, currentOrderId, allOrders) {
+      const norm = normalizePhone(custPhone);
+      if (!norm || norm.length < 10) return '';
+
+      const pastOrders = allOrders.filter(o => o.orderId !== currentOrderId && normalizePhone(o.customerPhone) === norm);
+
+      if (pastOrders.length === 0) {
+        return `<span class="cust-history-badge badge-new" title="প্রথমবার অর্ডার করছেন">👤 নতুন কাস্টমার</span>`;
+      }
+
+      const badOrders = pastOrders.filter(o => o.status === 'Cancelled' || o.status === 'Returned');
+      if (badOrders.length > 0) {
+        const cancelCount = badOrders.filter(o => o.status === 'Cancelled').length;
+        const returnCount = badOrders.filter(o => o.status === 'Returned').length;
+        let notes = [];
+        if (cancelCount > 0) notes.push(`${toBanglaNumber(cancelCount)}টি বাতিল`);
+        if (returnCount > 0) notes.push(`${toBanglaNumber(returnCount)}টি রিটার্ন`);
+
+        return `<span class="cust-history-badge badge-warning" title="পূর্বে ক্যানসেল/রিটার্ন ইতিহাস আছে (${notes.join(', ')})">⚠️ পূর্বে ক্যানসেল/রিটার্ন রেকর্ড আছে</span>`;
+      }
+
+      const deliveredOrders = pastOrders.filter(o => o.status === 'Delivered');
+      if (deliveredOrders.length > 0) {
+        return `<span class="cust-history-badge badge-repeat" title="পূর্বে ${toBanglaNumber(deliveredOrders.length)}টি সফল ডেলিভারি হয়েছে">⭐ বিশ্বস্ত কাস্টমার (${toBanglaNumber(pastOrders.length + 1)}ম অর্ডার)</span>`;
+      }
+
+      return `<span class="cust-history-badge badge-repeat-pending" title="একই ফোন থেকে ${toBanglaNumber(pastOrders.length + 1)}টি অর্ডার">🔄 রিপিট কাস্টমার (${toBanglaNumber(pastOrders.length + 1)}ম অর্ডার)</span>`;
+    }
+
+    // Unit P&L calculation (Distinguishing Pre-Dispatch Cancellation from Post-Dispatch Return)
     function calculateOrderPnl(ord) {
       const status = ord.status || 'New';
       const qty = ord.quantity || 1;
@@ -747,23 +1502,24 @@
           sub: 'হাতে প্রাপ্ত মুনাফা'
         };
       } else if (status === 'Returned') {
-        // Product returns to stock. Loss is return courier fee + wasted packaging + ad CPP + calling staff
-        const netLoss = DEFAULT_RETURN_COURIER_FEE + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
+        // Post-Dispatch Return: courier was dispatched, incurred forward courier + return courier + wasted packaging + staff + ad
+        const forwardCourier = Number(ord.shippingCost) !== undefined ? Number(ord.shippingCost) : (ord.district === 'ঢাকা' ? 70 : 130);
+        const netLoss = forwardCourier + DEFAULT_RETURN_COURIER_FEE + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
         return {
           className: 'pnl-badge-loss',
           label: `-৳${toBanglaNumber(netLoss)} ক্ষতি 🔴`,
-          sub: 'রিটার্ন ও প্যাকিং লস'
+          sub: `কুরিয়ার (৳${toBanglaNumber(forwardCourier)}+৳৭০) + প্যাকিং (৳২৫)`
         };
       } else if (status === 'Cancelled') {
-        // Was never shipped. Loss is ad CPP + confirmation call cost
+        // Pre-Dispatch Cancellation: cancelled before courier handover! ৳0 courier & packaging loss.
         const netLoss = DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
         return {
           className: 'pnl-badge-adloss',
           label: `-৳${toBanglaNumber(netLoss)} এড লস ⚠️`,
-          sub: 'বিজ্ঞাপন ও কল খরচ'
+          sub: '৳০ কুরিয়ার ও প্যাকিং ক্ষতি'
         };
       } else {
-        // Pending / Confirmed / Shipped
+        // Pipeline (New / Confirmed / Shipped)
         const projected = totalRev - (cogs + shipping + cod + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT);
         return {
           className: 'pnl-badge-pipeline',
@@ -771,6 +1527,39 @@
           sub: 'ডেলিভারি প্রত্যাশিত'
         };
       }
+    }
+
+    // Filter by Date
+    function filterByDate(dateKey) {
+      currentDateFilter = dateKey;
+      const dates = ['all', 'today', 'week', 'month'];
+      dates.forEach(d => {
+        const btn = document.getElementById(`date-pill-${d}`);
+        if (btn) btn.classList.toggle('active', d === dateKey);
+      });
+      applyFiltersAndDisplay();
+    }
+
+    // Filter by Status dropdown
+    function filterByStatusDropdown(statusVal) {
+      filterOrdersBy(statusVal);
+    }
+
+    // Search input handler
+    function handleSearchInput(val) {
+      currentSearchTerm = val.trim();
+      const clearBtn = document.getElementById('btn-clear-search');
+      if (clearBtn) clearBtn.style.display = currentSearchTerm ? 'flex' : 'none';
+      applyFiltersAndDisplay();
+    }
+
+    function clearSearchInput() {
+      const inp = document.getElementById('order-search-input');
+      const clearBtn = document.getElementById('btn-clear-search');
+      if (inp) inp.value = '';
+      if (clearBtn) clearBtn.style.display = 'none';
+      currentSearchTerm = '';
+      applyFiltersAndDisplay();
     }
 
     function filterOrdersBy(filter) {
@@ -789,18 +1578,32 @@
         if (el) el.classList.toggle('active', p === filter);
       });
 
-      let localOrders = [];
-      try {
-        localOrders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
-      } catch (e) {
-        localOrders = [];
+      const select = document.getElementById('status-filter-select');
+      if (select && select.value !== filter) {
+        select.value = filter;
       }
-      displayOrders(localOrders);
+
+      applyFiltersAndDisplay();
+    }
+
+    function getOrderTimestamp(ord) {
+      if (ord.timestamp && !isNaN(ord.timestamp)) return Number(ord.timestamp);
+      if (ord.updatedAt && !isNaN(ord.updatedAt)) return Number(ord.updatedAt);
+      return Date.now();
+    }
+
+    function applyFiltersAndDisplay() {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+      displayOrders(orders);
     }
 
     function displayOrders(orders) {
       const tbody = document.getElementById('admin-orders-tbody');
-      const countEl = document.getElementById('admin-orders-count');
       if (!tbody) return;
 
       const totalCount = orders.length;
@@ -810,7 +1613,6 @@
       const pipelineCount = orders.filter(o => !['Delivered', 'Returned', 'Cancelled'].includes(o.status)).length;
 
       // Update stat counters
-      if (countEl) countEl.textContent = toBanglaNumber(totalCount);
       const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = toBanglaNumber(val); };
       setTxt('stat-all-count', totalCount);
       setTxt('stat-delivered-count', deliveredCount);
@@ -824,26 +1626,67 @@
       setTxt('pill-count-returned', returnedCount);
       setTxt('pill-count-cancelled', cancelledCount);
 
-      // Filter list
-      let filtered = orders;
-      if (currentActiveFilter === 'Delivered') {
-        filtered = orders.filter(o => o.status === 'Delivered');
-      } else if (currentActiveFilter === 'Returned') {
-        filtered = orders.filter(o => o.status === 'Returned');
-      } else if (currentActiveFilter === 'Cancelled') {
-        filtered = orders.filter(o => o.status === 'Cancelled');
-      } else if (currentActiveFilter === 'Pipeline') {
-        filtered = orders.filter(o => !['Delivered', 'Returned', 'Cancelled'].includes(o.status));
-      }
+      // Apply 3-way combined filtering (Status + Date + Search)
+      const filtered = orders.filter(ord => {
+        // 1. Status Filter
+        if (currentActiveFilter === 'Delivered' && ord.status !== 'Delivered') return false;
+        if (currentActiveFilter === 'Returned' && ord.status !== 'Returned') return false;
+        if (currentActiveFilter === 'Cancelled' && ord.status !== 'Cancelled') return false;
+        if (currentActiveFilter === 'Pipeline' && ['Delivered', 'Returned', 'Cancelled'].includes(ord.status)) return false;
+        if (['New', 'Confirmed', 'Shipped'].includes(currentActiveFilter) && ord.status !== currentActiveFilter) return false;
+
+        // 2. Date Filter
+        if (currentDateFilter !== 'all') {
+          const ts = getOrderTimestamp(ord);
+          const d = new Date(ts);
+          const now = new Date();
+
+          if (currentDateFilter === 'today') {
+            const isToday = d.getDate() === now.getDate() &&
+                            d.getMonth() === now.getMonth() &&
+                            d.getFullYear() === now.getFullYear();
+            if (!isToday) return false;
+          } else if (currentDateFilter === 'week') {
+            const sevenDaysAgo = Date.now() - (7 * 24 * 60 * 60 * 1000);
+            if (ts < sevenDaysAgo) return false;
+          } else if (currentDateFilter === 'month') {
+            const isMonth = d.getMonth() === now.getMonth() &&
+                            d.getFullYear() === now.getFullYear();
+            if (!isMonth) return false;
+          }
+        }
+
+        // 3. Search Term Filter
+        if (currentSearchTerm) {
+          const term = currentSearchTerm.toLowerCase();
+          const termDigits = normalizePhone(currentSearchTerm);
+
+          const matchId = (ord.orderId || '').toLowerCase().includes(term);
+          const matchName = (ord.customerName || '').toLowerCase().includes(term);
+          const matchAddr = (ord.fullAddress || '').toLowerCase().includes(term);
+          const matchPhone = termDigits ? normalizePhone(ord.customerPhone || '').includes(termDigits) : false;
+
+          if (!matchId && !matchName && !matchAddr && !matchPhone) return false;
+        }
+
+        return true;
+      });
+
+      // Update filtered count badge
+      const countVal = document.getElementById('filter-count-val');
+      const totalVal = document.getElementById('total-count-val');
+      if (countVal) countVal.textContent = toBanglaNumber(filtered.length);
+      if (totalVal) totalVal.textContent = toBanglaNumber(totalCount);
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94A3B8; padding: 28px;">এই ফিল্টারে কোনো অর্ডার পাওয়া যায়নি।</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #94A3B8; padding: 32px;">এই ফিল্টার বা অনুসন্ধানে কোনো অর্ডার পাওয়া যায়নি।</td></tr>`;
         return;
       }
 
       tbody.innerHTML = filtered.map(ord => {
         const curStatus = ord.status || 'New';
         const pnl = calculateOrderPnl(ord);
+        const historyBadge = getCustomerHistoryBadge(ord.customerPhone, ord.orderId, orders);
 
         return `
           <tr>
@@ -852,8 +1695,11 @@
               <small style="color: #64748B;">${ord.orderDate}</small>
             </td>
             <td>
-              <strong>${ord.customerName}</strong><br>
-              <a href="tel:${ord.customerPhone}" style="color: var(--primary); font-weight: 700; text-decoration: none;">📞 ${ord.customerPhone}</a>
+              <strong>${ord.customerName}</strong>
+              <div style="display: flex; flex-direction: column; gap: 3px; margin-top: 3px;">
+                <a href="tel:${ord.customerPhone}" style="color: var(--primary); font-weight: 700; text-decoration: none; font-size: 0.88rem;">📞 ${ord.customerPhone}</a>
+                ${historyBadge}
+              </div>
             </td>
             <td style="max-width: 200px; word-break: break-word; font-size: 0.82rem; color: #334155;">
               ${ord.fullAddress}
@@ -877,8 +1723,13 @@
                   <option value="Cancelled" ${curStatus === 'Cancelled' ? 'selected' : ''}>🔴 Cancelled (বাতিল)</option>
                 </select>
                 ${curStatus === 'Cancelled' ? `
-                  <div class="cancel-reason-tag" title="ক্লিক করে কারণ পরিবর্তন করুন" onclick="openCancelReasonModal('${ord.orderId}')">
-                    <span>${ord.cancelReason ? ord.cancelReason : 'কারণ নির্বাচন করুন ✎'}</span>
+                  <div class="cancel-reason-tag" title="ক্লিক করে বাতিল কারণ পরিবর্তন করুন" onclick="openCancelReasonModal('${ord.orderId}')">
+                    <span>বাতিল: ${ord.cancelReason ? ord.cancelReason : 'কারণ নির্বাচন করুন ✎'}</span>
+                  </div>
+                ` : ''}
+                ${curStatus === 'Returned' ? `
+                  <div class="return-reason-tag" title="ক্লিক করে রিটার্ন কারণ পরিবর্তন করুন" onclick="openReturnReasonModal('${ord.orderId}')">
+                    <span>রিটার্ন: ${ord.returnReason ? ord.returnReason : 'কারণ নির্বাচন করুন ✎'}</span>
                   </div>
                 ` : ''}
               </div>
@@ -889,25 +1740,34 @@
                 <small style="font-size: 0.68rem; font-weight: normal; opacity: 0.85;">${pnl.sub}</small>
               </div>
             </td>
+            <td style="text-align: center;">
+              <button type="button" class="btn-invoice-print" onclick="openInvoiceModal('${ord.orderId}')" title="ইনভয়েস চালান দেখুন ও প্রিন্ট করুন">
+                🖨️ ইনভয়েস
+              </button>
+            </td>
           </tr>
         `;
       }).join('');
     }
 
-    // Status change handler
+    // Status change router
     function onStatusSelectChange(orderId, newStatus) {
       if (newStatus === 'Cancelled') {
         openCancelReasonModal(orderId);
+      } else if (newStatus === 'Returned') {
+        openReturnReasonModal(orderId);
       } else {
-        updateOrderStatus(orderId, newStatus, '');
+        updateOrderStatus(orderId, newStatus, '', '');
       }
     }
 
-    // Cancel modal functions
+    // ---------------------------------------------------------
+    // Pre-Dispatch Cancel Modal
+    // ---------------------------------------------------------
     function openCancelReasonModal(orderId) {
       pendingCancelOrderId = orderId;
       const descEl = document.getElementById('cancel-modal-order-desc');
-      if (descEl) descEl.textContent = `অর্ডার #${orderId} বাতিল করার কারণ নির্বাচন করুন যাতে স্টোরের P&L এবং লস হিসাব নিখুঁত থাকে:`;
+      if (descEl) descEl.textContent = `অর্ডার #${orderId} বাতিল করার সঠিক কারণ নির্বাচন করুন যাতে স্টোরের P&L এবং লস হিসাব নিখুঁত থাকে:`;
       
       const modal = document.getElementById('cancel-reason-modal');
       if (modal) modal.classList.add('open');
@@ -917,7 +1777,7 @@
       const modal = document.getElementById('cancel-reason-modal');
       if (modal) modal.classList.remove('open');
       pendingCancelOrderId = null;
-      renderAdminOrders(); // Re-sync table select back if not confirmed
+      renderAdminOrders();
     }
 
     function toggleCustomReason(isCustom) {
@@ -940,12 +1800,109 @@
         }
       }
 
-      updateOrderStatus(pendingCancelOrderId, 'Cancelled', reason);
+      updateOrderStatus(pendingCancelOrderId, 'Cancelled', reason, '');
 
       const modal = document.getElementById('cancel-reason-modal');
       if (modal) modal.classList.remove('open');
       pendingCancelOrderId = null;
     }
+
+    // ---------------------------------------------------------
+    // Post-Dispatch Return Modal
+    // ---------------------------------------------------------
+    function openReturnReasonModal(orderId) {
+      pendingReturnOrderId = orderId;
+      const descEl = document.getElementById('return-modal-order-desc');
+      if (descEl) descEl.textContent = `অর্ডার #${orderId}-এর পার্সেল রিটার্ন আসার সঠিক কারণ নির্বাচন করুন (এতে কুরিয়ার ও প্যাকেজিং খরচ অন্তর্ভুক্ত হবে):`;
+
+      const modal = document.getElementById('return-reason-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeReturnReasonModal() {
+      const modal = document.getElementById('return-reason-modal');
+      if (modal) modal.classList.remove('open');
+      pendingReturnOrderId = null;
+      renderAdminOrders();
+    }
+
+    function toggleCustomReturnReason(isCustom) {
+      const customInput = document.getElementById('return-custom-reason');
+      if (customInput) {
+        customInput.style.display = isCustom ? 'block' : 'none';
+        if (isCustom) customInput.focus();
+      }
+    }
+
+    function confirmReturnReasonModal() {
+      if (!pendingReturnOrderId) return;
+      const selectedRadio = document.querySelector('input[name="return-reason-opt"]:checked');
+      let reason = selectedRadio ? selectedRadio.value : 'ডেলিভারির সময় গ্রাহক রিসিভ করতে অস্বীকৃতি জানিয়েছে';
+
+      if (reason.startsWith('অন্যান্য')) {
+        const customInput = document.getElementById('return-custom-reason');
+        if (customInput && customInput.value.trim()) {
+          reason = `অন্যান্য: ${customInput.value.trim()}`;
+        }
+      }
+
+      updateOrderStatus(pendingReturnOrderId, 'Returned', '', reason);
+
+      const modal = document.getElementById('return-reason-modal');
+      if (modal) modal.classList.remove('open');
+      pendingReturnOrderId = null;
+    }
+
+    // ---------------------------------------------------------
+    // Printable Invoice Modal
+    // ---------------------------------------------------------
+    window.openInvoiceModal = function(orderId) {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+
+      const ord = orders.find(o => o.orderId === orderId);
+      if (!ord) return;
+
+      const setEl = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+
+      setEl('inv-order-id', `#${ord.orderId}`);
+      setEl('inv-order-date', `তারিখ: ${ord.orderDate || new Date().toLocaleDateString('bn-BD')}`);
+      setEl('inv-cust-name', ord.customerName || 'সম্মানিত ক্রেতা');
+      setEl('inv-cust-phone', ord.customerPhone || '--');
+      setEl('inv-cust-addr', ord.fullAddress || '--');
+
+      const normPhone = normalizePhone(ord.customerPhone);
+      const pastCount = orders.filter(o => o.orderId !== ord.orderId && normalizePhone(o.customerPhone) === normPhone).length;
+      setEl('inv-cust-type', pastCount > 0 ? `রিপিট গ্রাহক (${toBanglaNumber(pastCount + 1)}ম অর্ডার)` : 'নতুন গ্রাহক');
+
+      setEl('inv-item-name', ord.packageTitle || 'বাচ্চাদের ৬ পিস সম্পূর্ণ ফুড গ্রেড সিলিকন ফিডিং সেট');
+      setEl('inv-item-color', ord.selectedColor || 'স্কাই ব্লু');
+      setEl('inv-item-qty', toBanglaNumber(ord.quantity || 1));
+
+      const qty = ord.quantity || 1;
+      const shipping = Number(ord.shippingCost) !== undefined ? Number(ord.shippingCost) : 70;
+      const grandTotal = Number(ord.totalPrice) || (qty === 2 ? 2290 : 1260);
+      const subTotal = grandTotal >= shipping ? (grandTotal - shipping) : (qty === 2 ? 2290 : 1190);
+      const unitPrice = Math.round(subTotal / qty);
+
+      setEl('inv-item-price', `৳${toBanglaNumber(unitPrice)}`);
+      setEl('inv-item-subtotal', `৳${toBanglaNumber(subTotal)}`);
+      setEl('inv-subtotal-val', `৳${toBanglaNumber(subTotal)}`);
+      setEl('inv-shipping-val', shipping === 0 ? 'ফ্রি ডেলিভারি 🎁 (৳০)' : `৳${toBanglaNumber(shipping)}`);
+      setEl('inv-grand-val', `৳${toBanglaNumber(grandTotal)}`);
+
+      const modal = document.getElementById('invoice-modal');
+      if (modal) modal.classList.add('open');
+    };
+
+    window.closeInvoiceModal = function() {
+      const modal = document.getElementById('invoice-modal');
+      if (modal) modal.classList.remove('open');
+    };
 
     function showToast(message) {
       const toast = document.getElementById('admin-toast');
@@ -958,7 +1915,7 @@
       }, 3500);
     }
 
-    function updateOrderStatus(orderId, newStatus, cancelReason = '') {
+    function updateOrderStatus(orderId, newStatus, cancelReason = '', returnReason = '') {
       let orders = [];
       try {
         orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
@@ -971,14 +1928,19 @@
         item.status = newStatus;
         if (newStatus === 'Cancelled') {
           item.cancelReason = cancelReason || item.cancelReason || 'গ্রাহকের মত পরিবর্তন';
+          item.returnReason = '';
+        } else if (newStatus === 'Returned') {
+          item.returnReason = returnReason || item.returnReason || 'ডেলিভারির সময় রিসিভ করতে অস্বীকৃতি';
+          item.cancelReason = '';
         } else {
           item.cancelReason = '';
+          item.returnReason = '';
         }
         item.updatedAt = Date.now();
       }
 
       localStorage.setItem('littlenest_orders', JSON.stringify(orders));
-      displayOrders(orders);
+      applyFiltersAndDisplay();
 
       // Push to backend API
       try {
@@ -989,7 +1951,8 @@
             action: 'updateStatus',
             orderId: orderId,
             status: newStatus,
-            cancelReason: cancelReason
+            cancelReason: cancelReason,
+            returnReason: returnReason
           })
         }).catch(() => {});
       } catch (err) {}
@@ -997,7 +1960,7 @@
       showToast(`✓ অর্ডার #${orderId} সফলভাবে '${newStatus}' হিসেবে আপডেট হয়েছে!`);
     }
 
-    // 1-Click Test Order Creator for Store Owner
+    // 1-Click Test Order Creator
     function createSampleTestOrder() {
       const testNames = ['সুমাইয়া জাহান (টেস্ট)', 'তানভীর আহমেদ (টেস্ট)', 'ফারজানা ইসলাম (টেস্ট)', 'কামরুল হাসান (টেস্ট)'];
       const testPhones = ['01712345678', '01819876543', '01911223344', '01655667788'];
@@ -1029,7 +1992,8 @@
         orderDate: new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' }),
         timestamp: Date.now(),
         status: 'New',
-        cancelReason: ''
+        cancelReason: '',
+        returnReason: ''
       };
 
       let existing = [];
@@ -1051,18 +2015,71 @@
         }).catch(() => {});
       } catch (e) {}
 
-      displayOrders(existing);
+      applyFiltersAndDisplay();
       showToast('🧪 নতুন টেস্ট অর্ডার সফলভাবে যোগ করা হয়েছে!');
     }
 
-    function exportOrdersToCSV() {
-      const orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+    // Courier CSV Export (Formatted for Steadfast / Pathao bulk upload)
+    function exportCourierBulkCSV() {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+
       if (orders.length === 0) {
         alert('কোনো অর্ডার ডেটা নেই!');
         return;
       }
 
-      const headers = ['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Package', 'Color', 'Total Price', 'Status', 'Cancel Reason'];
+      // Filter non-cancelled orders
+      const readyOrders = orders.filter(o => o.status !== 'Cancelled');
+      if (readyOrders.length === 0) {
+        alert('ডেলিভারির জন্য কোনো কার্যকর (অ-বাতিলকৃত) অর্ডার নেই!');
+        return;
+      }
+
+      const headers = ['Invoice', 'Name', 'Phone', 'Address', 'Amount', 'Note'];
+      const rows = readyOrders.map(o => {
+        const invoice = o.orderId;
+        const name = `"${(o.customerName || '').replace(/"/g, '""')}"`;
+        const phone = `"${(o.customerPhone || '').replace(/"/g, '""')}"`;
+        const address = `"${(o.fullAddress || '').replace(/"/g, '""')}"`;
+        const amount = Number(o.totalPrice) || 1260;
+        const note = `"${(o.packageTitle || 'সিলিকন ফিডিং সেট')} (${o.selectedColor || 'মিক্সড'}) | Fragile Baby Feeding Set"`;
+
+        return [invoice, name, phone, address, amount, note];
+      });
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `courier_upload_steadfast_pathao_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+
+      showToast(`✓ কুরিয়ার বাল্ক আপলোড CSV (${toBanglaNumber(readyOrders.length)}টি অর্ডার) সফলভাবে ডাউনলোড হয়েছে!`);
+    }
+
+    // Full Store Data CSV Export
+    function exportOrdersToCSV() {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+
+      if (orders.length === 0) {
+        alert('কোনো অর্ডার ডেটা নেই!');
+        return;
+      }
+
+      const headers = ['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Package', 'Color', 'Total Price', 'Status', 'Cancel Reason', 'Return Reason'];
       const rows = orders.map(o => [
         o.orderId,
         `"${o.orderDate}"`,
@@ -1073,7 +2090,8 @@
         `"${o.selectedColor}"`,
         o.totalPrice,
         o.status || 'New',
-        `"${(o.cancelReason || '').replace(/"/g, '""')}"`
+        `"${(o.cancelReason || '').replace(/"/g, '""')}"`,
+        `"${(o.returnReason || '').replace(/"/g, '""')}"`
       ]);
 
       const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');

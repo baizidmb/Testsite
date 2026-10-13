@@ -42,6 +42,7 @@ const server = http.createServer((req, res) => {
         res.setHeader('Content-Type', 'application/json; charset=utf-8');
         res.end(JSON.stringify(data));
       };
+      delete require.cache[require.resolve('./api/orders.js')];
       const apiHandler = require('./api/orders.js');
       apiHandler(req, res);
     });
