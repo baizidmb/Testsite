@@ -26,6 +26,8 @@ const server = http.createServer((req, res) => {
     reqPath = '/index.html';
   } else if (reqPath === '/admin' || reqPath === '/admin/') {
     reqPath = '/admin.html';
+  } else if (reqPath === '/pnl' || reqPath === '/pnl/') {
+    reqPath = '/pnl.html';
   } else if (reqPath === '/api/orders') {
     let body = '';
     req.on('data', chunk => body += chunk);

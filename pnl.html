@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>প্রফেশনাল E-Commerce P&L প্রফিট ক্যালকুলেটর | LittleNest BD</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/product-bowl.jpg">
+
+  <!-- Google Bengali & English Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    :root {
+      --pnl-bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --accent-green: #059669;
+      --accent-green-bg: #ECFDF5;
+      --accent-red: #DC2626;
+      --accent-red-bg: #FEF2F2;
+      --accent-blue: #0284C7;
+      --accent-blue-bg: #E0F2FE;
+      --accent-purple: #7C3AED;
+      --accent-purple-bg: #F5F3FF;
+      --accent-orange: #EA580C;
+      --accent-orange-bg: #FFF7ED;
+    }
+
+    body {
+      background-color: var(--pnl-bg);
+      color: #0F172A;
+      font-family: 'Anek Bangla', 'Hind Siliguri', sans-serif;
+    }
+
+    .pnl-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 24px 16px 60px;
+    }
+
+    /* Top Nav */
+    .pnl-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .pnl-brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pnl-brand-icon {
+      font-size: 2rem;
+      background: #FFF3EB;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+    }
+
+    .pnl-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.2;
+    }
+
+    .pnl-sub {
+      font-size: 0.84rem;
+      color: #64748B;
+      font-weight: 500;
+    }
+
+    .pnl-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-pnl-link {
+      background: #F1F5F9;
+      color: #334155;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: var(--radius-full);
+      text-decoration: none;
+      border: 1px solid #CBD5E1;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .btn-pnl-link:hover {
+      background: #E2E8F0;
+      color: #0F172A;
+    }
+
+    .btn-pnl-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      border-color: var(--primary);
+    }
+
+    .btn-pnl-primary:hover {
+      background: #E04D1E;
+      color: #FFFFFF;
+    }
+
+    /* Preset Selection Bar */
+    .pnl-presets-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 16px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    .presets-label {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1E293B;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .presets-buttons {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .btn-preset {
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      color: #334155;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-preset:hover, .btn-preset.active {
+      border-color: var(--primary);
+      background: #FFF3EB;
+      color: var(--primary);
+    }
+
+    /* Key Metrics Grid */
+    .metrics-summary-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    @media (min-width: 900px) {
+      .metrics-summary-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+    }
+
+    .metric-hero-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 18px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--card-accent, #CBD5E1);
+    }
+
+    .card-revenue { --card-accent: #0284C7; }
+    .card-expense { --card-accent: #DC2626; }
+    .card-profit { --card-accent: #059669; }
+    .card-roas { --card-accent: #7C3AED; }
+
+    .metric-label-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .metric-title {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #64748B;
+    }
+
+    .metric-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .badge-green { background: #ECFDF5; color: #059669; }
+    .badge-red { background: #FEF2F2; color: #DC2626; }
+    .badge-blue { background: #E0F2FE; color: #0284C7; }
+    .badge-purple { background: #F5F3FF; color: #7C3AED; }
+
+    .metric-number-big {
+      font-size: 1.7rem;
+      font-weight: 800;
+      color: #0F172A;
+      font-family: 'Inter', 'Anek Bangla', sans-serif;
+      line-height: 1.1;
+    }
+
+    .card-profit .metric-number-big {
+      color: #059669;
+    }
+
+    .metric-footnote {
+      font-size: 0.78rem;
+      color: #94A3B8;
+      margin-top: 2px;
+    }
+
+    /* Stacked Percentage Breakdown Progress Bar */
+    .pnl-breakdown-bar-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 18px 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xs);
+    }
+
+    .breakdown-bar-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .breakdown-bar-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #1E293B;
+    }
+
+    .breakdown-progress-track {
+      height: 16px;
+      border-radius: 9999px;
+      background: #E2E8F0;
+      overflow: hidden;
+      display: flex;
+      margin-bottom: 12px;
+    }
+
+    .progress-segment {
+      height: 100%;
+      transition: width 0.4s ease;
+    }
+
+    .seg-cogs { background: #0284C7; }
+    .seg-ads { background: #7C3AED; }
+    .seg-courier { background: #EA580C; }
+    .seg-ops { background: #64748B; }
+    .seg-profit { background: #059669; }
+
+    .breakdown-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px 18px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    /* Two Columns Workstation Layout: Inputs Left, Statement Right */
+    .pnl-workstation-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 960px) {
+      .pnl-workstation-grid {
+        grid-template-columns: 1.15fr 0.85fr;
+      }
+    }
+
+    /* Input Section Cards */
+    .pnl-input-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 20px;
+    }
+
+    .input-card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #1E293B;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .form-row-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    @media (min-width: 600px) {
+      .form-row-3 {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .input-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .input-label {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .input-label-hint {
+      font-size: 0.74rem;
+      font-weight: 500;
+      color: #94A3B8;
+    }
+
+    .input-shell-box {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .input-prefix, .input-suffix {
+      position: absolute;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #64748B;
+      font-family: 'Inter', sans-serif;
+      pointer-events: none;
+    }
+
+    .input-prefix { left: 12px; }
+    .input-suffix { right: 12px; }
+
+    .pnl-num-input {
+      width: 100%;
+      height: 44px;
+      background: #F8FAFC;
+      border: 1.5px solid #CBD5E1;
+      border-radius: var(--radius-md);
+      padding: 8px 12px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #0F172A;
+      font-family: 'Inter', 'Anek Bangla', sans-serif;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    .pnl-num-input.has-prefix { padding-left: 28px; }
+    .pnl-num-input.has-suffix { padding-right: 32px; }
+
+    .pnl-num-input:focus {
+      background: #FFFFFF;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 100, 51, 0.15);
+    }
+
+    /* Slider styling */
+    .slider-range-wrap {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .pnl-range-slider {
+      flex: 1;
+      height: 8px;
+      border-radius: 4px;
+      accent-color: var(--primary);
+      cursor: pointer;
+    }
+
+    .slider-badge-val {
+      min-width: 58px;
+      text-align: center;
+      background: #F1F5F9;
+      border: 1px solid #CBD5E1;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--primary);
+      font-family: 'Inter', sans-serif;
+    }
+
+    /* P&L Statement Side Card */
+    .pnl-statement-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px 22px;
+      box-shadow: var(--shadow-sm);
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    .statement-title-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #E2E8F0;
+    }
+
+    .statement-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .statement-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+
+    .statement-table tr {
+      border-bottom: 1px solid #F1F5F9;
+    }
+
+    .statement-table td {
+      padding: 10px 4px;
+    }
+
+    .statement-table td:last-child {
+      text-align: right;
+      font-weight: 700;
+      font-family: 'Inter', 'Anek Bangla', sans-serif;
+    }
+
+    .row-revenue-head {
+      font-weight: 800;
+      color: #0284C7;
+      background: #F0F9FF;
+    }
+
+    .row-revenue-head td {
+      padding: 10px 8px;
+    }
+
+    .row-expense-head {
+      font-weight: 800;
+      color: #DC2626;
+      background: #FEF2F2;
+    }
+
+    .row-expense-head td {
+      padding: 10px 8px;
+    }
+
+    .row-total-profit {
+      font-weight: 800;
+      font-size: 1.1rem;
+      background: #ECFDF5;
+      color: #059669;
+      border-top: 2px dashed #10B981 !important;
+      border-bottom: 2px solid #059669 !important;
+    }
+
+    .row-total-profit td {
+      padding: 14px 8px;
+    }
+
+    .neg-profit {
+      color: #DC2626 !important;
+      background: #FEF2F2 !important;
+      border-color: #DC2626 !important;
+    }
+
+    /* AI Advice Pill */
+    .pnl-insights-card {
+      margin-top: 18px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+    }
+
+    .insights-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #0F172A;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .insights-body {
+      font-size: 0.82rem;
+      color: #475569;
+      line-height: 1.55;
+    }
+
+    /* Print View */
+    @media print {
+      body { background: #FFFFFF; }
+      .pnl-header, .presets-buttons, .btn-pnl-link, .pnl-presets-card { display: none !important; }
+      .pnl-workstation-grid { grid-template-columns: 1fr !important; }
+      .pnl-statement-card { box-shadow: none; border: 1px solid #000; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="pnl-container">
+
+    <!-- 1. Header Navigation -->
+    <header class="pnl-header">
+      <div class="pnl-brand-wrap">
+        <div class="pnl-brand-icon">📊</div>
+        <div>
+          <h1 class="pnl-title">স্মার্ট E-Commerce P&L প্রফিট ক্যালকুলেটর</h1>
+          <p class="pnl-sub">বাস্তবমুখী রিটার্ন লস, ফেসবুক এড খরচ ও কুরিয়ার চার্জ সহ সঠিক নিট মুনাফা বিশ্লেষণ</p>
+        </div>
+      </div>
+
+      <div class="pnl-nav-actions">
+        <a href="/admin" class="btn-pnl-link">← এডমিন প্যানেল</a>
+        <a href="/" class="btn-pnl-link">🌐 লাইভ স্টোর</a>
+        <button type="button" class="btn-pnl-link btn-pnl-primary" onclick="exportPnlReportCSV()">📥 রিপোর্ট ডাউনলোড</button>
+        <button type="button" class="btn-pnl-link" onclick="window.print()">🖨️ প্রিন্ট</button>
+      </div>
+    </header>
+
+    <!-- 2. Campaign Quick Presets -->
+    <div class="pnl-presets-card">
+      <div class="presets-label">
+        <span>⚡ দ্রুত ক্যাম্পেইন প্রিসেট:</span>
+        <small style="color: #64748B; font-weight: normal;">(এক ক্লিকে বাস্তবসম্মত ডাটা লোড করুন)</small>
+      </div>
+      <div class="presets-buttons">
+        <button type="button" class="btn-preset active" id="preset-btn-standard" onclick="loadPreset('standard')">
+          🍼 সিলিকন ফিডিং সেট (স্ট্যান্ডার্ড)
+        </button>
+        <button type="button" class="btn-preset" id="preset-btn-scaling" onclick="loadPreset('scaling')">
+          🚀 স্কেলিং ক্যাম্পেইন (২০০ অর্ডার/দিন)
+        </button>
+        <button type="button" class="btn-preset" id="preset-btn-double" onclick="loadPreset('double')">
+          🎁 ২-সেট বান্ডেল (ফ্রি ডেলিভারি)
+        </button>
+        <button type="button" class="btn-preset" onclick="resetDefaults()">
+          🔄 রিসেট
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. Key Performance Metric Cards -->
+    <div class="metrics-summary-grid">
+      <!-- 1. Gross Revenue -->
+      <div class="metric-hero-card card-revenue">
+        <div class="metric-label-row">
+          <span class="metric-title">সর্বমোট রাজস্ব (Gross Revenue)</span>
+          <span class="metric-badge badge-blue" id="badge-total-orders">১০০ অর্ডার</span>
+        </div>
+        <div class="metric-number-big" id="disp-gross-revenue">৳১,১০,৮৮০</div>
+        <div class="metric-footnote" id="disp-revenue-sub">পণ্য বিক্রয়: ৳১,০৪,৭২০ | ডেলিভারি ফি: ৳৬,১৬০</div>
+      </div>
+
+      <!-- 2. Total Operating Expenses -->
+      <div class="metric-hero-card card-expense">
+        <div class="metric-label-row">
+          <span class="metric-title">মোট ব্যয় (Total Expenses)</span>
+          <span class="metric-badge badge-red" id="disp-expense-ratio">৬৫.৪% খরচ</span>
+        </div>
+        <div class="metric-number-big" id="disp-total-expense" style="color: #DC2626;">৳৭২,৫৬০</div>
+        <div class="metric-footnote" id="disp-cogs-sub">পণ্য ও প্যাকিং: ৳৪৮,৫০০ | এড: ৳১৫,০০০</div>
+      </div>
+
+      <!-- 3. Net Profit -->
+      <div class="metric-hero-card card-profit">
+        <div class="metric-label-row">
+          <span class="metric-title">চূড়ান্ত নিট মুনাফা (Net Profit)</span>
+          <span class="metric-badge badge-green" id="disp-profit-margin">৩৪.৬% মার্জিন</span>
+        </div>
+        <div class="metric-number-big" id="disp-net-profit">৳৩৮,৩২০</div>
+        <div class="metric-footnote" id="disp-profit-per-order">প্রতি সফল অর্ডারে লাভ: ৳৪৩৫.৪৫</div>
+      </div>
+
+      <!-- 4. ROAS & Break-Even -->
+      <div class="metric-hero-card card-roas">
+        <div class="metric-label-row">
+          <span class="metric-title">মার্কেটিং ROAS ও ব্রেক-ইভেন</span>
+          <span class="metric-badge badge-purple" id="disp-roas-status">লাভজনক</span>
+        </div>
+        <div class="metric-number-big" id="disp-roas-val">৭.৩৯x</div>
+        <div class="metric-footnote" id="disp-breakeven-info">ব্রেক-ইভেন ROAS: ১.৯৩x | ম্যাক্স CPP: ৳৫৮২</div>
+      </div>
+    </div>
+
+    <!-- 4. Stacked Progress Breakdown Bar -->
+    <div class="pnl-breakdown-bar-card">
+      <div class="breakdown-bar-head">
+        <span class="breakdown-bar-title">📊 রাজস্ব বনাম খরচের আনুপাতিক চিত্র (Revenue Split)</span>
+        <span style="font-size: 0.8rem; color: #64748B;">প্রতি ১০০ টাকার আয়ে ব্যয়ের ভাগ</span>
+      </div>
+      <div class="breakdown-progress-track">
+        <div class="progress-segment seg-cogs" id="bar-seg-cogs" style="width: 41%;" title="পণ্য ও প্যাকেজিং"></div>
+        <div class="progress-segment seg-ads" id="bar-seg-ads" style="width: 20%;" title="ফেসবুক এড"></div>
+        <div class="progress-segment seg-courier" id="bar-seg-courier" style="width: 11%;" title="কুরিয়ার ও রিটার্ন লস"></div>
+        <div class="progress-segment seg-ops" id="bar-seg-ops" style="width: 3%;" title="অপারেশন ও কলিং"></div>
+        <div class="progress-segment seg-profit" id="bar-seg-profit" style="width: 25%;" title="নিট প্রফিট"></div>
+      </div>
+      <div class="breakdown-legend">
+        <div class="legend-item"><span class="legend-dot seg-cogs"></span><span>পণ্য সোর্সিং (<span id="pct-cogs">৪১%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-ads"></span><span>ফেসবুক এড (<span id="pct-ads">২০%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-courier"></span><span>কুরিয়ার ও রিটার্ন (<span id="pct-courier">১১%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-ops"></span><span>প্যাকিং ও অন্যান্য (<span id="pct-ops">৩%</span>)</span></div>
+        <div class="legend-item"><span class="legend-dot seg-profit"></span><strong style="color: #059669;">নিট প্রফিট (<span id="pct-profit">২৫%</span>)</strong></div>
+      </div>
+    </div>
+
+    <!-- 5. Two Columns Workstation Grid -->
+    <div class="pnl-workstation-grid">
+
+      <!-- LEFT COLUMN: All Organized Inputs -->
+      <div class="pnl-inputs-column">
+
+        <!-- Card 1: Product & Sales Volume -->
+        <div class="pnl-input-card">
+          <h3 class="input-card-title">📦 ১. বিক্রয় ও অর্ডার সংখ্যা (Sales & Pricing)</h3>
+          <div class="form-row-3">
+            <div class="input-field-group">
+              <label class="input-label" for="inp-sell-price">বিক্রয় মূল্য প্রতি সেট <span class="input-label-hint">৳</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-sell-price" class="pnl-num-input has-prefix" value="1190" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-total-orders">মোট অর্ডার সংখ্যা <span class="input-label-hint">পিস</span></label>
+              <div class="input-shell-box">
+                <input type="number" id="inp-total-orders" class="pnl-num-input" value="100" min="1" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-customer-shipping">গ্রাহক হতে শিপিং চার্জ <span class="input-label-hint">৳</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-customer-shipping" class="pnl-num-input has-prefix" value="70" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Sourcing & Packaging (COGS) -->
+        <div class="pnl-input-card">
+          <h3 class="input-card-title">🏭 ২. পণ্য ক্রয় ও প্যাকেজিং ব্যয় (COGS)</h3>
+          <div class="form-row-2">
+            <div class="input-field-group">
+              <label class="input-label" for="inp-product-cost">পণ্য ক্রয় মূল্য প্রতি সেট (সোর্সিং) <span class="input-label-hint">৳</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-product-cost" class="pnl-num-input has-prefix" value="520" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-packaging-cost">প্যাকেজিং, বক্স, পলি ও টেপ খরচ <span class="input-label-hint">৳ / পিস</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-packaging-cost" class="pnl-num-input has-prefix" value="30" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Logistics, Courier & Return Loss -->
+        <div class="pnl-input-card">
+          <h3 class="input-card-title">🚚 ৩. কুরিয়ার ডেলিভারি ও রিটার্ন লস (Logistics)</h3>
+          
+          <!-- Delivery Success Rate Slider -->
+          <div style="margin-bottom: 16px; background: #F8FAFC; padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid #E2E8F0;">
+            <div class="input-label">
+              <span>সফল ডেলিভারি অনুপাত (Success Rate):</span>
+              <span id="label-return-pct" style="color: #EA580C; font-weight: 700;">রিটার্ন রেট: ১২%</span>
+            </div>
+            <div class="slider-range-wrap">
+              <input type="range" id="inp-success-rate-slider" class="pnl-range-slider" min="50" max="100" value="88" oninput="syncSuccessRate(this.value)">
+              <span class="slider-badge-val" id="disp-slider-val">88%</span>
+            </div>
+            <small style="color: #64748B; font-size: 0.76rem; display: block; margin-top: 4px;">
+              💡 ১০০টি অর্ডারের মধ্যে <span id="disp-calc-delivered" style="font-weight: 700; color: #059669;">৮৮টি ডেলিভারি</span> হবে এবং <span id="disp-calc-returned" style="font-weight: 700; color: #DC2626;">১২টি রিটার্ন</span> আসবে।
+            </small>
+          </div>
+
+          <div class="form-row-3">
+            <div class="input-field-group">
+              <label class="input-label" for="inp-courier-fee">সফল ডেলিভারি চার্জ <span class="input-label-hint">৳</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-courier-fee" class="pnl-num-input has-prefix" value="100" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-return-fee">রিটার্ন কুরিয়ার ক্ষতি <span class="input-label-hint">৳ / পার্সেল</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-return-fee" class="pnl-num-input has-prefix" value="70" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-cod-charge">কুরিয়ার COD চার্জ <span class="input-label-hint">%</span></label>
+              <div class="input-shell-box">
+                <input type="number" id="inp-cod-charge" class="pnl-num-input has-suffix" value="1.0" step="0.1" min="0" oninput="calculatePNL()">
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 4: Meta / Facebook Ads Marketing -->
+        <div class="pnl-input-card">
+          <h3 class="input-card-title">📢 ৪. ফেসবুক এড ও মার্কেটিং ব্যয় (Meta Ads)</h3>
+          
+          <div class="form-row-3">
+            <div class="input-field-group">
+              <label class="input-label" for="inp-ad-cpp">প্রতি অর্ডারে এড খরচ (CPP) <span class="input-label-hint">$</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">$</span>
+                <input type="number" id="inp-ad-cpp" class="pnl-num-input has-prefix" value="2.20" step="0.1" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-usd-rate">ডলার এক্সচেঞ্জ রেট <span class="input-label-hint">৳ / $1</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-usd-rate" class="pnl-num-input has-prefix" value="125" min="1" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label">প্রতি অর্ডারে BDT ব্যয়</label>
+              <div class="input-shell-box">
+                <input type="text" id="disp-bdt-cpp" class="pnl-num-input" value="৳২৭৫.০০" readonly style="background: #F1F5F9; color: #475569;">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 5: Operational Overheads & Damages -->
+        <div class="pnl-input-card">
+          <h3 class="input-card-title">💼 ৫. স্টাফ, ড্যামেজ ও অন্যান্য ওভারহেড (Overheads)</h3>
+          <div class="form-row-3">
+            <div class="input-field-group">
+              <label class="input-label" for="inp-staff-cost">কলিং / কনফার্ম স্টাফ ফি <span class="input-label-hint">৳ / অর্ডার</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-staff-cost" class="pnl-num-input has-prefix" value="20" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-damage-pct">রিটার্ন ড্যামেজ ঝুঁকি <span class="input-label-hint">%</span></label>
+              <div class="input-shell-box">
+                <input type="number" id="inp-damage-pct" class="pnl-num-input has-suffix" value="2.0" step="0.5" min="0" oninput="calculatePNL()">
+                <span class="input-suffix">%</span>
+              </div>
+            </div>
+
+            <div class="input-field-group">
+              <label class="input-label" for="inp-misc-cost">অন্যান্য আনুষঙ্গিক খরচ <span class="input-label-hint">৳ / পার্সেল</span></label>
+              <div class="input-shell-box">
+                <span class="input-prefix">৳</span>
+                <input type="number" id="inp-misc-cost" class="pnl-num-input has-prefix" value="10" min="0" oninput="calculatePNL()">
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Professional Accounting P&L Statement -->
+      <div class="pnl-statement-column">
+        <div class="pnl-statement-card">
+          <div class="statement-title-row">
+            <h3 class="statement-title">📋 প্রফিট & লস স্টেটমেন্ট (P&L)</h3>
+            <span style="font-size: 0.78rem; font-weight: 700; color: #0284C7;" id="stmt-batch-tag">ব্যাচ: ১০০ অর্ডার</span>
+          </div>
+
+          <table class="statement-table">
+            <tbody>
+              <!-- Revenue Section -->
+              <tr class="row-revenue-head">
+                <td>১. মোট অর্জিত রাজস্ব (Revenue)</td>
+                <td id="tbl-rev-total">৳১,১০,৮৮০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• পণ্য বিক্রয় মূল্য (<span id="tbl-delivered-count">৮৮</span>টি সফল ডেলিভারি)</td>
+                <td id="tbl-rev-product">৳১,০৪,৭২০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• গ্রাহকের প্রদত্ত ডেলিভারি চার্জ</td>
+                <td id="tbl-rev-shipping">৳৬,১৬০</td>
+              </tr>
+
+              <!-- Expenses Section -->
+              <tr class="row-expense-head">
+                <td>২. মোট অপারেটিং ব্যয় (Operating Costs)</td>
+                <td id="tbl-exp-total" style="color: #DC2626;">৳৭২,৫৬০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• পণ্য ক্রয় ব্যয় (COGS - সফল ডেলিভারি)</td>
+                <td id="tbl-exp-product">৳৪৫,৭৬০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• প্যাকেজিং, কার্টুন ও টেপ (১০০% পার্সেল)</td>
+                <td id="tbl-exp-packaging">৳৩,০০০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• সফল কুরিয়ার ডেলিভারি ফি</td>
+                <td id="tbl-exp-courier">৳৮,৮০০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• কুরিয়ার সিওডি ফি (<span id="tbl-cod-pct-text">১%</span>)</td>
+                <td id="tbl-exp-cod">৳১,১০৯</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #EA580C; font-weight: 600;">• রিটার্ন পার্সেল কুরিয়ার ক্ষতি (<span id="tbl-return-count">১২</span>টি)</td>
+                <td id="tbl-exp-return" style="color: #EA580C;">৳৮৪০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• ট্রানজিট ড্যামেজ ও পণ্য অপচয়</td>
+                <td id="tbl-exp-damage">৳১২৫</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #7C3AED; font-weight: 600;">• ফেসবুক এড খরচ (Meta Ads)</td>
+                <td id="tbl-exp-ads" style="color: #7C3AED;">৳২৭,৫০০</td>
+              </tr>
+              <tr>
+                <td style="padding-left: 14px; color: #475569;">• স্টাফ, কলিং ও অন্যান্য অফিস ওভারহেড</td>
+                <td id="tbl-exp-ops">৳৩,০০০</td>
+              </tr>
+
+              <!-- Net Profit Bottom Line -->
+              <tr class="row-total-profit" id="row-final-profit">
+                <td>🏆 চূড়ান্ত নিট মুনাফা (Net Profit)</td>
+                <td id="tbl-final-profit">৳৩৮,৩২০</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Smart Business Insights Pill -->
+          <div class="pnl-insights-card" id="pnl-insights-box">
+            <div class="insights-title">
+              <span>💡 বিজনেস পারফরম্যান্স পরামর্শ:</span>
+            </div>
+            <div class="insights-body" id="insights-text">
+              চমৎকার মুনাফা! আপনার নিট প্রফিট মার্জিন ৩৪.৬%, যা ই-কমার্সে অত্যন্ত লাভজনক মানদণ্ড। বর্তমান এড ক্যাম্পেইনটি নিরাপদে স্কেল করা যেতে পারে।
+            </div>
+          </div>
+
+          <div style="margin-top: 18px; display: flex; gap: 8px;">
+            <button type="button" class="btn-pnl-link btn-pnl-primary" style="flex: 1; justify-content: center;" onclick="exportPnlReportCSV()">
+              📥 রিপোর্ট এক্সপোর্ট (CSV)
+            </button>
+            <button type="button" class="btn-pnl-link" style="flex: 1; justify-content: center;" onclick="window.print()">
+              🖨️ প্রিন্ট করুন
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    // Bengali Numeral Helper
+    function toBanglaNumber(num) {
+      if (num === null || num === undefined || isNaN(num)) return '০';
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      return Math.round(num).toLocaleString('en-US').replace(/\d/g, d => bnDigits[d]);
+    }
+
+    function toBanglaFloat(num, decimals = 1) {
+      if (num === null || num === undefined || isNaN(num)) return '০';
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      return Number(num).toFixed(decimals).replace(/\d/g, d => bnDigits[d]);
+    }
+
+    // Sync Slider and Calculation
+    function syncSuccessRate(val) {
+      const sliderVal = document.getElementById('disp-slider-val');
+      if (sliderVal) sliderVal.textContent = val + '%';
+      calculatePNL();
+    }
+
+    // Main Dynamic P&L Calculation Engine
+    function calculatePNL() {
+      // 1. Get input values
+      const sellPrice = parseFloat(document.getElementById('inp-sell-price').value) || 0;
+      const totalOrders = parseFloat(document.getElementById('inp-total-orders').value) || 0;
+      const custShipping = parseFloat(document.getElementById('inp-customer-shipping').value) || 0;
+
+      const productCost = parseFloat(document.getElementById('inp-product-cost').value) || 0;
+      const packagingCost = parseFloat(document.getElementById('inp-packaging-cost').value) || 0;
+
+      const successRate = parseFloat(document.getElementById('inp-success-rate-slider').value) || 88;
+      const courierFee = parseFloat(document.getElementById('inp-courier-fee').value) || 0;
+      const returnFee = parseFloat(document.getElementById('inp-return-fee').value) || 0;
+      const codPct = parseFloat(document.getElementById('inp-cod-charge').value) || 0;
+
+      const adCppUsd = parseFloat(document.getElementById('inp-ad-cpp').value) || 0;
+      const usdRate = parseFloat(document.getElementById('inp-usd-rate').value) || 125;
+
+      const staffCost = parseFloat(document.getElementById('inp-staff-cost').value) || 0;
+      const damagePct = parseFloat(document.getElementById('inp-damage-pct').value) || 0;
+      const miscCost = parseFloat(document.getElementById('inp-misc-cost').value) || 0;
+
+      // Update Slider Display Text
+      const returnRate = 100 - successRate;
+      document.getElementById('label-return-pct').textContent = `রিটার্ন রেট: ${toBanglaFloat(returnRate, 0)}%`;
+
+      const deliveredOrders = Math.round(totalOrders * (successRate / 100));
+      const returnedOrders = Math.max(0, totalOrders - deliveredOrders);
+
+      document.getElementById('disp-calc-delivered').textContent = `${toBanglaNumber(deliveredOrders)}টি ডেলিভারি`;
+      document.getElementById('disp-calc-returned').textContent = `${toBanglaNumber(returnedOrders)}টি রিটার্ন`;
+
+      // Update BDT CPP preview
+      const cppBdt = adCppUsd * usdRate;
+      document.getElementById('disp-bdt-cpp').value = `৳${toBanglaFloat(cppBdt, 2)}`;
+
+      // -------------------------------------------------------------
+      // REVENUE CALCULATIONS
+      // -------------------------------------------------------------
+      const productSalesRevenue = deliveredOrders * sellPrice;
+      const shippingCollected = deliveredOrders * custShipping;
+      const grossRevenue = productSalesRevenue + shippingCollected;
+
+      // -------------------------------------------------------------
+      // EXPENSES CALCULATIONS
+      // -------------------------------------------------------------
+      const totalProductCost = deliveredOrders * productCost;
+      const totalPackagingCost = totalOrders * packagingCost; // consumed on every shipped order
+      const totalCourierDelivered = deliveredOrders * courierFee;
+      const totalCodCharge = grossRevenue * (codPct / 100);
+      const totalReturnLoss = returnedOrders * returnFee;
+      const totalTransitDamage = returnedOrders * productCost * (damagePct / 100);
+      const totalAdSpend = totalOrders * cppBdt;
+      const totalStaffOps = totalOrders * (staffCost + miscCost);
+
+      const totalExpenses = totalProductCost + totalPackagingCost + totalCourierDelivered + 
+                            totalCodCharge + totalReturnLoss + totalTransitDamage + 
+                            totalAdSpend + totalStaffOps;
+
+      // -------------------------------------------------------------
+      // PROFIT & PERFORMANCE METRICS
+      // -------------------------------------------------------------
+      const netProfit = grossRevenue - totalExpenses;
+      const profitMarginPct = grossRevenue > 0 ? (netProfit / grossRevenue) * 100 : 0;
+      const profitPerDelivered = deliveredOrders > 0 ? (netProfit / deliveredOrders) : 0;
+
+      // Marketing ROAS
+      const roas = totalAdSpend > 0 ? (grossRevenue / totalAdSpend) : 0;
+
+      // Non-ad expenses
+      const nonAdExpenses = totalExpenses - totalAdSpend;
+      // Break-even calculations
+      const breakEvenRoas = (grossRevenue - nonAdExpenses) > 0 
+        ? (grossRevenue / (grossRevenue - nonAdExpenses)) 
+        : 0;
+      const maxAllowableCppBdt = totalOrders > 0 
+        ? Math.max(0, (grossRevenue - nonAdExpenses) / totalOrders) 
+        : 0;
+
+      // -------------------------------------------------------------
+      // UPDATE TOP METRIC CARDS
+      // -------------------------------------------------------------
+      document.getElementById('badge-total-orders').textContent = `${toBanglaNumber(totalOrders)} অর্ডার`;
+      document.getElementById('disp-gross-revenue').textContent = `৳${toBanglaNumber(grossRevenue)}`;
+      document.getElementById('disp-revenue-sub').textContent = `পণ্য বিক্রয়: ৳${toBanglaNumber(productSalesRevenue)} | ডেলিভারি ফি: ৳${toBanglaNumber(shippingCollected)}`;
+
+      document.getElementById('disp-total-expense').textContent = `৳${toBanglaNumber(totalExpenses)}`;
+      const expRatio = grossRevenue > 0 ? (totalExpenses / grossRevenue) * 100 : 0;
+      document.getElementById('disp-expense-ratio').textContent = `${toBanglaFloat(expRatio, 1)}% খরচ`;
+      document.getElementById('disp-cogs-sub').textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(totalProductCost + totalPackagingCost)} | এড: ৳${toBanglaNumber(totalAdSpend)}`;
+
+      const profitEl = document.getElementById('disp-net-profit');
+      const profitCard = document.getElementById('row-final-profit');
+      profitEl.textContent = `৳${toBanglaNumber(netProfit)}`;
+      if (netProfit < 0) {
+        profitEl.style.color = '#DC2626';
+        if (profitCard) profitCard.classList.add('neg-profit');
+      } else {
+        profitEl.style.color = '#059669';
+        if (profitCard) profitCard.classList.remove('neg-profit');
+      }
+
+      document.getElementById('disp-profit-margin').textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
+      document.getElementById('disp-profit-per-order').textContent = `প্রতি সফল অর্ডারে লাভ: ৳${toBanglaFloat(profitPerDelivered, 2)}`;
+
+      document.getElementById('disp-roas-val').textContent = `${toBanglaFloat(roas, 2)}x`;
+      document.getElementById('disp-roas-status').textContent = roas >= breakEvenRoas ? 'লাভজনক' : 'লোকসান';
+      document.getElementById('disp-roas-status').className = 'metric-badge ' + (roas >= breakEvenRoas ? 'badge-green' : 'badge-red');
+      document.getElementById('disp-breakeven-info').textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x | ম্যাক্স CPP: ৳${toBanglaNumber(maxAllowableCppBdt)}`;
+
+      // -------------------------------------------------------------
+      // UPDATE PROGRESS BREAKDOWN BAR
+      // -------------------------------------------------------------
+      if (grossRevenue > 0) {
+        const pctCogs = Math.max(0, ((totalProductCost + totalPackagingCost) / grossRevenue) * 100);
+        const pctAds = Math.max(0, (totalAdSpend / grossRevenue) * 100);
+        const pctCourier = Math.max(0, ((totalCourierDelivered + totalReturnLoss + totalCodCharge) / grossRevenue) * 100);
+        const pctOps = Math.max(0, ((totalStaffOps + totalTransitDamage) / grossRevenue) * 100);
+        const pctProfit = Math.max(0, profitMarginPct);
+
+        document.getElementById('bar-seg-cogs').style.width = pctCogs + '%';
+        document.getElementById('bar-seg-ads').style.width = pctAds + '%';
+        document.getElementById('bar-seg-courier').style.width = pctCourier + '%';
+        document.getElementById('bar-seg-ops').style.width = pctOps + '%';
+        document.getElementById('bar-seg-profit').style.width = pctProfit + '%';
+
+        document.getElementById('pct-cogs').textContent = toBanglaFloat(pctCogs, 0) + '%';
+        document.getElementById('pct-ads').textContent = toBanglaFloat(pctAds, 0) + '%';
+        document.getElementById('pct-courier').textContent = toBanglaFloat(pctCourier, 0) + '%';
+        document.getElementById('pct-ops').textContent = toBanglaFloat(pctOps, 0) + '%';
+        document.getElementById('pct-profit').textContent = toBanglaFloat(pctProfit, 0) + '%';
+      }
+
+      // -------------------------------------------------------------
+      // UPDATE DETAILED STATEMENT TABLE
+      // -------------------------------------------------------------
+      document.getElementById('stmt-batch-tag').textContent = `ব্যাচ: ${toBanglaNumber(totalOrders)} অর্ডার`;
+      document.getElementById('tbl-rev-total').textContent = `৳${toBanglaNumber(grossRevenue)}`;
+      document.getElementById('tbl-delivered-count').textContent = toBanglaNumber(deliveredOrders);
+      document.getElementById('tbl-rev-product').textContent = `৳${toBanglaNumber(productSalesRevenue)}`;
+      document.getElementById('tbl-rev-shipping').textContent = `৳${toBanglaNumber(shippingCollected)}`;
+
+      document.getElementById('tbl-exp-total').textContent = `৳${toBanglaNumber(totalExpenses)}`;
+      document.getElementById('tbl-exp-product').textContent = `৳${toBanglaNumber(totalProductCost)}`;
+      document.getElementById('tbl-exp-packaging').textContent = `৳${toBanglaNumber(totalPackagingCost)}`;
+      document.getElementById('tbl-exp-courier').textContent = `৳${toBanglaNumber(totalCourierDelivered)}`;
+      document.getElementById('tbl-cod-pct-text').textContent = `${codPct}%`;
+      document.getElementById('tbl-exp-cod').textContent = `৳${toBanglaNumber(totalCodCharge)}`;
+      document.getElementById('tbl-return-count').textContent = toBanglaNumber(returnedOrders);
+      document.getElementById('tbl-exp-return').textContent = `৳${toBanglaNumber(totalReturnLoss)}`;
+      document.getElementById('tbl-exp-damage').textContent = `৳${toBanglaNumber(totalTransitDamage)}`;
+      document.getElementById('tbl-exp-ads').textContent = `৳${toBanglaNumber(totalAdSpend)}`;
+      document.getElementById('tbl-exp-ops').textContent = `৳${toBanglaNumber(totalStaffOps)}`;
+
+      document.getElementById('tbl-final-profit').textContent = `৳${toBanglaNumber(netProfit)}`;
+
+      // -------------------------------------------------------------
+      // SMART INSIGHTS RECOMMENDATION
+      // -------------------------------------------------------------
+      const insightsText = document.getElementById('insights-text');
+      const insightsBox = document.getElementById('pnl-insights-box');
+      if (netProfit < 0) {
+        insightsBox.style.borderLeftColor = '#DC2626';
+        insightsText.innerHTML = `<strong style="color: #DC2626;">🚨 সতর্কতা: বর্তমান সেটিংসে ব্যবসা লোকসানে চলছে!</strong><br>আপনার ফেসবুক এড খরচ বা রিটার্ন লস আয়ের চেয়ে বেশি। লাভজনক হতে হলে এড CPP সর্বোচ্চ <strong>৳${toBanglaNumber(maxAllowableCppBdt)}</strong> ($${toBanglaFloat(maxAllowableCppBdt / usdRate, 2)}) এ নামিয়ে আনতে হবে অথবা বিক্রয়মূল্য বৃদ্ধি করতে হবে।`;
+      } else if (returnRate > 18) {
+        insightsBox.style.borderLeftColor = '#EA580C';
+        insightsText.innerHTML = `<strong style="color: #EA580C;">⚠️ রিটার্ন রেট ${toBanglaFloat(returnRate, 0)}% যা ঝুঁকিপূর্ণ!</strong><br>রিটার্ন পার্সেলের কারণে আপনার <strong>৳${toBanglaNumber(totalReturnLoss)}</strong> কুরিয়ার ফি ক্ষতি হচ্ছে। অর্ডার কনফার্মেশনের সময় কাস্টমারের মোবাইল নম্বর ও ঠিকানা ভালো করে যাচাই করুন।`;
+      } else if (profitMarginPct >= 28) {
+        insightsBox.style.borderLeftColor = '#059669';
+        insightsText.innerHTML = `<strong style="color: #059669;">🌟 চমৎকার স্বাস্থ্যকর প্রফিট মার্জিন (${toBanglaFloat(profitMarginPct, 1)}%)!</strong><br>প্রতি সফল ডেলিভারিতে আপনি গড়ে <strong>৳${toBanglaNumber(profitPerDelivered)}</strong> প্রকৃত লাভ করছেন। এই ক্যাম্পেইনটি মেটা এডসে বাজেট বাড়িয়ে নিরাপদে স্কেল করার জন্য আদর্শ।`;
+      } else {
+        insightsBox.style.borderLeftColor = '#0284C7';
+        insightsText.innerHTML = `ব্যবসা লাভজনক পর্যায়ে রয়েছে (নিট মার্জিন ${toBanglaFloat(profitMarginPct, 1)}%)। প্রফিট আরও বাড়াতে প্যাকেজিং সোর্সিং খরচ কমান এবং কুরিয়ারের সাথে স্পেশাল রেটের জন্য আলোচনা করুন।`;
+      }
+    }
+
+    // Preset Configurations
+    const PRESETS = {
+      standard: {
+        sellPrice: 1190,
+        totalOrders: 100,
+        custShipping: 70,
+        productCost: 520,
+        packagingCost: 30,
+        successRate: 88,
+        courierFee: 100,
+        returnFee: 70,
+        codCharge: 1.0,
+        adCpp: 2.20,
+        usdRate: 125,
+        staffCost: 20,
+        damagePct: 2.0,
+        miscCost: 10
+      },
+      scaling: {
+        sellPrice: 1190,
+        totalOrders: 250,
+        custShipping: 70,
+        productCost: 490, // bulk discount
+        packagingCost: 28,
+        successRate: 85,
+        courierFee: 95,
+        returnFee: 70,
+        codCharge: 1.0,
+        adCpp: 2.60,
+        usdRate: 125,
+        staffCost: 18,
+        damagePct: 2.5,
+        miscCost: 8
+      },
+      double: {
+        sellPrice: 2290,
+        totalOrders: 50,
+        custShipping: 0, // free shipping offer
+        productCost: 980,
+        packagingCost: 45,
+        successRate: 90,
+        courierFee: 110,
+        returnFee: 70,
+        codCharge: 1.0,
+        adCpp: 3.40,
+        usdRate: 125,
+        staffCost: 20,
+        damagePct: 2.0,
+        miscCost: 10
+      }
+    };
+
+    function loadPreset(key) {
+      const p = PRESETS[key];
+      if (!p) return;
+
+      document.querySelectorAll('.btn-preset').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`preset-btn-${key}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      document.getElementById('inp-sell-price').value = p.sellPrice;
+      document.getElementById('inp-total-orders').value = p.totalOrders;
+      document.getElementById('inp-customer-shipping').value = p.custShipping;
+      document.getElementById('inp-product-cost').value = p.productCost;
+      document.getElementById('inp-packaging-cost').value = p.packagingCost;
+      
+      document.getElementById('inp-success-rate-slider').value = p.successRate;
+      document.getElementById('disp-slider-val').textContent = p.successRate + '%';
+
+      document.getElementById('inp-courier-fee').value = p.courierFee;
+      document.getElementById('inp-return-fee').value = p.returnFee;
+      document.getElementById('inp-cod-charge').value = p.codCharge;
+      document.getElementById('inp-ad-cpp').value = p.adCpp;
+      document.getElementById('inp-usd-rate').value = p.usdRate;
+      document.getElementById('inp-staff-cost').value = p.staffCost;
+      document.getElementById('inp-damage-pct').value = p.damagePct;
+      document.getElementById('inp-misc-cost').value = p.miscCost;
+
+      calculatePNL();
+    }
+
+    function resetDefaults() {
+      loadPreset('standard');
+    }
+
+    function exportPnlReportCSV() {
+      const grossRev = document.getElementById('disp-gross-revenue').textContent;
+      const totalExp = document.getElementById('disp-total-expense').textContent;
+      const netProf = document.getElementById('disp-net-profit').textContent;
+      const margin = document.getElementById('disp-profit-margin').textContent;
+      const roas = document.getElementById('disp-roas-val').textContent;
+
+      const rows = [
+        ['Metric', 'Value'],
+        ['Report Generated', new Date().toLocaleString()],
+        ['Total Orders', document.getElementById('inp-total-orders').value],
+        ['Gross Revenue', `"${grossRev}"`],
+        ['Total Expenses', `"${totalExp}"`],
+        ['Net Profit', `"${netProf}"`],
+        ['Net Profit Margin', `"${margin}"`],
+        ['ROAS', `"${roas}"`],
+        ['Product Selling Price', document.getElementById('inp-sell-price').value],
+        ['Product Sourcing Cost', document.getElementById('inp-product-cost').value],
+        ['Delivery Success Rate', document.getElementById('inp-success-rate-slider').value + '%'],
+        ['Meta Ad CPP (USD)', document.getElementById('inp-ad-cpp').value],
+        ['USD to BDT Rate', document.getElementById('inp-usd-rate').value]
+      ];
+
+      const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
+      const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `PNL_Report_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    // Initialize on load
+    document.addEventListener('DOMContentLoaded', () => {
+      calculatePNL();
+    });
+  </script>
+</body>
+</html>
