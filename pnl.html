@@ -592,12 +592,306 @@
       font-size: 0.82rem;
       color: #475569;
       line-height: 1.55;
+    /* Login Screen */
+    .pnl-login-box {
+      max-width: 440px;
+      margin: 60px auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px 28px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+    .pnl-login-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+    .pnl-login-title {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 6px;
+    }
+    .pnl-login-sub {
+      font-size: 0.86rem;
+      color: #64748B;
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+    .pnl-login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .pnl-login-input {
+      width: 100%;
+      height: 48px;
+      padding: 10px 16px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.2s ease;
+      box-sizing: border-box;
+    }
+    .pnl-login-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(255, 100, 51, 0.15);
+    }
+    .pnl-error-text {
+      color: #DC2626;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+    .btn-pnl-submit {
+      width: 100%;
+      height: 48px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(255, 100, 51, 0.25);
+    }
+    .btn-pnl-submit:hover {
+      background: #E04D1E;
+    }
+
+    /* Mode Switcher Bar */
+    .pnl-mode-switch-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 12px 18px;
+      margin-bottom: 20px;
+      box-shadow: var(--shadow-xs);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .mode-switch-inner {
+      display: flex;
+      background: #F1F5F9;
+      padding: 4px;
+      border-radius: 12px;
+      gap: 4px;
+    }
+    .btn-mode-tab {
+      background: transparent;
+      border: none;
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #64748B;
+      padding: 9px 18px;
+      border-radius: 9px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .btn-mode-tab.active {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #059669;
+      box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7);
+      animation: pulseGreen 1.8s infinite;
+    }
+    @keyframes pulseGreen {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(5, 150, 105, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(5, 150, 105, 0); }
+    }
+    .live-orders-pill {
+      background: #ECFDF5;
+      color: #047857;
+      font-size: 0.75rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 9999px;
+      border: 1px solid #A7F3D0;
+    }
+    .mode-sync-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .btn-pnl-sync {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-pnl-sync:hover {
+      background: #DBEAFE;
+    }
+    .btn-pnl-test {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+      font-size: 0.82rem;
+      font-weight: 700;
+      padding: 7px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .btn-pnl-test:hover {
+      background: #D1FAE5;
+    }
+
+    /* Live Orders Table & Status Select in PNL */
+    .pnl-orders-section {
+      margin-top: 24px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+      box-shadow: var(--shadow-xs);
+    }
+    .pnl-orders-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #F1F5F9;
+    }
+    .order-status-select {
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 6px 10px;
+      border-radius: 8px;
+      border: 1.5px solid transparent;
+      outline: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-family: inherit;
+    }
+    .status-opt-New { background: #FEF3C7; color: #B45309; border-color: #FDE68A; }
+    .status-opt-Confirmed { background: #EFF6FF; color: #1D4ED8; border-color: #BFDBFE; }
+    .status-opt-Shipped { background: #F5F3FF; color: #7C3AED; border-color: #DDD6FE; }
+    .status-opt-Delivered { background: #ECFDF5; color: #047857; border-color: #A7F3D0; }
+    .status-opt-Returned { background: #FFF1F2; color: #BE123C; border-color: #FECDD3; }
+    .status-opt-Cancelled { background: #F1F5F9; color: #475569; border-color: #CBD5E1; }
+
+    .cancel-reason-tag {
+      font-size: 0.72rem;
+      background: #FEE2E2;
+      color: #DC2626;
+      padding: 3px 8px;
+      border-radius: 6px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px dashed #FCA5A5;
+      line-height: 1.3;
+      margin-top: 4px;
+    }
+    .cancel-reason-tag:hover {
+      background: #FECACA;
+    }
+
+    .pnl-badge {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 2px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 8px;
+      border-radius: 6px;
+      white-space: nowrap;
+    }
+    .pnl-badge-profit { background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; }
+    .pnl-badge-loss { background: #FEF2F2; color: #DC2626; border: 1px solid #FECACA; }
+    .pnl-badge-adloss { background: #FFF7ED; color: #C2410C; border: 1px solid #FED7AA; }
+    .pnl-badge-pipeline { background: #F8FAFC; color: #64748B; border: 1px solid #E2E8F0; }
+
+    /* Cancellation Reasons Breakdown Card */
+    .cancel-analysis-card {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin-bottom: 20px;
+      display: none;
+    }
+    .cancel-analysis-head {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: #991B1B;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .cancel-reasons-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .cancel-reason-pill {
+      background: #FFFFFF;
+      border: 1px solid #FCA5A5;
+      color: #B91C1C;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .cancel-reason-count {
+      background: #FEE2E2;
+      color: #991B1B;
+      padding: 1px 6px;
+      border-radius: 9999px;
+      font-size: 0.72rem;
     }
 
     /* Print View */
     @media print {
       body { background: #FFFFFF; }
-      .pnl-header, .presets-buttons, .btn-pnl-link, .pnl-presets-card { display: none !important; }
+      .pnl-header, .presets-buttons, .btn-pnl-link, .pnl-presets-card, .pnl-mode-switch-card, .pnl-orders-section { display: none !important; }
       .pnl-workstation-grid { grid-template-columns: 1fr !important; }
       .pnl-statement-card { box-shadow: none; border: 1px solid #000; }
     }
@@ -607,23 +901,62 @@
 
   <div class="pnl-container">
 
-    <!-- 1. Header Navigation -->
-    <header class="pnl-header">
-      <div class="pnl-brand-wrap">
-        <div class="pnl-brand-icon">📊</div>
-        <div>
-          <h1 class="pnl-title">স্মার্ট E-Commerce P&L প্রফিট ক্যালকুলেটর</h1>
-          <p class="pnl-sub">বাস্তবমুখী রিটার্ন লস, ফেসবুক এড খরচ ও কুরিয়ার চার্জ সহ সঠিক নিট মুনাফা বিশ্লেষণ</p>
+    <!-- 1. Password Protected Login Screen -->
+    <div class="pnl-login-box" id="pnl-login-view">
+      <div class="pnl-login-icon">🔐</div>
+      <h1 class="pnl-login-title">স্টোর P&L ফাইন্যান্সিয়াল লগইন</h1>
+      <p class="pnl-login-sub">স্টোরের লাভ-ক্ষতি, ডেলিভারি মেট্রিক্স ও গোপনীয় অর্থনৈতিক ডাটা দেখতে পাসওয়ার্ড দিন</p>
+      <form class="pnl-login-form" onsubmit="handlePnlLogin(event)">
+        <input type="password" id="pnl-pass-input" class="pnl-login-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
+        <div class="pnl-error-text" id="pnl-error-msg">ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে আবার চেষ্টা করুন।</div>
+        <button type="submit" class="btn-pnl-submit">
+          <span>🔓 ক্যালকুলেটরে প্রবেশ করুন</span>
+        </button>
+      </form>
+      <div style="margin-top: 14px; text-align: center;">
+        <a href="/admin" style="font-size: 0.85rem; color: #7C3AED; text-decoration: underline; font-weight: 600;">← এডমিন প্যানেলে যান</a>
+      </div>
+    </div>
+
+    <!-- 2. Protected Dashboard View (Visible after login) -->
+    <div class="pnl-dashboard" id="pnl-dash-view" style="display: none;">
+
+      <!-- Header Navigation -->
+      <header class="pnl-header">
+        <div class="pnl-brand-wrap">
+          <div class="pnl-brand-icon">📊</div>
+          <div>
+            <h1 class="pnl-title">স্মার্ট E-Commerce P&L প্রফিট ক্যালকুলেটর</h1>
+            <p class="pnl-sub">বাস্তবমুখী রিটার্ন লস, ফেসবুক এড খরচ ও কুরিয়ার চার্জ সহ সঠিক নিট মুনাফা বিশ্লেষণ</p>
+          </div>
+        </div>
+
+        <div class="pnl-nav-actions">
+          <a href="/admin" class="btn-pnl-link">← এডমিন প্যানেল</a>
+          <a href="/" class="btn-pnl-link">🌐 লাইভ স্টোর</a>
+          <button type="button" class="btn-pnl-link btn-pnl-primary" onclick="exportPnlReportCSV()">📥 রিপোর্ট ডাউনলোড</button>
+          <button type="button" class="btn-pnl-link" onclick="window.print()">🖨️ প্রিন্ট</button>
+          <button type="button" class="btn-pnl-link" style="color: #DC2626; border-color: #FECACA; background: #FEF2F2;" onclick="handlePnlLogout()">🚪 লগআউট</button>
+        </div>
+      </header>
+
+      <!-- Mode Switcher -->
+      <div class="pnl-mode-switch-card">
+        <div class="mode-switch-inner">
+          <button type="button" class="btn-mode-tab active" id="tab-mode-live" onclick="switchPnlMode('live')">
+            <span class="pulse-dot"></span>
+            <span>🟢 লাইভ স্টোর ডাটা সিঙ্ক (Real Store Orders)</span>
+            <span class="live-orders-pill" id="live-orders-count-pill">০ অর্ডার</span>
+          </button>
+          <button type="button" class="btn-mode-tab" id="tab-mode-forecast" onclick="switchPnlMode('forecast')">
+            <span>⚡ ফোরকাস্টিং ও সিমুলেশন (Forecasting Mode)</span>
+          </button>
+        </div>
+        <div class="mode-sync-actions">
+          <button type="button" class="btn-pnl-sync" onclick="syncLiveOrdersFromStore()">🔄 ডাটা সিঙ্ক করুন</button>
+          <button type="button" class="btn-pnl-test" onclick="createPnlTestOrder()">🧪 টেস্ট অর্ডার যোগ করুন</button>
         </div>
       </div>
-
-      <div class="pnl-nav-actions">
-        <a href="/admin" class="btn-pnl-link">← এডমিন প্যানেল</a>
-        <a href="/" class="btn-pnl-link">🌐 লাইভ স্টোর</a>
-        <button type="button" class="btn-pnl-link btn-pnl-primary" onclick="exportPnlReportCSV()">📥 রিপোর্ট ডাউনলোড</button>
-        <button type="button" class="btn-pnl-link" onclick="window.print()">🖨️ প্রিন্ট</button>
-      </div>
-    </header>
 
     <!-- 2. Campaign Quick Presets -->
     <div class="pnl-presets-card">
@@ -969,11 +1302,145 @@
         </div>
       </div>
 
-    </div>
+      <!-- 5. Cancellation Reasons Analytics Card (Shown in Live Mode when cancels exist) -->
+      <div class="cancel-analysis-card" id="pnl-cancel-analysis">
+        <div class="cancel-analysis-head">
+          <span>⚠️ ক্যানসেল হওয়ার কারণ অ্যানালাইসিস (Cancellation Insights):</span>
+        </div>
+        <div class="cancel-reasons-list" id="pnl-cancel-reasons-list">
+          <!-- Dynamically populated reason badges with percentages -->
+        </div>
+      </div>
 
+      <!-- 6. Real-Time Store Orders & Unit P&L Management Table -->
+      <div class="pnl-orders-section" id="pnl-orders-card">
+        <div class="pnl-orders-head">
+          <div>
+            <h2 style="font-size: 1.15rem; font-weight: 800; color: #0F172A; display: flex; align-items: center; gap: 8px;">
+              <span>📦 স্টোরের লাইভ অর্ডার তালিকা ও ইউনিট P&L ট্র্যাকিং</span>
+              <span class="live-orders-pill" id="tbl-order-count-pill">০ অর্ডার</span>
+            </h2>
+            <p style="font-size: 0.82rem; color: #64748B; margin-top: 2px;">
+              এখান থেকেই যেকোনো অর্ডারের ডেলিভারি স্ট্যাটাস পরিবর্তন করুন — উপরের আর্থিক রিপোর্ট স্বয়ংক্রিয়ভাবে পরিবর্তিত হবে।
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn-pnl-test" onclick="createPnlTestOrder()">🧪 টেস্ট অর্ডার যোগ করুন</button>
+            <button type="button" class="btn-pnl-sync" onclick="syncLiveOrdersFromStore()">🔄 ডাটা রিফ্রেশ</button>
+          </div>
+        </div>
+
+        <!-- Filter Pills for Orders Table -->
+        <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px;">
+          <button type="button" class="filter-pill active" id="pnl-pill-ALL" onclick="filterPnlOrders('ALL')">সব অর্ডার (<span id="pnl-count-all">০</span>)</button>
+          <button type="button" class="filter-pill" id="pnl-pill-Delivered" onclick="filterPnlOrders('Delivered')">🟢 ডেলিভার্ড (<span id="pnl-count-delivered">০</span>)</button>
+          <button type="button" class="filter-pill" id="pnl-pill-Pipeline" onclick="filterPnlOrders('Pipeline')">🟣 ট্রানজিট/নতুন (<span id="pnl-count-pipeline">০</span>)</button>
+          <button type="button" class="filter-pill" id="pnl-pill-Returned" onclick="filterPnlOrders('Returned')">🟠 রিটার্নড (<span id="pnl-count-returned">০</span>)</button>
+          <button type="button" class="filter-pill" id="pnl-pill-Cancelled" onclick="filterPnlOrders('Cancelled')">🔴 বাতিল (<span id="pnl-count-cancelled">০</span>)</button>
+        </div>
+
+        <div class="table-responsive">
+          <table class="admin-table">
+            <thead>
+              <tr>
+                <th>আইডি ও সময়</th>
+                <th>গ্রাহকের বিবরণ</th>
+                <th>ঠিকানা</th>
+                <th>প্যাকেজ ও রঙ</th>
+                <th>মোট বিল</th>
+                <th style="min-width: 140px;">স্ট্যাটাস পরিবর্তন</th>
+                <th style="min-width: 110px;">অর্ডার P&L</th>
+              </tr>
+            </thead>
+            <tbody id="pnl-orders-tbody">
+              <tr>
+                <td colspan="7" style="text-align: center; color: #94A3B8; padding: 24px;">কোনো অর্ডার ডেটা লোড হয়নি।</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div> <!-- Close pnl-dash-view -->
+
+  </div> <!-- Close pnl-container -->
+
+  <!-- Cancel Reason Modal in P&L -->
+  <div class="cancel-modal-overlay" id="pnl-cancel-reason-modal">
+    <div class="cancel-modal-card">
+      <div class="cancel-modal-title">
+        <span>🚫 অর্ডার বাতিল করার কারণ</span>
+      </div>
+      <p class="cancel-modal-sub" id="pnl-cancel-modal-desc">অর্ডার বাতিল করার সঠিক কারণ নির্বাচন করুন যাতে P&L এবং রিটার্ন/এড লস নিখুঁত থাকে:</p>
+      
+      <div class="cancel-radio-group">
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="গ্রাহকের মত পরিবর্তন (Customer changed mind)" checked onchange="togglePnlCustomReason(false)">
+          <span>গ্রাহকের মত পরিবর্তন (Customer changed mind)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="ফোনে পাওয়া যায়নি / বন্ধ (Unreachable)" onchange="togglePnlCustomReason(false)">
+          <span>ফোনে পাওয়া যায়নি / বন্ধ (Unreachable)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="ভুল নম্বর বা ঠিকানা (Invalid contact)" onchange="togglePnlCustomReason(false)">
+          <span>ভুল নম্বর বা ঠিকানা (Invalid contact)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="দেরিতে ডেলিভারির কারণে অস্বীকৃতি (Late delivery)" onchange="togglePnlCustomReason(false)">
+          <span>দেরিতে ডেলিভারির কারণে অস্বীকৃতি (Late delivery)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="অন্য কোথা থেকে কিনে ফেলেছে (Bought elsewhere)" onchange="togglePnlCustomReason(false)">
+          <span>অন্য কোথা থেকে কিনে ফেলেছে (Bought elsewhere)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="অর্ডারের কথা অস্বীকার করেছে (Denied order)" onchange="togglePnlCustomReason(false)">
+          <span>অর্ডারের কথা অস্বীকার করেছে (Denied order)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="ডুপ্লিকেট / ফেক অর্ডার (Duplicate/Fake)" onchange="togglePnlCustomReason(false)">
+          <span>ডুপ্লিকেট / ফেক অর্ডার (Duplicate/Fake)</span>
+        </label>
+        <label class="cancel-radio-label">
+          <input type="radio" name="pnl-cancel-reason-opt" value="অন্যান্য কারণ (Other)" onchange="togglePnlCustomReason(true)">
+          <span>অন্যান্য কারণ (Other)</span>
+        </label>
+      </div>
+
+      <input type="text" id="pnl-cancel-custom-reason" class="pnl-login-input" placeholder="কাস্টম কারণ বা নোট লিখুন..." style="margin-bottom: 14px; display: none; height: 42px;">
+
+      <div class="cancel-modal-actions">
+        <button type="button" class="btn-cancel-modal-back" onclick="closePnlCancelReasonModal()">ফিরে যান</button>
+        <button type="button" class="btn-cancel-modal-confirm" onclick="confirmPnlCancelReasonModal()">বাতিল কনফার্ম করুন</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div class="admin-toast" id="pnl-toast">
+    <span>✓</span>
+    <span id="pnl-toast-text">স্ট্যাটাস সফলভাবে আপডেট করা হয়েছে!</span>
   </div>
 
   <script>
+    // ========================================================
+    // 🔑 STORE ADMIN & P&L PASSWORD:
+    // ========================================================
+    const ADMIN_PASSWORD = "admin123";
+
+    let currentPnlMode = 'live'; // 'live' (real store data) or 'forecast' (manual projection)
+    let pnlActiveFilter = 'ALL';
+    let pnlPendingCancelOrderId = null;
+
+    // Financial defaults for Unit P&L and live calculation
+    const DEFAULT_COGS_PER_SET = 480;
+    const DEFAULT_PACKAGING_COST = 25;
+    const DEFAULT_CALL_STAFF_COST = 15;
+    const DEFAULT_AD_CPP_BDT = 250;
+    const DEFAULT_RETURN_COURIER_FEE = 70;
+    const DEFAULT_DELIVERED_COURIER_FEE = 70;
+
     // Bengali Numeral Helper
     function toBanglaNumber(num) {
       if (num === null || num === undefined || isNaN(num)) return '০';
@@ -987,6 +1454,95 @@
       return Number(num).toFixed(decimals).replace(/\d/g, d => bnDigits[d]);
     }
 
+    // --------------------------------------------------------
+    // 1. Password Protection & Authentication
+    // --------------------------------------------------------
+    function checkPnlAuth() {
+      const isAuth = sessionStorage.getItem('littlenest_admin_auth') === 'true';
+      const loginView = document.getElementById('pnl-login-view');
+      const dashView = document.getElementById('pnl-dash-view');
+
+      if (isAuth) {
+        if (loginView) loginView.style.display = 'none';
+        if (dashView) dashView.style.display = 'block';
+        initPnlDashboard();
+      } else {
+        if (loginView) loginView.style.display = 'block';
+        if (dashView) dashView.style.display = 'none';
+        const passInp = document.getElementById('pnl-pass-input');
+        if (passInp) passInp.focus();
+      }
+    }
+
+    function handlePnlLogin(e) {
+      e.preventDefault();
+      const input = document.getElementById('pnl-pass-input');
+      const errorMsg = document.getElementById('pnl-error-msg');
+      const pass = input ? input.value : '';
+
+      if (pass === ADMIN_PASSWORD) {
+        sessionStorage.setItem('littlenest_admin_auth', 'true');
+        if (errorMsg) errorMsg.style.display = 'none';
+        checkPnlAuth();
+      } else {
+        if (errorMsg) errorMsg.style.display = 'block';
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    }
+
+    function handlePnlLogout() {
+      sessionStorage.removeItem('littlenest_admin_auth');
+      checkPnlAuth();
+    }
+
+    function initPnlDashboard() {
+      // Default to live store data
+      syncLiveOrdersFromStore();
+
+      // Poll cloud API every 12 seconds in live mode
+      if (!window._pnlPollInterval) {
+        window._pnlPollInterval = setInterval(() => {
+          if (sessionStorage.getItem('littlenest_admin_auth') === 'true' && currentPnlMode === 'live') {
+            syncLiveOrdersFromStore(false);
+          }
+        }, 12000);
+      }
+    }
+
+    // --------------------------------------------------------
+    // 2. Mode Switching: Live Store Sync vs Forecasting
+    // --------------------------------------------------------
+    function switchPnlMode(mode) {
+      currentPnlMode = mode;
+      
+      const tabLive = document.getElementById('tab-mode-live');
+      const tabForecast = document.getElementById('tab-mode-forecast');
+      const ordersCard = document.getElementById('pnl-orders-card');
+      const presetsCard = document.getElementById('pnl-presets-card');
+      const syncActions = document.getElementById('mode-sync-actions');
+
+      if (mode === 'live') {
+        if (tabLive) tabLive.classList.add('active');
+        if (tabForecast) tabForecast.classList.remove('active');
+        if (ordersCard) ordersCard.style.display = 'block';
+        if (presetsCard) presetsCard.style.display = 'none';
+        if (syncActions) syncActions.style.display = 'flex';
+        syncLiveOrdersFromStore();
+      } else {
+        if (tabLive) tabLive.classList.remove('active');
+        if (tabForecast) tabForecast.classList.add('active');
+        if (ordersCard) ordersCard.style.display = 'none';
+        if (presetsCard) presetsCard.style.display = 'flex';
+        if (syncActions) syncActions.style.display = 'none';
+        const cancelAnalysis = document.getElementById('pnl-cancel-analysis');
+        if (cancelAnalysis) cancelAnalysis.style.display = 'none';
+        calculatePNL();
+      }
+    }
+
     // Sync Slider and Calculation
     function syncSuccessRate(val) {
       const sliderVal = document.getElementById('disp-slider-val');
@@ -996,6 +1552,7 @@
 
     // Main Dynamic P&L Calculation Engine
     function calculatePNL() {
+      if (currentPnlMode === 'live') return;
       // 1. Get input values
       const sellPrice = parseFloat(document.getElementById('inp-sell-price').value) || 0;
       const totalOrders = parseFloat(document.getElementById('inp-total-orders').value) || 0;
@@ -1255,6 +1812,534 @@
       loadPreset('standard');
     }
 
+    // --------------------------------------------------------
+    // 3. Live Store Data Sync & Financial Calculation
+    // --------------------------------------------------------
+    async function syncLiveOrdersFromStore(showFeedback = true) {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+
+      // Render local immediate data
+      if (currentPnlMode === 'live') {
+        calculateLivePNL(orders);
+      }
+
+      // Fetch cloud serverless orders
+      try {
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.orders && Array.isArray(data.orders)) {
+            const map = new Map();
+            orders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
+            data.orders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
+
+            const merged = Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            localStorage.setItem('littlenest_orders', JSON.stringify(merged));
+            if (currentPnlMode === 'live') {
+              calculateLivePNL(merged);
+            }
+          }
+        }
+      } catch (err) {}
+
+      if (showFeedback && currentPnlMode === 'live') {
+        showPnlToast('🔄 স্টোরের লাইভ ডাটা সফলভাবে সিঙ্ক হয়েছে!');
+      }
+    }
+
+    function calculateLivePNL(orders = []) {
+      const totalOrders = orders.length;
+      const pillCount = document.getElementById('live-orders-count-pill');
+      if (pillCount) pillCount.textContent = `${toBanglaNumber(totalOrders)} অর্ডার`;
+
+      // Status breakdown
+      const deliveredOrders = orders.filter(o => o.status === 'Delivered');
+      const returnedOrders = orders.filter(o => o.status === 'Returned');
+      const cancelledOrders = orders.filter(o => o.status === 'Cancelled');
+      const pipelineOrders = orders.filter(o => !['Delivered', 'Returned', 'Cancelled'].includes(o.status));
+
+      const numDelivered = deliveredOrders.length;
+      const numReturned = returnedOrders.length;
+      const numCancelled = cancelledOrders.length;
+      const numPipeline = pipelineOrders.length;
+
+      // Real Collected Revenue from Delivered Orders
+      const realDeliveredRevenue = deliveredOrders.reduce((sum, o) => sum + (Number(o.totalPrice) || 1260), 0);
+      const realProductSales = deliveredOrders.reduce((sum, o) => {
+        const ship = Number(o.shippingCost) !== undefined ? Number(o.shippingCost) : 70;
+        return sum + Math.max(0, (Number(o.totalPrice) || 1260) - ship);
+      }, 0);
+      const realShippingCollected = Math.max(0, realDeliveredRevenue - realProductSales);
+
+      // Real Operating Costs
+      const realCOGS = deliveredOrders.reduce((sum, o) => sum + (DEFAULT_COGS_PER_SET * (o.quantity || 1)), 0);
+      const realDeliveredCourierFee = deliveredOrders.reduce((sum, o) => {
+        return sum + (Number(o.shippingCost) || DEFAULT_DELIVERED_COURIER_FEE);
+      }, 0);
+      const realReturnCourierFee = numReturned * DEFAULT_RETURN_COURIER_FEE;
+      const realWastedPackaging = numReturned * DEFAULT_PACKAGING_COST;
+      const realUsedPackaging = (numDelivered + numReturned) * DEFAULT_PACKAGING_COST;
+      const realCodCharge = Math.round(realDeliveredRevenue * 0.01);
+      const realCallingStaff = (numDelivered + numReturned + numCancelled) * DEFAULT_CALL_STAFF_COST;
+      const realAdsSpend = totalOrders * DEFAULT_AD_CPP_BDT;
+      const realDamage = Math.round(realCOGS * 0.02);
+
+      const totalRealExpenses = realCOGS + realUsedPackaging + realDeliveredCourierFee + realReturnCourierFee + realCodCharge + realCallingStaff + realAdsSpend + realDamage;
+      const realNetProfit = realDeliveredRevenue - totalRealExpenses;
+      const profitMarginPct = realDeliveredRevenue > 0 ? (realNetProfit / realDeliveredRevenue) * 100 : 0;
+      const expenseRatioPct = realDeliveredRevenue > 0 ? (totalRealExpenses / realDeliveredRevenue) * 100 : 0;
+      const realRoas = realAdsSpend > 0 ? (realDeliveredRevenue / realAdsSpend) : 0;
+      const nonAdCosts = totalRealExpenses - realAdsSpend;
+      const breakEvenRoas = (realDeliveredRevenue - nonAdCosts) > 0 ? (realDeliveredRevenue / (realDeliveredRevenue - nonAdCosts)) : 0;
+      const maxAllowableCpp = totalOrders > 0 ? Math.max(0, (realDeliveredRevenue - nonAdCosts) / totalOrders) : 0;
+
+      // Update Top Key Performance Metric Cards
+      document.getElementById('badge-total-orders').textContent = `${toBanglaNumber(totalOrders)}টি লাইভ অর্ডার`;
+      document.getElementById('disp-gross-revenue').textContent = `৳${toBanglaNumber(realDeliveredRevenue)}`;
+      document.getElementById('disp-revenue-sub').textContent = `ডেলিভার্ড: ${toBanglaNumber(numDelivered)}টি | রিটার্নড: ${toBanglaNumber(numReturned)}টি | বাতিল: ${toBanglaNumber(numCancelled)}টি`;
+
+      document.getElementById('disp-expense-ratio').textContent = `${toBanglaFloat(expenseRatioPct, 1)}% ব্যয়`;
+      document.getElementById('disp-total-expense').textContent = `৳${toBanglaNumber(totalRealExpenses)}`;
+      document.getElementById('disp-cogs-sub').textContent = `পণ্য ও প্যাকিং: ৳${toBanglaNumber(realCOGS + realUsedPackaging)} | কুরিয়ার ও রিটার্ন লস: ৳${toBanglaNumber(realDeliveredCourierFee + realReturnCourierFee)}`;
+
+      const profitCard = document.querySelector('.card-profit');
+      const profitDisp = document.getElementById('disp-net-profit');
+      const marginBadge = document.getElementById('disp-profit-margin');
+
+      profitDisp.textContent = `৳${toBanglaNumber(realNetProfit)}`;
+      marginBadge.textContent = `${toBanglaFloat(profitMarginPct, 1)}% মার্জিন`;
+
+      if (realNetProfit >= 0) {
+        if (profitCard) profitCard.classList.remove('neg-profit');
+        profitDisp.style.color = '#059669';
+        marginBadge.className = 'metric-badge badge-green';
+        document.getElementById('disp-profit-sub').textContent = `সফল ডেলিভারির পর অর্জিত প্রকৃত ক্যাশ প্রফিট`;
+      } else {
+        if (profitCard) profitCard.classList.add('neg-profit');
+        profitDisp.style.color = '#DC2626';
+        marginBadge.className = 'metric-badge badge-red';
+        document.getElementById('disp-profit-sub').textContent = `⚠️ লোকসান! রিটার্ন বা এড খরচ কমাতে পদক্ষেপ নিন`;
+      }
+
+      document.getElementById('disp-roas-val').textContent = `${toBanglaFloat(realRoas, 2)}x`;
+      document.getElementById('disp-break-even-roas').textContent = `ব্রেক-ইভেন ROAS: ${toBanglaFloat(breakEvenRoas, 2)}x`;
+      document.getElementById('disp-max-cpp-usd').textContent = `$${toBanglaFloat(maxAllowableCpp / 125, 2)}`;
+      document.getElementById('disp-max-cpp-bdt').textContent = `সর্বোচ্চ ৳${toBanglaNumber(maxAllowableCpp)} / অর্ডার`;
+
+      // Update Visual Progress Breakdown Bar
+      if (realDeliveredRevenue > 0) {
+        const cogsPct = Math.min(100, Math.max(0, (realCOGS / realDeliveredRevenue) * 100));
+        const adsPct = Math.min(100, Math.max(0, (realAdsSpend / realDeliveredRevenue) * 100));
+        const courierPct = Math.min(100, Math.max(0, ((realDeliveredCourierFee + realReturnCourierFee + realUsedPackaging + realCodCharge) / realDeliveredRevenue) * 100));
+        const opsPct = Math.min(100, Math.max(0, ((realCallingStaff + realDamage) / realDeliveredRevenue) * 100));
+        const profitBarPct = Math.min(100, Math.max(0, profitMarginPct));
+
+        document.getElementById('bar-cogs').style.width = cogsPct + '%';
+        document.getElementById('bar-ads').style.width = adsPct + '%';
+        document.getElementById('bar-courier').style.width = courierPct + '%';
+        document.getElementById('bar-ops').style.width = opsPct + '%';
+        document.getElementById('bar-profit').style.width = profitBarPct + '%';
+
+        document.getElementById('legend-cogs-pct').textContent = toBanglaFloat(cogsPct, 1) + '%';
+        document.getElementById('legend-ads-pct').textContent = toBanglaFloat(adsPct, 1) + '%';
+        document.getElementById('legend-courier-pct').textContent = toBanglaFloat(courierPct, 1) + '%';
+        document.getElementById('legend-ops-pct').textContent = toBanglaFloat(opsPct, 1) + '%';
+        document.getElementById('legend-profit-pct').textContent = toBanglaFloat(profitBarPct, 1) + '%';
+      }
+
+      // Update P&L Financial Statement Table
+      document.getElementById('tbl-rev-total').textContent = `৳${toBanglaNumber(realDeliveredRevenue)}`;
+      document.getElementById('tbl-delivered-count').textContent = toBanglaNumber(numDelivered);
+      document.getElementById('tbl-rev-product').textContent = `৳${toBanglaNumber(realProductSales)}`;
+      document.getElementById('tbl-rev-shipping').textContent = `৳${toBanglaNumber(realShippingCollected)}`;
+
+      document.getElementById('tbl-exp-total').textContent = `৳${toBanglaNumber(totalRealExpenses)}`;
+      document.getElementById('tbl-exp-product').textContent = `৳${toBanglaNumber(realCOGS)}`;
+      document.getElementById('tbl-exp-packaging').textContent = `৳${toBanglaNumber(realUsedPackaging)}`;
+      document.getElementById('tbl-exp-courier').textContent = `৳${toBanglaNumber(realDeliveredCourierFee)}`;
+      document.getElementById('tbl-exp-cod').textContent = `৳${toBanglaNumber(realCodCharge)}`;
+      document.getElementById('tbl-return-count').textContent = toBanglaNumber(numReturned);
+      document.getElementById('tbl-exp-return').textContent = `৳${toBanglaNumber(realReturnCourierFee + realWastedPackaging)}`;
+      document.getElementById('tbl-exp-damage').textContent = `৳${toBanglaNumber(realDamage)}`;
+      document.getElementById('tbl-exp-ads').textContent = `৳${toBanglaNumber(realAdsSpend)}`;
+      document.getElementById('tbl-exp-ops').textContent = `৳${toBanglaNumber(realCallingStaff)}`;
+
+      const finalProfitEl = document.getElementById('tbl-final-profit');
+      const finalProfitRow = document.getElementById('row-final-profit');
+      finalProfitEl.textContent = `৳${toBanglaNumber(realNetProfit)}`;
+
+      if (realNetProfit >= 0) {
+        if (finalProfitRow) finalProfitRow.classList.remove('neg-profit');
+        finalProfitEl.style.color = '#059669';
+      } else {
+        if (finalProfitRow) finalProfitRow.classList.add('neg-profit');
+        finalProfitEl.style.color = '#DC2626';
+      }
+
+      // Business Insights Text
+      const insightsBox = document.getElementById('pnl-insights-box');
+      const insightsText = document.getElementById('insights-text');
+      if (insightsBox && insightsText) {
+        if (totalOrders === 0) {
+          insightsBox.style.borderLeftColor = '#64748B';
+          insightsText.innerHTML = `এখনও কোনো লাইভ অর্ডার আসেনি। টেস্ট করতে "🧪 টেস্ট অর্ডার যোগ করুন" বাটনে ক্লিক করুন অথবা আসল অর্ডার আসলে স্বয়ংক্রিয়ভাবে লাভ-ক্ষতি ক্যালকুলেট হবে।`;
+        } else if (numReturned > numDelivered && (numDelivered + numReturned) > 0) {
+          insightsBox.style.borderLeftColor = '#DC2626';
+          insightsText.innerHTML = `⚠️ সতর্কবার্তা! আপনার রিটার্ন সংখ্যা (${toBanglaNumber(numReturned)}টি) ডেলিভারির চেয়ে বেশি। কুরিয়ারে পার্সেল বুক করার পূর্বে কাস্টমারকে কল করে নিশ্চিত করুন যাতে রিটার্ন লস কমে।`;
+        } else if (realNetProfit < 0) {
+          insightsBox.style.borderLeftColor = '#EA580C';
+          insightsText.innerHTML = `বর্তমানে স্টোর লোকসানে রয়েছে (-৳${toBanglaNumber(Math.abs(realNetProfit))})। ফেসবুক এডসের CPP কমাতে ক্যাম্পেইন অপ্টিমাইজ করুন এবং ক্যানসেল কারণগুলো পরীক্ষা করুন।`;
+        } else {
+          insightsBox.style.borderLeftColor = '#059669';
+          insightsText.innerHTML = `আলহামদুলিল্লাহ! আপনার স্টোর লাভজনক ধারায় রয়েছে (নিট মার্জিন ${toBanglaFloat(profitMarginPct, 1)}%)। ডেলিভারি সাকসেস বজায় রেখে ক্যাম্পেইন স্কেল করতে পারেন।`;
+        }
+      }
+
+      // ------------------------------------------------------
+      // Cancellation Reasons Analytics Card
+      // ------------------------------------------------------
+      const cancelAnalysisCard = document.getElementById('pnl-cancel-analysis');
+      const cancelReasonsList = document.getElementById('pnl-cancel-reasons-list');
+
+      if (numCancelled > 0 && cancelAnalysisCard && cancelReasonsList) {
+        cancelAnalysisCard.style.display = 'block';
+
+        const reasonMap = {};
+        cancelledOrders.forEach(o => {
+          const r = o.cancelReason || 'গ্রাহকের মত পরিবর্তন (Customer changed mind)';
+          reasonMap[r] = (reasonMap[r] || 0) + 1;
+        });
+
+        cancelReasonsList.innerHTML = Object.entries(reasonMap).map(([reason, cnt]) => {
+          const pct = Math.round((cnt / numCancelled) * 100);
+          return `
+            <div class="cancel-reason-pill">
+              <span>${reason}</span>
+              <span class="cancel-reason-count">${toBanglaNumber(cnt)}টি (${toBanglaNumber(pct)}%)</span>
+            </div>
+          `;
+        }).join('');
+      } else if (cancelAnalysisCard) {
+        cancelAnalysisCard.style.display = 'none';
+      }
+
+      // Render the Live Orders Table inside PNL
+      renderPnlOrdersTable(orders);
+    }
+
+    // --------------------------------------------------------
+    // 4. Live Orders Table & Unit P&L Rendering
+    // --------------------------------------------------------
+    function filterPnlOrders(filter) {
+      pnlActiveFilter = filter;
+      const pills = ['ALL', 'Delivered', 'Pipeline', 'Returned', 'Cancelled'];
+      pills.forEach(p => {
+        const el = document.getElementById(`pnl-pill-${p}`);
+        if (el) el.classList.toggle('active', p === filter);
+      });
+
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+      renderPnlOrdersTable(orders);
+    }
+
+    function calculateUnitPnl(ord) {
+      const status = ord.status || 'New';
+      const qty = ord.quantity || 1;
+      const totalRev = Number(ord.totalPrice) || 1260;
+      const shipping = Number(ord.shippingCost) !== undefined ? Number(ord.shippingCost) : 70;
+      const cogs = DEFAULT_COGS_PER_SET * qty;
+      const cod = Math.round(totalRev * 0.01);
+
+      if (status === 'Delivered') {
+        const netProfit = totalRev - (cogs + shipping + cod + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT);
+        return {
+          className: 'pnl-badge-profit',
+          label: `+৳${toBanglaNumber(Math.max(0, netProfit))} লাভ 🟢`,
+          sub: 'হাতে প্রাপ্ত মুনাফা'
+        };
+      } else if (status === 'Returned') {
+        const netLoss = DEFAULT_RETURN_COURIER_FEE + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
+        return {
+          className: 'pnl-badge-loss',
+          label: `-৳${toBanglaNumber(netLoss)} ক্ষতি 🔴`,
+          sub: 'রিটার্ন ও প্যাকিং লস'
+        };
+      } else if (status === 'Cancelled') {
+        const netLoss = DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT;
+        return {
+          className: 'pnl-badge-adloss',
+          label: `-৳${toBanglaNumber(netLoss)} এড লস ⚠️`,
+          sub: 'বিজ্ঞাপন ও কল খরচ'
+        };
+      } else {
+        const projected = totalRev - (cogs + shipping + cod + DEFAULT_PACKAGING_COST + DEFAULT_CALL_STAFF_COST + DEFAULT_AD_CPP_BDT);
+        return {
+          className: 'pnl-badge-pipeline',
+          label: `~৳${toBanglaNumber(Math.max(0, projected))} সম্ভাব্য ⏳`,
+          sub: 'ডেলিভারি প্রত্যাশিত'
+        };
+      }
+    }
+
+    function renderPnlOrdersTable(orders = []) {
+      const tbody = document.getElementById('pnl-orders-tbody');
+      const orderCountPill = document.getElementById('tbl-order-count-pill');
+      if (!tbody) return;
+
+      const totalCount = orders.length;
+      const deliveredCount = orders.filter(o => o.status === 'Delivered').length;
+      const returnedCount = orders.filter(o => o.status === 'Returned').length;
+      const cancelledCount = orders.filter(o => o.status === 'Cancelled').length;
+      const pipelineCount = orders.filter(o => !['Delivered', 'Returned', 'Cancelled'].includes(o.status)).length;
+
+      if (orderCountPill) orderCountPill.textContent = `${toBanglaNumber(totalCount)} অর্ডার`;
+
+      const setTxt = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = toBanglaNumber(val); };
+      setTxt('pnl-count-all', totalCount);
+      setTxt('pnl-count-delivered', deliveredCount);
+      setTxt('pnl-count-pipeline', pipelineCount);
+      setTxt('pnl-count-returned', returnedCount);
+      setTxt('pnl-count-cancelled', cancelledCount);
+
+      let filtered = orders;
+      if (pnlActiveFilter === 'Delivered') {
+        filtered = orders.filter(o => o.status === 'Delivered');
+      } else if (pnlActiveFilter === 'Returned') {
+        filtered = orders.filter(o => o.status === 'Returned');
+      } else if (pnlActiveFilter === 'Cancelled') {
+        filtered = orders.filter(o => o.status === 'Cancelled');
+      } else if (pnlActiveFilter === 'Pipeline') {
+        filtered = orders.filter(o => !['Delivered', 'Returned', 'Cancelled'].includes(o.status));
+      }
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: #94A3B8; padding: 24px;">এই ক্যাটাগরিতে কোনো অর্ডার পাওয়া যায়নি।</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = filtered.map(ord => {
+        const curStatus = ord.status || 'New';
+        const pnl = calculateUnitPnl(ord);
+
+        return `
+          <tr>
+            <td>
+              <strong>#${ord.orderId}</strong><br>
+              <small style="color: #64748B;">${ord.orderDate}</small>
+            </td>
+            <td>
+              <strong>${ord.customerName}</strong><br>
+              <a href="tel:${ord.customerPhone}" style="color: var(--primary); font-weight: 700; text-decoration: none;">📞 ${ord.customerPhone}</a>
+            </td>
+            <td style="max-width: 180px; word-break: break-word; font-size: 0.82rem; color: #334155;">
+              ${ord.fullAddress}
+            </td>
+            <td>
+              <strong>${ord.packageTitle}</strong><br>
+              <span style="font-size: 0.76rem; color: #475569; font-weight: 600;">রঙ: ${ord.selectedColor}</span>
+            </td>
+            <td>
+              <strong style="color: var(--primary); font-size: 0.98rem;">৳${toBanglaNumber(ord.totalPrice)}</strong>
+            </td>
+            <td>
+              <div style="display: flex; flex-direction: column; gap: 4px;">
+                <select class="order-status-select status-opt-${curStatus}" onchange="onPnlStatusChange('${ord.orderId}', this.value)">
+                  <option value="New" ${curStatus === 'New' ? 'selected' : ''}>🟡 New (নতুন)</option>
+                  <option value="Confirmed" ${curStatus === 'Confirmed' ? 'selected' : ''}>🔵 Confirmed (কনফার্মড)</option>
+                  <option value="Shipped" ${curStatus === 'Shipped' ? 'selected' : ''}>🟣 Shipped (ট্রানজিটে)</option>
+                  <option value="Delivered" ${curStatus === 'Delivered' ? 'selected' : ''}>🟢 Delivered (সফল)</option>
+                  <option value="Returned" ${curStatus === 'Returned' ? 'selected' : ''}>🟠 Returned (রিটার্নড)</option>
+                  <option value="Cancelled" ${curStatus === 'Cancelled' ? 'selected' : ''}>🔴 Cancelled (বাতিল)</option>
+                </select>
+                ${curStatus === 'Cancelled' ? `
+                  <div class="cancel-reason-tag" title="ক্লিক করে কারণ পরিবর্তন করুন" onclick="openPnlCancelModal('${ord.orderId}')">
+                    <span>${ord.cancelReason ? ord.cancelReason : 'কারণ নির্বাচন করুন ✎'}</span>
+                  </div>
+                ` : ''}
+              </div>
+            </td>
+            <td>
+              <div class="pnl-badge ${pnl.className}">
+                <span>${pnl.label}</span>
+                <small style="font-size: 0.68rem; font-weight: normal; opacity: 0.85;">${pnl.sub}</small>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    // Status change from PNL table
+    function onPnlStatusChange(orderId, newStatus) {
+      if (newStatus === 'Cancelled') {
+        openPnlCancelModal(orderId);
+      } else {
+        updatePnlOrderStatus(orderId, newStatus, '');
+      }
+    }
+
+    function openPnlCancelModal(orderId) {
+      pnlPendingCancelOrderId = orderId;
+      const descEl = document.getElementById('pnl-cancel-modal-desc');
+      if (descEl) descEl.textContent = `অর্ডার #${orderId} বাতিল করার সঠিক কারণ নির্বাচন করুন যাতে P&L এবং রিটার্ন/এড লস নিখুঁত থাকে:`;
+      
+      const modal = document.getElementById('pnl-cancel-reason-modal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closePnlCancelReasonModal() {
+      const modal = document.getElementById('pnl-cancel-reason-modal');
+      if (modal) modal.classList.remove('open');
+      pnlPendingCancelOrderId = null;
+      let orders = [];
+      try { orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]'); } catch (e) {}
+      renderPnlOrdersTable(orders);
+    }
+
+    function togglePnlCustomReason(isCustom) {
+      const customInput = document.getElementById('pnl-cancel-custom-reason');
+      if (customInput) {
+        customInput.style.display = isCustom ? 'block' : 'none';
+        if (isCustom) customInput.focus();
+      }
+    }
+
+    function confirmPnlCancelReasonModal() {
+      if (!pnlPendingCancelOrderId) return;
+      const selectedRadio = document.querySelector('input[name="pnl-cancel-reason-opt"]:checked');
+      let reason = selectedRadio ? selectedRadio.value : 'গ্রাহকের মত পরিবর্তন';
+
+      if (reason.startsWith('অন্যান্য')) {
+        const customInput = document.getElementById('pnl-cancel-custom-reason');
+        if (customInput && customInput.value.trim()) {
+          reason = `অন্যান্য: ${customInput.value.trim()}`;
+        }
+      }
+
+      updatePnlOrderStatus(pnlPendingCancelOrderId, 'Cancelled', reason);
+
+      const modal = document.getElementById('pnl-cancel-reason-modal');
+      if (modal) modal.classList.remove('open');
+      pnlPendingCancelOrderId = null;
+    }
+
+    function updatePnlOrderStatus(orderId, newStatus, cancelReason = '') {
+      let orders = [];
+      try {
+        orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        orders = [];
+      }
+
+      const item = orders.find(o => o.orderId === orderId);
+      if (item) {
+        item.status = newStatus;
+        if (newStatus === 'Cancelled') {
+          item.cancelReason = cancelReason || item.cancelReason || 'গ্রাহকের মত পরিবর্তন';
+        } else {
+          item.cancelReason = '';
+        }
+        item.updatedAt = Date.now();
+      }
+
+      localStorage.setItem('littlenest_orders', JSON.stringify(orders));
+
+      // Push to backend API
+      try {
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'updateStatus',
+            orderId: orderId,
+            status: newStatus,
+            cancelReason: cancelReason
+          })
+        }).catch(() => {});
+      } catch (err) {}
+
+      calculateLivePNL(orders);
+      showPnlToast(`✓ অর্ডার #${orderId} এর স্ট্যাটাস '${newStatus}' হিসেবে আপডেট ও P&L রিক্যালকুলেট হয়েছে!`);
+    }
+
+    function createPnlTestOrder() {
+      const testNames = ['সুমাইয়া জাহান (টেস্ট)', 'তানভীর আহমেদ (টেস্ট)', 'ফারজানা ইসলাম (টেস্ট)', 'কামরুল হাসান (টেস্ট)'];
+      const testPhones = ['01712345678', '01819876543', '01911223344', '01655667788'];
+      const testAddrs = [
+        'বাড়ি #১২, রোড #০৫, ব্লক-ডি, মিরপুর-১০, ঢাকা',
+        'ফ্ল্যাট #৪বি, হোল্ডিং #১৮, জিইসি মোড়, চট্টগ্রাম',
+        'বাড়ি #০৭, উপশহর রোড, সিলেট সদর',
+        'ধানমন্ডি ৮/এ, ঢাকা'
+      ];
+      const testColors = ['স্কাই ব্লু', 'পিঙ্ক', 'গ্রিন', 'পার্পল', 'গ্রে'];
+
+      const randomIdx = Math.floor(Math.random() * testNames.length);
+      const randomColor = testColors[Math.floor(Math.random() * testColors.length)];
+
+      const sampleOrder = {
+        orderId: 'LN-' + Math.floor(100000 + Math.random() * 900000),
+        customerName: testNames[randomIdx],
+        customerPhone: testPhones[randomIdx],
+        fullAddress: testAddrs[randomIdx],
+        division: 'ঢাকা বিভাগ',
+        district: 'ঢাকা',
+        upazila: 'মিরপুর',
+        detailAddress: testAddrs[randomIdx],
+        packageTitle: '১টি সম্পূর্ণ সেট (৬ পিস)',
+        quantity: 1,
+        selectedColor: randomColor,
+        shippingCost: 70,
+        totalPrice: 1260,
+        orderDate: new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' }),
+        timestamp: Date.now(),
+        status: 'New',
+        cancelReason: ''
+      };
+
+      let existing = [];
+      try {
+        existing = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        existing = [];
+      }
+
+      existing.unshift(sampleOrder);
+      localStorage.setItem('littlenest_orders', JSON.stringify(existing));
+
+      // Post to cloud API
+      try {
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sampleOrder)
+        }).catch(() => {});
+      } catch (e) {}
+
+      calculateLivePNL(existing);
+      showPnlToast('🧪 নতুন টেস্ট অর্ডার যোগ করা হয়েছে এবং P&L আপডেট হয়েছে!');
+    }
+
+    function showPnlToast(message) {
+      const toast = document.getElementById('pnl-toast');
+      const textEl = document.getElementById('pnl-toast-text');
+      if (!toast) return;
+      if (textEl) textEl.textContent = message;
+      toast.style.display = 'flex';
+      setTimeout(() => {
+        toast.style.display = 'none';
+      }, 3500);
+    }
+
     function exportPnlReportCSV() {
       const grossRev = document.getElementById('disp-gross-revenue').textContent;
       const totalExp = document.getElementById('disp-total-expense').textContent;
@@ -1262,36 +2347,54 @@
       const margin = document.getElementById('disp-profit-margin').textContent;
       const roas = document.getElementById('disp-roas-val').textContent;
 
+      let orders = [];
+      try { orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]'); } catch (e) {}
+
       const rows = [
         ['Metric', 'Value'],
         ['Report Generated', new Date().toLocaleString()],
-        ['Total Orders', document.getElementById('inp-total-orders').value],
+        ['Active Mode', currentPnlMode.toUpperCase()],
+        ['Total Orders', orders.length],
         ['Gross Revenue', `"${grossRev}"`],
         ['Total Expenses', `"${totalExp}"`],
         ['Net Profit', `"${netProf}"`],
         ['Net Profit Margin', `"${margin}"`],
-        ['ROAS', `"${roas}"`],
-        ['Product Selling Price', document.getElementById('inp-sell-price').value],
-        ['Product Sourcing Cost', document.getElementById('inp-product-cost').value],
-        ['Delivery Success Rate', document.getElementById('inp-success-rate-slider').value + '%'],
-        ['Meta Ad CPP (USD)', document.getElementById('inp-ad-cpp').value],
-        ['USD to BDT Rate', document.getElementById('inp-usd-rate').value]
+        ['ROAS', `"${roas}"`]
       ];
+
+      if (orders.length > 0) {
+        rows.push([]);
+        rows.push(['--- LIVE ORDERS BREAKDOWN ---']);
+        rows.push(['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Package', 'Total Price', 'Status', 'Cancel Reason']);
+        orders.forEach(o => {
+          rows.push([
+            o.orderId,
+            `"${o.orderDate}"`,
+            `"${o.customerName}"`,
+            `"${o.customerPhone}"`,
+            `"${(o.fullAddress || '').replace(/"/g, '""')}"`,
+            `"${o.packageTitle}"`,
+            o.totalPrice,
+            o.status || 'New',
+            `"${(o.cancelReason || '').replace(/"/g, '""')}"`
+          ]);
+        });
+      }
 
       const csv = '\uFEFF' + rows.map(r => r.join(',')).join('\n');
       const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `PNL_Report_${Date.now()}.csv`;
+      a.download = `LittleNest_PNL_Report_${Date.now()}.csv`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
     }
 
-    // Initialize on load
+    // Page Load & Initialization
     document.addEventListener('DOMContentLoaded', () => {
-      calculatePNL();
+      checkPnlAuth();
     });
   </script>
 </body>
