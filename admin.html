@@ -204,7 +204,9 @@
         <div class="admin-card">
           <div class="admin-card-head">
             <h2 class="admin-card-title">📦 প্রাপ্ত অর্ডার তালিকা (<span id="admin-orders-count">০</span>)</h2>
-            <div style="display: flex; gap: 8px;">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn-admin-action" style="background: #ECFDF5; color: #059669; border-color: #A7F3D0; font-weight: 700;" onclick="createSampleTestOrder()">🧪 টেস্ট অর্ডার যোগ করুন</button>
+              <button type="button" class="btn-admin-action" onclick="renderAdminOrders()">🔄 রিফ্রেশ</button>
               <button type="button" class="btn-admin-action" onclick="exportOrdersToCSV()">📥 CSV ডাউনলোড</button>
               <button type="button" class="btn-admin-action" style="color: #DC2626;" onclick="clearAllOrders()">🗑️ মুছে ফেলুন</button>
             </div>
@@ -281,6 +283,15 @@
       document.getElementById('admin-dash-view').style.display = 'block';
       loadPixelValue();
       renderAdminOrders();
+
+      // Auto-poll cloud API every 10 seconds
+      if (!window._adminPollInterval) {
+        window._adminPollInterval = setInterval(() => {
+          if (sessionStorage.getItem('littlenest_admin_auth') === 'true') {
+            renderAdminOrders();
+          }
+        }, 10000);
+      }
     }
 
     // Bengali Numeral Helper
@@ -316,15 +327,49 @@
       }
     }
 
-    function renderAdminOrders() {
+    async function renderAdminOrders() {
       const tbody = document.getElementById('admin-orders-tbody');
       const countEl = document.getElementById('admin-orders-count');
       if (!tbody) return;
 
-      const orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      let localOrders = [];
+      try {
+        localOrders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        localOrders = [];
+      }
+
+      // Display immediate local cache
+      displayOrders(localOrders);
+
+      // Fetch cloud serverless orders
+      try {
+        const res = await fetch('/api/orders');
+        if (res.ok) {
+          const data = await res.json();
+          if (data && data.orders && Array.isArray(data.orders)) {
+            const map = new Map();
+            localOrders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
+            data.orders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
+
+            const merged = Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+            localStorage.setItem('littlenest_orders', JSON.stringify(merged));
+            displayOrders(merged);
+          }
+        }
+      } catch (err) {
+        // Fallback to local cache
+      }
+    }
+
+    function displayOrders(orders) {
+      const tbody = document.getElementById('admin-orders-tbody');
+      const countEl = document.getElementById('admin-orders-count');
+      if (!tbody) return;
+
       if (countEl) countEl.textContent = toBanglaNumber(orders.length);
 
-      if (orders.length === 0) {
+      if (!orders || orders.length === 0) {
         tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94A3B8; padding: 24px;">এখনও কোনো অর্ডার আসেনি।</td></tr>`;
         return;
       }
@@ -339,6 +384,62 @@
           <td><span style="background: #ECFDF5; color: #059669; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">${ord.status || 'New'}</span></td>
         </tr>
       `).join('');
+    }
+
+    // 1-Click Test Order Creator for Store Owner
+    function createSampleTestOrder() {
+      const testNames = ['সুমাইয়া জাহান (টেস্ট)', 'তানভীর আহমেদ (টেস্ট)', 'ফারজানা ইসলাম (টেস্ট)'];
+      const testPhones = ['01712345678', '01819876543', '01911223344'];
+      const testAddrs = [
+        'বাড়ি #১২, রোড #০৫, ব্লক-ডি, মিরপুর-১০, ঢাকা',
+        'ফ্ল্যাট #৪বি, হোল্ডিং #১৮, জিইসি মোড়, চট্টগ্রাম',
+        'বাড়ি #০৭, উপশহর রোড, সিলেট সদর'
+      ];
+      const testColors = ['স্কাই ব্লু', 'পিঙ্ক', 'গ্রিন', 'পার্পল', 'গ্রে'];
+
+      const randomIdx = Math.floor(Math.random() * 3);
+      const randomColor = testColors[Math.floor(Math.random() * testColors.length)];
+
+      const sampleOrder = {
+        orderId: 'LN-' + Math.floor(100000 + Math.random() * 900000),
+        customerName: testNames[randomIdx],
+        customerPhone: testPhones[randomIdx],
+        fullAddress: testAddrs[randomIdx],
+        division: 'ঢাকা বিভাগ',
+        district: 'ঢাকা',
+        upazila: 'মিরপুর',
+        detailAddress: testAddrs[randomIdx],
+        packageTitle: '১টি সম্পূর্ণ সেট (৬ পিস)',
+        quantity: 1,
+        selectedColor: randomColor,
+        shippingCost: 70,
+        totalPrice: 1260,
+        orderDate: new Date().toLocaleString('bn-BD', { dateStyle: 'medium', timeStyle: 'short' }),
+        timestamp: Date.now(),
+        status: 'New'
+      };
+
+      let existing = [];
+      try {
+        existing = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      } catch (e) {
+        existing = [];
+      }
+
+      existing.unshift(sampleOrder);
+      localStorage.setItem('littlenest_orders', JSON.stringify(existing));
+
+      // Post to cloud API
+      try {
+        fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(sampleOrder)
+        }).catch(() => {});
+      } catch (e) {}
+
+      displayOrders(existing);
+      alert('✅ টেস্ট অর্ডার সফলভাবে তৈরি হয়েছে এবং টেবিলে যুক্ত করা হয়েছে!');
     }
 
     function exportOrdersToCSV() {

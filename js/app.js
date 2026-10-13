@@ -284,6 +284,8 @@ window.handleCleanOrderSubmit = function(e) {
   });
 
   let hasError = false;
+  let firstErrorEl = null;
+
   const name = nameInput ? nameInput.value.trim() : '';
   const phone = phoneInput ? phoneInput.value.trim() : '';
   const detail = detailInput ? detailInput.value.trim() : '';
@@ -292,43 +294,69 @@ window.handleCleanOrderSubmit = function(e) {
   if (!name || name.length < 2) {
     if (nameInput) nameInput.classList.add('is-invalid');
     if (nameFeedback) nameFeedback.classList.add('show');
-    if (!hasError && nameInput) nameInput.focus();
+    if (!firstErrorEl) firstErrorEl = nameInput;
     hasError = true;
   }
 
-  // 2. Validate Phone
-  const phoneRegex = /^(?:\+?88)?01[3-9]\d{8}$/;
-  if (!phone || !phoneRegex.test(phone)) {
+  // 2. Validate & Sanitize Phone
+  const rawDigits = phone.replace(/[^\d+]/g, '');
+  let normalizedPhone = rawDigits;
+  if (normalizedPhone.startsWith('+88')) normalizedPhone = normalizedPhone.substring(3);
+  else if (normalizedPhone.startsWith('88')) normalizedPhone = normalizedPhone.substring(2);
+
+  // Accept valid 11-digit BD number or any reasonable 10-14 digit number
+  const isValidPhone = /^01\d{9}$/.test(normalizedPhone) || /^(?:\+?88)?01[0-9]\d{8}$/.test(rawDigits) || (normalizedPhone.length >= 10 && normalizedPhone.length <= 14);
+
+  if (!isValidPhone) {
     if (phoneInput) phoneInput.classList.add('is-invalid');
-    if (phoneFeedback) phoneFeedback.classList.add('show');
-    if (!hasError && phoneInput) phoneInput.focus();
+    if (phoneFeedback) {
+      phoneFeedback.textContent = '১১ ডিজিটের সঠিক মোবাইল নম্বর দিন (যেমন: 01712345678)';
+      phoneFeedback.classList.add('show');
+    }
+    if (!firstErrorEl) firstErrorEl = phoneInput;
     hasError = true;
   }
 
-  // 3. Validate Address Cascades
-  if (!selectedDivision || !selectedDistrict || !selectedUpazila || !detail || detail.length < 3) {
+  // 3. Address Handling & Smart Fallback
+  if (!detail || detail.length < 3) {
+    if (detailInput) detailInput.classList.add('is-invalid');
     if (addressFeedback) {
-      addressFeedback.textContent = 'অনুগ্রহ করে বিভাগ, জেলা, থানা এবং বিস্তারিত ঠিকানা সঠিকভাবে লিখুন';
+      addressFeedback.textContent = 'অনুগ্রহ করে আপনার সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন';
       addressFeedback.classList.add('show');
     }
-
-    if (!selectedDivision && divSelect) {
-      divSelect.classList.add('is-invalid');
-      if (!hasError) divSelect.focus();
-    } else if (!selectedDistrict && distSelect) {
-      distSelect.classList.add('is-invalid');
-      if (!hasError) distSelect.focus();
-    } else if (!selectedUpazila && upzSelect) {
-      upzSelect.classList.add('is-invalid');
-      if (!hasError) upzSelect.focus();
-    } else if ((!detail || detail.length < 3) && detailInput) {
-      detailInput.classList.add('is-invalid');
-      if (!hasError) detailInput.focus();
-    }
+    if (!firstErrorEl) firstErrorEl = detailInput;
     hasError = true;
   }
 
-  if (hasError) return;
+  // If user provided detail address but didn't pick dropdowns, provide smart fallback
+  let finalDivision = selectedDivision;
+  let finalDistrict = selectedDistrict;
+  let finalUpazila = selectedUpazila;
+
+  if (!finalDivision || !finalDistrict || !finalUpazila) {
+    const detLower = detail.toLowerCase();
+    if (detLower.includes('chittagong') || detail.includes('চট্টগ্রাম')) {
+      finalDivision = finalDivision || 'চট্টগ্রাম বিভাগ';
+      finalDistrict = finalDistrict || 'চট্টগ্রাম';
+      finalUpazila = finalUpazila || 'সদর এলাকা';
+    } else if (detLower.includes('sylhet') || detail.includes('সিলেট')) {
+      finalDivision = finalDivision || 'সিলেট বিভাগ';
+      finalDistrict = finalDistrict || 'সিলেট';
+      finalUpazila = finalUpazila || 'সদর এলাকা';
+    } else {
+      finalDivision = finalDivision || 'ঢাকা বিভাগ';
+      finalDistrict = finalDistrict || 'ঢাকা';
+      finalUpazila = finalUpazila || 'সদর এলাকা';
+    }
+  }
+
+  if (hasError) {
+    if (firstErrorEl) {
+      firstErrorEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      firstErrorEl.focus();
+    }
+    return;
+  }
 
   // Processing state
   if (submitBtn) {
@@ -343,16 +371,16 @@ window.handleCleanOrderSubmit = function(e) {
     timeStyle: 'short'
   });
 
-  const fullAddress = `${detail}, ${selectedUpazila}, ${selectedDistrict}, ${selectedDivision}`;
+  const fullAddress = `${detail}, ${finalUpazila}, ${finalDistrict}, ${finalDivision}`;
 
   const orderData = {
     orderId: orderId,
     customerName: name,
-    customerPhone: phone,
+    customerPhone: normalizedPhone || phone,
     fullAddress: fullAddress,
-    division: selectedDivision,
-    district: selectedDistrict,
-    upazila: selectedUpazila,
+    division: finalDivision,
+    district: finalDistrict,
+    upazila: finalUpazila,
     detailAddress: detail,
     packageTitle: currentPackage.name,
     quantity: currentPackage.quantity,
@@ -364,10 +392,21 @@ window.handleCleanOrderSubmit = function(e) {
     status: 'New'
   };
 
-  // Save to LocalStorage
+  // 1. Save to LocalStorage immediately
   saveOrderToStorage(orderData);
 
-  // Trigger Facebook Pixel Purchase Event
+  // 2. Dispatch to serverless API (/api/orders) in background
+  try {
+    fetch('/api/orders', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    }).catch(err => console.info('Cloud order sync:', err.message));
+  } catch (e) {
+    // Safe
+  }
+
+  // 3. Trigger Facebook Pixel Purchase Event
   if (typeof trackPixelEvent === 'function') {
     trackPixelEvent('Purchase', {
       content_name: 'Silicone Baby Feeding Set',
@@ -380,7 +419,7 @@ window.handleCleanOrderSubmit = function(e) {
     });
   }
 
-  // Render receipt and display modal
+  // 4. Render receipt and display modal
   showOrderSuccessModal(orderData);
 
   // Reset form inputs & address state
@@ -406,6 +445,8 @@ function showOrderSuccessModal(order) {
   const details = document.getElementById('receipt-details');
 
   if (details) {
+    const waText = `আসসালামু আলাইকুম, আমি LittleNest BD থেকে সিলিকন ফিডিং সেট অর্ডার করেছি।\n\nঅর্ডার আইডি: #${order.orderId}\nগ্রাহকের নাম: ${order.customerName}\nমোবাইল: ${order.customerPhone}\nডেলিভারি ঠিকানা: ${order.fullAddress}\nপ্যাকেজ: ${order.packageTitle} (${order.selectedColor})\nসর্বমোট বিল: ৳${toBanglaNumber(order.totalPrice)} (ক্যাশ অন ডেলিভারি)`;
+
     details.innerHTML = `
       <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
         <span>অর্ডার আইডি:</span>
@@ -437,11 +478,18 @@ function showOrderSuccessModal(order) {
         <span>সর্বমোট বিল:</span>
         <span style="color: var(--primary); font-size: 1.15rem;">৳${toBanglaNumber(order.totalPrice)}</span>
       </div>
+
+      <div style="margin-top: 14px; text-align: center;">
+        <a href="https://wa.me/971567813203?text=${encodeURIComponent(waText)}" target="_blank" style="display: inline-flex; align-items: center; justify-content: center; gap: 8px; width: 100%; background: #25D366; color: #FFFFFF; font-weight: 700; padding: 10px 16px; border-radius: 9999px; text-decoration: none; font-size: 0.92rem; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);">
+          <span>💬 হোয়াটসঅ্যাপে অর্ডারের কনফার্মেশন পাঠান</span>
+        </a>
+      </div>
     `;
   }
 
   if (modal) modal.classList.add('open');
 }
+
 
 window.closeSuccessModal = function() {
   const modal = document.getElementById('success-modal');
