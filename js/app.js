@@ -764,10 +764,172 @@ function setupScrollObservers() {
 }
 
 // -------------------------------------------------------------
-// 9. APP INITIALIZATION
+// 9. SMOOTH AUTO SLIDER HERO GALLERY
+// -------------------------------------------------------------
+function initHeroSlider() {
+  const slider = document.getElementById('hero-slider');
+  const track = document.getElementById('hero-slider-track');
+  if (!slider || !track) return;
+
+  const slides = track.querySelectorAll('.hero-slide');
+  const dots = slider.querySelectorAll('.slider-dot');
+  const prevBtn = document.getElementById('slider-arrow-prev');
+  const nextBtn = document.getElementById('slider-arrow-next');
+  const totalSlides = slides.length;
+  if (totalSlides <= 1) return;
+
+  let currentIndex = 0;
+  let autoSlideTimer = null;
+  const slideInterval = 3200; // 3.2s per slide
+
+  function goToSlide(index) {
+    if (index < 0) {
+      currentIndex = totalSlides - 1;
+    } else if (index >= totalSlides) {
+      currentIndex = 0;
+    } else {
+      currentIndex = index;
+    }
+
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    slides.forEach((slide, i) => {
+      slide.classList.toggle('active', i === currentIndex);
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === currentIndex);
+    });
+  }
+
+  function nextSlide() {
+    goToSlide(currentIndex + 1);
+  }
+
+  function prevSlide() {
+    goToSlide(currentIndex - 1);
+  }
+
+  function startAutoPlay() {
+    stopAutoPlay();
+    autoSlideTimer = setInterval(nextSlide, slideInterval);
+  }
+
+  function stopAutoPlay() {
+    if (autoSlideTimer) {
+      clearInterval(autoSlideTimer);
+      autoSlideTimer = null;
+    }
+  }
+
+  // Next / Prev Button Controls
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      nextSlide();
+      startAutoPlay();
+    });
+  }
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      prevSlide();
+      startAutoPlay();
+    });
+  }
+
+  // Dot Pagination Controls
+  dots.forEach(dot => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const idx = parseInt(dot.getAttribute('data-index'), 10);
+      if (!isNaN(idx)) {
+        goToSlide(idx);
+        startAutoPlay();
+      }
+    });
+  });
+
+  // Pause on hover, resume on leave
+  slider.addEventListener('mouseenter', stopAutoPlay);
+  slider.addEventListener('mouseleave', startAutoPlay);
+
+  // Keyboard navigation when user interacts with slider
+  slider.setAttribute('tabindex', '0');
+  slider.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') {
+      prevSlide();
+      startAutoPlay();
+    } else if (e.key === 'ArrowRight') {
+      nextSlide();
+      startAutoPlay();
+    }
+  });
+
+  // Touch Swipe Support for Mobile
+  let startX = 0;
+  let startY = 0;
+  let endX = 0;
+  let endY = 0;
+  let isSwiping = false;
+
+  slider.addEventListener('touchstart', (e) => {
+    if (e.touches.length > 0) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      endX = startX;
+      endY = startY;
+      isSwiping = true;
+      stopAutoPlay();
+    }
+  }, { passive: true });
+
+  slider.addEventListener('touchmove', (e) => {
+    if (!isSwiping || e.touches.length === 0) return;
+    endX = e.touches[0].clientX;
+    endY = e.touches[0].clientY;
+  }, { passive: true });
+
+  slider.addEventListener('touchend', () => {
+    if (!isSwiping) return;
+    isSwiping = false;
+    const diffX = startX - endX;
+    const diffY = startY - endY;
+
+    if (Math.abs(diffX) > 40 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        nextSlide();
+      } else {
+        prevSlide();
+      }
+    }
+    startX = 0;
+    startY = 0;
+    endX = 0;
+    endY = 0;
+    startAutoPlay();
+  });
+
+  // Pause when tab is not active to prevent queue lag
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+      stopAutoPlay();
+    } else {
+      startAutoPlay();
+    }
+  });
+
+  // Start auto slide
+  startAutoPlay();
+}
+
+// -------------------------------------------------------------
+// 10. APP INITIALIZATION
 // -------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   applySiteConfig();
+  initHeroSlider();
   initFAQ();
   updateBillDisplay();
   setupScrollObservers();
