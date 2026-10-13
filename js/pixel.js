@@ -121,19 +121,47 @@ const PixelTracker = {
   },
 
   // Track Purchase (upon successful order form submission)
+  // Ensures Meta Pixel Purchase fires strictly ONCE per unique order ID
   trackPurchase: function (orderData) {
+    if (!orderData) return;
+    const orderId = orderData.orderId || orderData.order_id || '';
+
+    // Guard: Prevent firing Purchase twice for the exact same order ID
+    if (orderId) {
+      try {
+        const key = 'pixel_purchased_order_ids';
+        let fired = [];
+        try {
+          fired = JSON.parse(sessionStorage.getItem(key) || '[]');
+        } catch (e) {
+          fired = [];
+        }
+        if (fired.includes(orderId)) {
+          console.warn(`[Meta Pixel] Purchase event already fired for Order #${orderId}. Skipping duplicate tracking.`);
+          return;
+        }
+        fired.push(orderId);
+        sessionStorage.setItem(key, JSON.stringify(fired));
+      } catch (err) {
+        // Safe fallback
+      }
+    }
+
     const data = {
-      content_name: orderData.packageTitle || 'সিলিকন ফিডিং সেট কম্বো',
+      content_name: orderData.packageTitle || 'বাচ্চাদের সিলিকন ফিডিং সেট কম্বো',
       content_ids: ['SKU-SILICONE-FEEDER-SET'],
       content_type: 'product',
-      value: orderData.totalPrice,
+      value: orderData.totalPrice || orderData.value || 1190,
       currency: 'BDT',
-      num_items: orderData.quantity || 1,
-      order_id: orderData.orderId
+      num_items: orderData.quantity || orderData.num_items || 1,
+      order_id: orderId
     };
+
     try {
-      if (window.fbq) fbq('track', 'Purchase', data);
-      console.log('[Meta Pixel] Tracked: Purchase', data);
+      if (window.fbq) {
+        fbq('track', 'Purchase', data, { eventID: orderId || undefined });
+      }
+      console.log('[Meta Pixel] Tracked unique Purchase event:', data);
     } catch (e) {
       console.warn('[Meta Pixel] Could not track Purchase', e);
     }
@@ -151,3 +179,20 @@ const PixelTracker = {
 };
 
 window.PixelTracker = PixelTracker;
+
+// Unified event dispatcher
+window.trackPixelEvent = function(eventName, data) {
+  if (eventName === 'Purchase') {
+    PixelTracker.trackPurchase(data);
+  } else if (eventName === 'ViewContent') {
+    PixelTracker.trackViewContent(data || {});
+  } else if (eventName === 'InitiateCheckout') {
+    PixelTracker.trackInitiateCheckout(data || {});
+  } else if (eventName === 'AddToCart') {
+    PixelTracker.trackAddToCart(data || {});
+  } else if (eventName === 'Contact') {
+    PixelTracker.trackContact(data && data.method ? data.method : 'WhatsApp');
+  } else if (typeof fbq === 'function') {
+    fbq('track', eventName, data);
+  }
+};

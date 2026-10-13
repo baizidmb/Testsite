@@ -4,11 +4,11 @@
  * To change the contact numbers or Pixel ID across the entire page, edit here:
  */
 const SITE_CONFIG = {
-  // WhatsApp number for direct wa.me links (digits only, e.g. "971567813203" or "8801712345678")
-  WHATSAPP_NUMBER: "971567813203",
+  // WhatsApp number for direct wa.me links (digits only, e.g. "8801700000000")
+  WHATSAPP_NUMBER: "8801700000000",
 
-  // Hotline phone number to display and call (e.g. "+971567813203" or "+8801712345678")
-  HOTLINE_DISPLAY: "+971567813203",
+  // Hotline phone number to display and call (e.g. "+8801700000000")
+  HOTLINE_DISPLAY: "+8801700000000",
 
   // Meta (Facebook) Pixel ID (leave empty "" for now or paste Pixel ID string)
   PIXEL_ID: ""

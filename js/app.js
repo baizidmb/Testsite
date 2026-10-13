@@ -28,8 +28,16 @@ function toBanglaNumber(num) {
 }
 
 // -------------------------------------------------------------
-// 1. PACKAGE & COLOR SELECTORS
+// 1. PACKAGE & COLOR SELECTORS (INTERACTIVE ORDER SUMMARY)
 // -------------------------------------------------------------
+const COLOR_HEX_MAP = {
+  'পিঙ্ক': '#F472B6',
+  'স্কাই ব্লু': '#38BDF8',
+  'গ্রিন': '#4ADE80',
+  'গ্রে': '#94A3B8',
+  'পার্পল': '#A855F7'
+};
+
 window.selectCleanPackage = function(qty, price, shipping) {
   currentPackage.quantity = qty;
   currentPackage.price = price;
@@ -48,6 +56,9 @@ window.selectCleanPackage = function(qty, price, shipping) {
     }
   }
 
+  const pkgNameEl = document.getElementById('summary-pkg-name');
+  if (pkgNameEl) pkgNameEl.textContent = currentPackage.name;
+
   recalculateShipping();
   updateAddressUI();
 };
@@ -63,6 +74,16 @@ window.selectCleanColor = function(colorName, el) {
 
   const hiddenInput = document.getElementById('selected-color-input');
   if (hiddenInput) hiddenInput.value = colorName;
+
+  // Real-time update in Order Summary Box
+  const summaryColorDot = document.getElementById('summary-color-dot');
+  const summaryColorText = document.getElementById('summary-color-text');
+  if (summaryColorDot) {
+    summaryColorDot.style.backgroundColor = COLOR_HEX_MAP[colorName] || '#38BDF8';
+  }
+  if (summaryColorText) {
+    summaryColorText.textContent = colorName;
+  }
 };
 
 function recalculateShipping() {
@@ -79,21 +100,28 @@ function recalculateShipping() {
 }
 
 function updateBillDisplay() {
+  const pkgNameEl = document.getElementById('summary-pkg-name');
+  const colorDotEl = document.getElementById('summary-color-dot');
+  const colorTextEl = document.getElementById('summary-color-text');
   const subtotalEl = document.getElementById('bill-subtotal-text');
   const shippingEl = document.getElementById('bill-shipping-text');
   const totalEl = document.getElementById('bill-total-text');
   const stickyNowEl = document.querySelector('.sticky-now');
+
+  if (pkgNameEl) pkgNameEl.textContent = currentPackage.name;
+  if (colorDotEl) colorDotEl.style.backgroundColor = COLOR_HEX_MAP[currentColor] || '#38BDF8';
+  if (colorTextEl) colorTextEl.textContent = currentColor;
 
   const total = currentPackage.price + currentPackage.shipping;
 
   if (subtotalEl) subtotalEl.textContent = `৳${toBanglaNumber(currentPackage.price)}`;
   if (shippingEl) {
     if (currentPackage.shipping === 0) {
-      shippingEl.textContent = 'ফ্রি ডেলিভারি 🎁';
+      shippingEl.textContent = 'ফ্রি ডেলিভারি 🎁 (৳০)';
     } else if (selectedDistrict === 'ঢাকা') {
       shippingEl.textContent = '৳৭০ (ঢাকার ভেতরে)';
     } else if (selectedDistrict) {
-      shippingEl.textContent = `৳${toBanglaNumber(currentPackage.shipping)} (${selectedDistrict} জেলা)`;
+      shippingEl.textContent = `৳${toBanglaNumber(currentPackage.shipping)} (${selectedDistrict} - ঢাকার বাইরে)`;
     } else {
       shippingEl.textContent = '৳৭০ (ঢাকার ভেতরে) / ৳১৩০ (বাইরে)';
     }
@@ -258,7 +286,91 @@ function updateAddressUI() {
 }
 
 // -------------------------------------------------------------
-// 3. STREAMLINED ORDER VALIDATION & SUBMISSION
+// 3. STRICT BANGLADESHI PHONE NUMBER SANITIZER & VALIDATOR
+// -------------------------------------------------------------
+const BD_PHONE_REGEX = /^01[3-9]\d{8}$/;
+
+function sanitizeBDPhone(value) {
+  if (!value) return '';
+  // Convert Bengali numerals (০-৯) to Latin digits (0-9)
+  const bnToEn = {'০':'0','১':'1','২':'2','৩':'3','৪':'4','৫':'5','৬':'6','৭':'7','৮':'8','৯':'9'};
+  let v = value.toString().replace(/[০-৯]/g, d => bnToEn[d]);
+
+  // Automatically strip spaces, hyphens, plus signs, brackets, dots
+  v = v.replace(/[\s\-\(\)\.]/g, '');
+
+  // Automatically strip +88 or 88 country code prefix
+  if (v.startsWith('+88')) {
+    v = v.substring(3);
+  } else if (v.startsWith('88')) {
+    v = v.substring(2);
+  } else if (v.startsWith('+')) {
+    v = v.substring(1);
+  }
+
+  // Keep only digits and restrict to max 11 digits
+  v = v.replace(/\D/g, '').slice(0, 11);
+  return v;
+}
+
+function setupPhoneInputValidation() {
+  const phoneInput = document.getElementById('cust-phone');
+  const phoneFeedback = document.getElementById('phone-feedback');
+  if (!phoneInput) return;
+
+  phoneInput.addEventListener('input', function() {
+    const sanitized = sanitizeBDPhone(phoneInput.value);
+    if (phoneInput.value !== sanitized) {
+      phoneInput.value = sanitized;
+    }
+
+    // If 11 digits reached, validate immediately
+    if (sanitized.length === 11) {
+      if (BD_PHONE_REGEX.test(sanitized)) {
+        phoneInput.classList.remove('is-invalid');
+        if (phoneFeedback) {
+          phoneFeedback.classList.remove('show');
+          phoneFeedback.style.display = 'none';
+        }
+      } else {
+        phoneInput.classList.add('is-invalid');
+        if (phoneFeedback) {
+          phoneFeedback.textContent = 'অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।';
+          phoneFeedback.classList.add('show');
+          phoneFeedback.style.display = 'block';
+        }
+      }
+    } else if (phoneFeedback && phoneFeedback.classList.contains('show')) {
+      if (sanitized.length === 0) {
+        phoneInput.classList.remove('is-invalid');
+        phoneFeedback.classList.remove('show');
+        phoneFeedback.style.display = 'none';
+      }
+    }
+  });
+
+  phoneInput.addEventListener('blur', function() {
+    const sanitized = sanitizeBDPhone(phoneInput.value);
+    phoneInput.value = sanitized;
+    if (sanitized.length > 0 && !BD_PHONE_REGEX.test(sanitized)) {
+      phoneInput.classList.add('is-invalid');
+      if (phoneFeedback) {
+        phoneFeedback.textContent = 'অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।';
+        phoneFeedback.classList.add('show');
+        phoneFeedback.style.display = 'block';
+      }
+    } else if (BD_PHONE_REGEX.test(sanitized)) {
+      phoneInput.classList.remove('is-invalid');
+      if (phoneFeedback) {
+        phoneFeedback.classList.remove('show');
+        phoneFeedback.style.display = 'none';
+      }
+    }
+  });
+}
+
+// -------------------------------------------------------------
+// 4. STREAMLINED ORDER VALIDATION & SUBMISSION
 // -------------------------------------------------------------
 window.handleCleanOrderSubmit = function(e) {
   e.preventDefault();
@@ -280,7 +392,10 @@ window.handleCleanOrderSubmit = function(e) {
     if (inp) inp.classList.remove('is-invalid');
   });
   [nameFeedback, phoneFeedback, addressFeedback].forEach(fb => {
-    if (fb) fb.classList.remove('show');
+    if (fb) {
+      fb.classList.remove('show');
+      fb.style.display = 'none';
+    }
   });
 
   let hasError = false;
@@ -293,25 +408,24 @@ window.handleCleanOrderSubmit = function(e) {
   // 1. Validate Name
   if (!name || name.length < 2) {
     if (nameInput) nameInput.classList.add('is-invalid');
-    if (nameFeedback) nameFeedback.classList.add('show');
+    if (nameFeedback) {
+      nameFeedback.classList.add('show');
+      nameFeedback.style.display = 'block';
+    }
     if (!firstErrorEl) firstErrorEl = nameInput;
     hasError = true;
   }
 
-  // 2. Validate & Sanitize Phone
-  const rawDigits = phone.replace(/[^\d+]/g, '');
-  let normalizedPhone = rawDigits;
-  if (normalizedPhone.startsWith('+88')) normalizedPhone = normalizedPhone.substring(3);
-  else if (normalizedPhone.startsWith('88')) normalizedPhone = normalizedPhone.substring(2);
+  // 2. Validate & Sanitize Phone (Strict BD Mobile Regex: ^01[3-9]\d{8}$)
+  const sanitizedPhone = sanitizeBDPhone(phone);
+  if (phoneInput) phoneInput.value = sanitizedPhone;
 
-  // Accept valid 11-digit BD number or any reasonable 10-14 digit number
-  const isValidPhone = /^01\d{9}$/.test(normalizedPhone) || /^(?:\+?88)?01[0-9]\d{8}$/.test(rawDigits) || (normalizedPhone.length >= 10 && normalizedPhone.length <= 14);
-
-  if (!isValidPhone) {
+  if (!BD_PHONE_REGEX.test(sanitizedPhone)) {
     if (phoneInput) phoneInput.classList.add('is-invalid');
     if (phoneFeedback) {
-      phoneFeedback.textContent = '১১ ডিজিটের সঠিক মোবাইল নম্বর দিন (যেমন: 01712345678)';
+      phoneFeedback.textContent = 'অনুগ্রহ করে সঠিক ১১ ডিজিটের মোবাইল নাম্বার দিন (যেমন: 017XXXXXXXX)।';
       phoneFeedback.classList.add('show');
+      phoneFeedback.style.display = 'block';
     }
     if (!firstErrorEl) firstErrorEl = phoneInput;
     hasError = true;
@@ -323,6 +437,7 @@ window.handleCleanOrderSubmit = function(e) {
     if (addressFeedback) {
       addressFeedback.textContent = 'অনুগ্রহ করে আপনার সম্পূর্ণ ডেলিভারি ঠিকানা লিখুন';
       addressFeedback.classList.add('show');
+      addressFeedback.style.display = 'block';
     }
     if (!firstErrorEl) firstErrorEl = detailInput;
     hasError = true;
@@ -358,6 +473,32 @@ window.handleCleanOrderSubmit = function(e) {
     return;
   }
 
+  // -----------------------------------------------------------
+  // DUPLICATE ORDER GUARD:
+  // Prevent duplicate orders from same phone within 10 minutes unless confirmed
+  // -----------------------------------------------------------
+  const now = Date.now();
+  const TEN_MINUTES_MS = 10 * 60 * 1000;
+  let recentSubmissions = [];
+  try {
+    recentSubmissions = JSON.parse(localStorage.getItem('littlenest_recent_submissions') || '[]');
+  } catch (err) {
+    recentSubmissions = [];
+  }
+
+  // Prune submissions older than 60 minutes
+  recentSubmissions = recentSubmissions.filter(item => (now - item.timestamp) < 60 * 60 * 1000);
+
+  const recentDuplicate = recentSubmissions.find(item => item.phone === sanitizedPhone && (now - item.timestamp) < TEN_MINUTES_MS);
+  if (recentDuplicate) {
+    const minutesAgo = Math.max(1, Math.round((now - recentDuplicate.timestamp) / 60000));
+    const confirmMsg = `আপনি এই নাম্বার (${sanitizedPhone}) দিয়ে ইতিমধ্যে গত ${toBanglaNumber(minutesAgo)} মিনিট আগে একটি অর্ডার করেছেন (অর্ডার আইডি: #${recentDuplicate.orderId})।\n\nআপনি কি নিশ্চিত যে আপনি আরেকটি নতুন অর্ডার করতে চান?`;
+    const allowDuplicate = window.confirm(confirmMsg);
+    if (!allowDuplicate) {
+      return; // Customer chose cancel, prevent duplicate order
+    }
+  }
+
   // Processing state
   if (submitBtn) {
     submitBtn.disabled = true;
@@ -376,7 +517,7 @@ window.handleCleanOrderSubmit = function(e) {
   const orderData = {
     orderId: orderId,
     customerName: name,
-    customerPhone: normalizedPhone || phone,
+    customerPhone: sanitizedPhone,
     fullAddress: fullAddress,
     division: finalDivision,
     district: finalDistrict,
@@ -388,9 +529,19 @@ window.handleCleanOrderSubmit = function(e) {
     shippingCost: currentPackage.shipping,
     totalPrice: grandTotal,
     orderDate: orderTime,
-    timestamp: Date.now(),
+    timestamp: now,
     status: 'New'
   };
+
+  // Record submission in recent submissions storage
+  recentSubmissions.push({
+    phone: sanitizedPhone,
+    timestamp: now,
+    orderId: orderId
+  });
+  try {
+    localStorage.setItem('littlenest_recent_submissions', JSON.stringify(recentSubmissions));
+  } catch (e) {}
 
   // 1. Save to LocalStorage immediately
   saveOrderToStorage(orderData);
@@ -406,9 +557,11 @@ window.handleCleanOrderSubmit = function(e) {
     // Safe
   }
 
-  // 3. Trigger Facebook Pixel Purchase Event
+  // 3. Trigger Facebook Pixel Purchase Event (Strictly once per unique order ID)
   if (typeof trackPixelEvent === 'function') {
     trackPixelEvent('Purchase', {
+      orderId: orderId,
+      packageTitle: currentPackage.name,
       content_name: 'Silicone Baby Feeding Set',
       content_category: 'Baby Dining',
       content_ids: ['LN-SILICONE-SET'],
@@ -597,8 +750,8 @@ function initFAQ() {
 // -------------------------------------------------------------
 function getPolicyRefundText() {
   const cfg = (typeof window !== 'undefined' && window.SITE_CONFIG) ? window.SITE_CONFIG : {
-    WHATSAPP_NUMBER: "971567813203",
-    HOTLINE_DISPLAY: "+971567813203"
+    WHATSAPP_NUMBER: "8801700000000",
+    HOTLINE_DISPLAY: "+8801700000000"
   };
   const hotlineBn = toBanglaNumber(cfg.HOTLINE_DISPLAY);
   const waBn = toBanglaNumber('+' + cfg.WHATSAPP_NUMBER);
@@ -653,8 +806,8 @@ window.openPolicyModal = function(type) {
 
 function applySiteConfig() {
   const cfg = (typeof window !== 'undefined' && window.SITE_CONFIG) ? window.SITE_CONFIG : {
-    WHATSAPP_NUMBER: "971567813203",
-    HOTLINE_DISPLAY: "+971567813203",
+    WHATSAPP_NUMBER: "8801700000000",
+    HOTLINE_DISPLAY: "+8801700000000",
     PIXEL_ID: ""
   };
 
@@ -979,6 +1132,7 @@ document.addEventListener('DOMContentLoaded', () => {
   applySiteConfig();
   initHeroSlider();
   initFAQ();
+  setupPhoneInputValidation();
   updateBillDisplay();
   setupScrollObservers();
   renderAdminOrders();
