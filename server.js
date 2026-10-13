@@ -24,6 +24,8 @@ const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/' || reqPath === '') {
     reqPath = '/index.html';
+  } else if (reqPath === '/admin' || reqPath === '/admin/') {
+    reqPath = '/admin.html';
   }
 
   const filePath = path.join(ROOT, reqPath);

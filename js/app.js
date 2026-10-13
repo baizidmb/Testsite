@@ -60,6 +60,9 @@ window.selectCleanColor = function(colorName, el) {
 
   const label = document.getElementById('selected-color-label');
   if (label) label.textContent = colorName;
+
+  const hiddenInput = document.getElementById('selected-color-input');
+  if (hiddenInput) hiddenInput.value = colorName;
 };
 
 function recalculateShipping() {

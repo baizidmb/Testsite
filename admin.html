@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+  <title>এডমিন প্যানেল | LittleNest BD</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="icon" type="image/png" href="images/product-bowl.jpg">
+
+  <!-- Google Bengali Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/config.js"></script>
+
+  <style>
+    .admin-page-wrap {
+      min-height: 100vh;
+      background: #F8FAFC;
+      padding: 30px 16px 60px;
+    }
+    .admin-container {
+      max-width: 1050px;
+      margin: 0 auto;
+    }
+    /* Login Box */
+    .admin-login-box {
+      max-width: 420px;
+      margin: 80px auto;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      box-shadow: var(--shadow-md);
+      text-align: center;
+    }
+    .admin-login-icon {
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+    }
+    .admin-login-title {
+      font-size: 1.35rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+    .admin-login-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+    .admin-login-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .admin-error-text {
+      color: #DC2626;
+      font-size: 0.82rem;
+      font-weight: 600;
+      margin-top: 4px;
+      display: none;
+    }
+    /* Dashboard Content */
+    .admin-dashboard {
+      display: none;
+    }
+    .admin-nav-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 14px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 20px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xs);
+    }
+    .admin-brand-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .admin-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn-admin-action {
+      background: #F1F5F9;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+    .btn-admin-action:hover {
+      background: #E2E8F0;
+    }
+    .btn-admin-logout {
+      background: #FEF2F2;
+      border-color: #FECACA;
+      color: #DC2626;
+    }
+    .btn-admin-logout:hover {
+      background: #FEE2E2;
+    }
+    .admin-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px 22px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-xs);
+    }
+    .admin-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .admin-card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .pixel-save-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="admin-page-wrap">
+    <div class="admin-container">
+
+      <!-- 1. Password Protected Login Screen -->
+      <div class="admin-login-box" id="admin-login-view">
+        <div class="admin-login-icon">🔐</div>
+        <h1 class="admin-login-title">স্টোর এডমিন লগইন</h1>
+        <p class="admin-login-sub">এডমিন ড্যাশবোর্ড ও ফেসবুক পিক্সেল কনফিগারেশনে প্রবেশ করতে পাসওয়ার্ড দিন</p>
+
+        <form class="admin-login-form" onsubmit="handleAdminLogin(event)">
+          <input type="password" id="admin-pass-input" class="clean-form-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
+          <div class="admin-error-text" id="admin-error-msg">ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে আবার চেষ্টা করুন।</div>
+          <button type="submit" class="btn-clean-order-submit" style="min-height: 48px; font-size: 1rem;">
+            <span>🔓 প্রবেশ করুন</span>
+          </button>
+        </form>
+      </div>
+
+      <!-- 2. Protected Admin Dashboard (Visible after login) -->
+      <div class="admin-dashboard" id="admin-dash-view">
+        
+        <!-- Navigation Bar -->
+        <header class="admin-nav-bar">
+          <div class="admin-brand-title">
+            <span>🍼 LittleNest BD</span>
+            <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">| এডমিন প্যানেল</span>
+          </div>
+          <div class="admin-nav-actions">
+            <a href="/" class="btn-admin-action">← স্টোরে ফিরে যান</a>
+            <button type="button" class="btn-admin-action btn-admin-logout" onclick="handleAdminLogout()">🚪 লগআউট</button>
+          </div>
+        </header>
+
+        <!-- Section 1: Facebook Pixel Configuration -->
+        <div class="admin-card">
+          <div class="admin-card-head">
+            <h2 class="admin-card-title">📡 Facebook Pixel কনফিগারেশন</h2>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.6;">
+            আপনার মেটা পিক্সেল আইডি (Pixel ID) নিচে দিয়ে সেভ করুন। এটি স্বয়ংক্রিয়ভাবে মূল ল্যান্ডিং পেজে PageView, ViewContent, InitiateCheckout ও Purchase ইভেন্ট ট্র্যাক করবে।
+          </p>
+          <div class="pixel-save-row">
+            <input type="text" id="admin-pixel-input" class="clean-form-input" style="flex: 1; min-width: 260px;" placeholder="Facebook Pixel ID (যেমন: 123456789012345)">
+            <button type="button" class="btn-clean-order-submit" style="width: auto; padding: 12px 24px; min-height: 48px; font-size: 0.95rem;" onclick="saveAdminPixel()">
+              সেভ করুন
+            </button>
+          </div>
+          <div id="pixel-status-msg" style="margin-top: 8px; font-size: 0.85rem; font-weight: 600;"></div>
+        </div>
+
+        <!-- Section 2: Orders Management Table -->
+        <div class="admin-card">
+          <div class="admin-card-head">
+            <h2 class="admin-card-title">📦 প্রাপ্ত অর্ডার তালিকা (<span id="admin-orders-count">০</span>)</h2>
+            <div style="display: flex; gap: 8px;">
+              <button type="button" class="btn-admin-action" onclick="exportOrdersToCSV()">📥 CSV ডাউনলোড</button>
+              <button type="button" class="btn-admin-action" style="color: #DC2626;" onclick="clearAllOrders()">🗑️ মুছে ফেলুন</button>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="admin-table">
+              <thead>
+                <tr>
+                  <th>আইডি ও সময়</th>
+                  <th>গ্রাহকের নাম ও ফোন</th>
+                  <th>ঠিকানা</th>
+                  <th>প্যাকেজ ও কালার</th>
+                  <th>মোট টাকা</th>
+                  <th>স্ট্যাটাস</th>
+                </tr>
+              </thead>
+              <tbody id="admin-orders-tbody">
+                <tr>
+                  <td colspan="6" style="text-align: center; color: #94A3B8; padding: 24px;">এখনও কোনো অর্ডার আসেনি।</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // ========================================================
+    // 🔑 CHANGE YOUR ADMIN PASSWORD HERE:
+    // ========================================================
+    const ADMIN_PASSWORD = "admin123";
+
+    // Check login state on page load
+    document.addEventListener('DOMContentLoaded', () => {
+      if (sessionStorage.getItem('littlenest_admin_auth') === 'true') {
+        showDashboard();
+      }
+    });
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const input = document.getElementById('admin-pass-input');
+      const errorMsg = document.getElementById('admin-error-msg');
+      const pass = input ? input.value : '';
+
+      if (pass === ADMIN_PASSWORD) {
+        sessionStorage.setItem('littlenest_admin_auth', 'true');
+        if (errorMsg) errorMsg.style.display = 'none';
+        showDashboard();
+      } else {
+        if (errorMsg) errorMsg.style.display = 'block';
+        if (input) {
+          input.value = '';
+          input.focus();
+        }
+      }
+    }
+
+    function handleAdminLogout() {
+      sessionStorage.removeItem('littlenest_admin_auth');
+      document.getElementById('admin-dash-view').style.display = 'none';
+      document.getElementById('admin-login-view').style.display = 'block';
+      const input = document.getElementById('admin-pass-input');
+      if (input) input.value = '';
+    }
+
+    function showDashboard() {
+      document.getElementById('admin-login-view').style.display = 'none';
+      document.getElementById('admin-dash-view').style.display = 'block';
+      loadPixelValue();
+      renderAdminOrders();
+    }
+
+    // Bengali Numeral Helper
+    function toBanglaNumber(num) {
+      const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
+      return num.toString().replace(/\d/g, d => bnDigits[d]);
+    }
+
+    function loadPixelValue() {
+      const pixelInput = document.getElementById('admin-pixel-input');
+      if (pixelInput) {
+        const stored = localStorage.getItem('fb_pixel_id') || 
+          (window.SITE_CONFIG && window.SITE_CONFIG.PIXEL_ID ? window.SITE_CONFIG.PIXEL_ID : '');
+        pixelInput.value = stored;
+      }
+    }
+
+    function saveAdminPixel() {
+      const pixelInput = document.getElementById('admin-pixel-input');
+      const statusMsg = document.getElementById('pixel-status-msg');
+      if (!pixelInput) return;
+
+      const val = pixelInput.value.trim();
+      localStorage.setItem('fb_pixel_id', val);
+      if (window.SITE_CONFIG) {
+        window.SITE_CONFIG.PIXEL_ID = val;
+      }
+
+      if (statusMsg) {
+        statusMsg.style.color = '#059669';
+        statusMsg.textContent = '✓ ফেসবুক পিক্সেল আইডি সফলভাবে সেভ হয়েছে!';
+        setTimeout(() => { statusMsg.textContent = ''; }, 3500);
+      }
+    }
+
+    function renderAdminOrders() {
+      const tbody = document.getElementById('admin-orders-tbody');
+      const countEl = document.getElementById('admin-orders-count');
+      if (!tbody) return;
+
+      const orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      if (countEl) countEl.textContent = toBanglaNumber(orders.length);
+
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: #94A3B8; padding: 24px;">এখনও কোনো অর্ডার আসেনি।</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(ord => `
+        <tr>
+          <td><strong>#${ord.orderId}</strong><br><small style="color: #64748B;">${ord.orderDate}</small></td>
+          <td>${ord.customerName}<br><a href="tel:${ord.customerPhone}" style="color: var(--primary); font-weight: 600;">${ord.customerPhone}</a></td>
+          <td style="max-width: 220px; word-break: break-word;">${ord.fullAddress}</td>
+          <td>${ord.packageTitle}<br><span style="font-size: 0.78rem; color: #475569; font-weight: 600;">কালার: ${ord.selectedColor}</span></td>
+          <td><strong style="color: var(--primary);">৳${toBanglaNumber(ord.totalPrice)}</strong></td>
+          <td><span style="background: #ECFDF5; color: #059669; padding: 3px 10px; border-radius: 9999px; font-size: 0.75rem; font-weight: 700;">${ord.status || 'New'}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function exportOrdersToCSV() {
+      const orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
+      if (orders.length === 0) {
+        alert('কোনো অর্ডার ডেটা নেই!');
+        return;
+      }
+
+      const headers = ['Order ID', 'Date', 'Customer Name', 'Phone', 'Address', 'Package', 'Color', 'Total Price', 'Status'];
+      const rows = orders.map(o => [
+        o.orderId,
+        `"${o.orderDate}"`,
+        `"${o.customerName}"`,
+        `"${o.customerPhone}"`,
+        `"${(o.fullAddress || '').replace(/"/g, '""')}"`,
+        `"${o.packageTitle}"`,
+        `"${o.selectedColor}"`,
+        o.totalPrice,
+        o.status || 'New'
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `orders_${Date.now()}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }
+
+    function clearAllOrders() {
+      if (confirm('আপনি কি নিশ্চিত যে সকল অর্ডার ইতিহাস মুছে ফেলতে চান?')) {
+        localStorage.removeItem('littlenest_orders');
+        renderAdminOrders();
+      }
+    }
+  </script>
+</body>
+</html>
