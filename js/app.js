@@ -546,15 +546,13 @@ window.handleCleanOrderSubmit = function(e) {
   // 1. Save to LocalStorage immediately
   saveOrderToStorage(orderData);
 
-  // 2. Dispatch to serverless API (/api/orders) in background
-  try {
-    fetch('/api/orders', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    }).catch(err => console.info('Cloud order sync:', err.message));
-  } catch (e) {
-    // Safe
+  // 2. Dispatch to Supabase PostgreSQL Database via DB helper
+  if (window.DB && typeof window.DB.createOrder === 'function') {
+    window.DB.createOrder(orderData).then(res => {
+      if (res && res.cloudSynced) {
+        console.info('✓ Order successfully synced to Supabase database:', orderId);
+      }
+    }).catch(err => console.info('Supabase order sync:', err.message));
   }
 
   // 3. Trigger Facebook Pixel Purchase Event (Strictly once per unique order ID)

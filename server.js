@@ -28,25 +28,6 @@ const server = http.createServer((req, res) => {
     reqPath = '/admin.html';
   } else if (reqPath === '/pnl' || reqPath === '/pnl/') {
     reqPath = '/pnl.html';
-  } else if (reqPath === '/api/orders') {
-    let body = '';
-    req.on('data', chunk => body += chunk);
-    req.on('end', () => {
-      try {
-        req.body = body ? JSON.parse(body) : {};
-      } catch (e) {
-        req.body = {};
-      }
-      res.status = (code) => { res.statusCode = code; return res; };
-      res.json = (data) => {
-        res.setHeader('Content-Type', 'application/json; charset=utf-8');
-        res.end(JSON.stringify(data));
-      };
-      delete require.cache[require.resolve('./api/orders.js')];
-      const apiHandler = require('./api/orders.js');
-      apiHandler(req, res);
-    });
-    return;
   }
 
   const filePath = path.join(ROOT, reqPath);

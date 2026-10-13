@@ -13,6 +13,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Anek+Bangla:wght@400;500;600;700;800&family=Hind+Siliguri:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/config.js"></script>
+  <script src="js/db.js"></script>
 
   <style>
     :root {
@@ -1014,16 +1017,31 @@
     <div class="pnl-login-box" id="pnl-login-view">
       <div class="pnl-login-icon">🔐</div>
       <h1 class="pnl-login-title">স্টোর P&L ফাইন্যান্সিয়াল লগইন</h1>
-      <p class="pnl-login-sub">স্টোরের লাভ-ক্ষতি, ডেলিভারি মেট্রিক্স ও গোপনীয় অর্থনৈতিক ডাটা দেখতে পাসওয়ার্ড দিন</p>
+      <p class="pnl-login-sub">স্টোরের লাভ-ক্ষতি, ডেলিভারি মেট্রিক্স ও গোপনীয় অর্থনৈতিক ডাটা দেখতে তথ্য দিন</p>
       <form class="pnl-login-form" onsubmit="handlePnlLogin(event)">
-        <input type="password" id="pnl-pass-input" class="pnl-login-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
-        <div class="pnl-error-text" id="pnl-error-msg">ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে আবার চেষ্টা করুন।</div>
-        <button type="submit" class="btn-pnl-submit">
+        <div style="text-align: left; margin-bottom: 4px;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">এডমিন ইমেইল / ইউজারনেম:</label>
+          <input type="text" id="pnl-email-input" class="pnl-login-input" placeholder="admin@littlenest.com" autocomplete="username">
+        </div>
+        <div style="text-align: left; margin-bottom: 4px;">
+          <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">পাসওয়ার্ড:</label>
+          <input type="password" id="pnl-pass-input" class="pnl-login-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
+        </div>
+        <div class="pnl-error-text" id="pnl-error-msg">ভুল তথ্য! সঠিক ইমেইল ও পাসওয়ার্ড দিন।</div>
+        <button type="submit" class="btn-pnl-submit" style="margin-top: 6px;">
           <span>🔓 ক্যালকুলেটরে প্রবেশ করুন</span>
         </button>
+
+        <!-- Supabase Connection Status Pill -->
+        <div id="pnl-login-supabase-status" style="margin-top: 12px; font-size: 0.78rem; color: #475569; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 7px 12px; border-radius: 8px; text-align: center;">
+          <span id="pnl-status-dot">⚡</span>
+          <span id="pnl-status-text">Supabase ডাটাবেজ স্ট্যাটাস চেক হচ্ছে...</span>
+        </div>
       </form>
-      <div style="margin-top: 14px; text-align: center;">
-        <a href="/admin" style="font-size: 0.85rem; color: #7C3AED; text-decoration: underline; font-weight: 600;">← এডমিন প্যানেলে যান</a>
+      <div style="margin-top: 16px; text-align: center; display: flex; justify-content: center; gap: 12px; font-size: 0.85rem;">
+        <a href="/admin" style="color: #7C3AED; text-decoration: underline; font-weight: 600;">← এডমিন প্যানেলে যান</a>
+        <span style="color: #CBD5E1;">|</span>
+        <a href="/" style="color: #0284C7; text-decoration: underline; font-weight: 600;">🌐 লাইভ স্টোর</a>
       </div>
     </div>
 
@@ -1595,8 +1613,23 @@
     // --------------------------------------------------------
     // 1. Password Protection & Authentication
     // --------------------------------------------------------
+    function updatePnlSupabaseStatusBadge() {
+      const dot = document.getElementById('pnl-status-dot');
+      const text = document.getElementById('pnl-status-text');
+      if (!dot || !text) return;
+
+      if (window.DB && window.DB.isConfigured()) {
+        dot.textContent = '🟢';
+        text.textContent = 'Supabase ক্লাউড ডাটাবেজ সক্রিয়';
+      } else {
+        dot.textContent = '🟡';
+        text.textContent = 'Supabase কী কনফিগার করুন (অথবা এডমিন পাসওয়ার্ড দিয়ে প্রবেশ করুন)';
+      }
+    }
+
     function checkPnlAuth() {
-      const isAuth = sessionStorage.getItem('littlenest_admin_auth') === 'true';
+      const session = window.DB ? window.DB.getAdminSession() : null;
+      const isAuth = !!session || sessionStorage.getItem('littlenest_admin_auth') === 'true';
       const loginView = document.getElementById('pnl-login-view');
       const dashView = document.getElementById('pnl-dash-view');
 
@@ -1607,32 +1640,60 @@
       } else {
         if (loginView) loginView.style.display = 'block';
         if (dashView) dashView.style.display = 'none';
+        updatePnlSupabaseStatusBadge();
         const passInp = document.getElementById('pnl-pass-input');
         if (passInp) passInp.focus();
       }
     }
 
-    function handlePnlLogin(e) {
-      e.preventDefault();
-      const input = document.getElementById('pnl-pass-input');
+    async function handlePnlLogin(e) {
+      if (e) e.preventDefault();
+      const emailInput = document.getElementById('pnl-email-input');
+      const passInput = document.getElementById('pnl-pass-input');
       const errorMsg = document.getElementById('pnl-error-msg');
-      const pass = input ? input.value : '';
+      
+      const email = emailInput ? emailInput.value.trim() : '';
+      const pass = passInput ? passInput.value.trim() : '';
 
-      if (pass === ADMIN_PASSWORD) {
-        sessionStorage.setItem('littlenest_admin_auth', 'true');
-        if (errorMsg) errorMsg.style.display = 'none';
-        checkPnlAuth();
-      } else {
-        if (errorMsg) errorMsg.style.display = 'block';
-        if (input) {
-          input.value = '';
-          input.focus();
+      if (!pass) {
+        if (errorMsg) {
+          errorMsg.textContent = 'অনুগ্রহ করে পাসওয়ার্ড লিখুন!';
+          errorMsg.style.display = 'block';
+        }
+        return;
+      }
+
+      try {
+        const result = await window.DB.loginAdmin(email, pass);
+        if (result && result.success) {
+          if (errorMsg) errorMsg.style.display = 'none';
+          checkPnlAuth();
+        } else {
+          if (errorMsg) {
+            errorMsg.textContent = (result && result.error) || 'ভুল তথ্য! সঠিক ইমেইল ও পাসওয়ার্ড দিন।';
+            errorMsg.style.display = 'block';
+          }
+          if (passInput) {
+            passInput.value = '';
+            passInput.focus();
+          }
+        }
+      } catch (err) {
+        if (errorMsg) {
+          errorMsg.textContent = 'লগইনে সমস্যা হয়েছে: ' + (err.message || 'আবার চেষ্টা করুন');
+          errorMsg.style.display = 'block';
         }
       }
     }
 
-    function handlePnlLogout() {
+    async function handlePnlLogout() {
+      if (window.DB && window.DB.logoutAdmin) {
+        await window.DB.logoutAdmin();
+      }
       sessionStorage.removeItem('littlenest_admin_auth');
+      localStorage.removeItem('littlenest_admin_auth');
+      sessionStorage.removeItem('littlenest_admin_token');
+      localStorage.removeItem('littlenest_admin_token');
       checkPnlAuth();
     }
 
@@ -1643,13 +1704,22 @@
       // Pre-fetch cloud API orders silently in the background
       syncLiveOrdersFromStore(false);
 
-      // Poll cloud API every 15 seconds in live mode
+      // Subscribe to Realtime Supabase updates if available
+      if (window.DB && window.DB.subscribeToOrders && !window._pnlRealtimeSubscribed) {
+        window._pnlRealtimeSubscribed = true;
+        window.DB.subscribeToOrders((updatedOrder, eventType) => {
+          syncLiveOrdersFromStore(false);
+        });
+      }
+
+      // Fallback periodic sync every 20 seconds in live mode
       if (!window._pnlPollInterval) {
         window._pnlPollInterval = setInterval(() => {
-          if (sessionStorage.getItem('littlenest_admin_auth') === 'true' && currentPnlMode === 'live') {
+          const session = window.DB ? window.DB.getAdminSession() : null;
+          if (session && currentPnlMode === 'live') {
             syncLiveOrdersFromStore(false);
           }
-        }, 15000);
+        }, 20000);
       }
     }
 
@@ -2161,15 +2231,14 @@
         if (pillCount) pillCount.textContent = `${toBanglaNumber(orders.length)} অর্ডার`;
       }
 
-      // Fetch cloud serverless orders
+      // Fetch cloud orders via Supabase
       try {
-        const res = await fetch('/api/orders');
-        if (res.ok) {
-          const data = await res.json();
-          if (data && data.orders && Array.isArray(data.orders)) {
+        if (window.DB && window.DB.getOrders) {
+          const cloudOrders = await window.DB.getOrders();
+          if (cloudOrders && Array.isArray(cloudOrders)) {
             const map = new Map();
             orders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
-            data.orders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
+            cloudOrders.forEach(o => { if (o && o.orderId) map.set(o.orderId, o); });
 
             const merged = Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
             localStorage.setItem('littlenest_orders', JSON.stringify(merged));
@@ -2181,7 +2250,9 @@
             }
           }
         }
-      } catch (err) {}
+      } catch (err) {
+        console.warn('Supabase sync live orders fallback:', err);
+      }
 
       if (showFeedback && currentPnlMode === 'live') {
         showPnlToast('🔄 স্টোরের লাইভ ডাটা সফলভাবে সিঙ্ক হয়েছে!');
@@ -2641,7 +2712,7 @@
       pnlPendingCancelOrderId = null;
     }
 
-    function updatePnlOrderStatus(orderId, newStatus, cancelReason = '') {
+    async function updatePnlOrderStatus(orderId, newStatus, cancelReason = '') {
       let orders = [];
       try {
         orders = JSON.parse(localStorage.getItem('littlenest_orders') || '[]');
@@ -2662,25 +2733,20 @@
 
       localStorage.setItem('littlenest_orders', JSON.stringify(orders));
 
-      // Push to backend API
+      // Push to Supabase backend
       try {
-        fetch('/api/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'updateStatus',
-            orderId: orderId,
-            status: newStatus,
-            cancelReason: cancelReason
-          })
-        }).catch(() => {});
-      } catch (err) {}
+        if (window.DB && window.DB.updateOrderStatus) {
+          await window.DB.updateOrderStatus(orderId, newStatus, cancelReason);
+        }
+      } catch (err) {
+        console.warn('Supabase update status fallback:', err);
+      }
 
       calculateLivePNL(orders);
       showPnlToast(`✓ অর্ডার #${orderId} এর স্ট্যাটাস '${newStatus}' হিসেবে আপডেট ও P&L রিক্যালকুলেট হয়েছে!`);
     }
 
-    function createPnlTestOrder() {
+    async function createPnlTestOrder() {
       const testNames = ['সুমাইয়া জাহান (টেস্ট)', 'তানভীর আহমেদ (টেস্ট)', 'ফারজানা ইসলাম (টেস্ট)', 'কামরুল হাসান (টেস্ট)'];
       const testPhones = ['01712345678', '01819876543', '01911223344', '01655667788'];
       const testAddrs = [
@@ -2724,14 +2790,14 @@
       existing.unshift(sampleOrder);
       localStorage.setItem('littlenest_orders', JSON.stringify(existing));
 
-      // Post to cloud API
+      // Post to Supabase
       try {
-        fetch('/api/orders', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(sampleOrder)
-        }).catch(() => {});
-      } catch (e) {}
+        if (window.DB && window.DB.createOrder) {
+          await window.DB.createOrder(sampleOrder);
+        }
+      } catch (e) {
+        console.warn('Supabase create test order fallback:', e);
+      }
 
       calculateLivePNL(existing);
       showPnlToast('🧪 নতুন টেস্ট অর্ডার যোগ করা হয়েছে এবং P&L আপডেট হয়েছে!');
