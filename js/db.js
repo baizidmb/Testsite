@@ -116,6 +116,11 @@
    */
   function mapRowToOrder(row) {
     if (!row) return null;
+    const is2Set = (Number(row.quantity) === 2) || 
+                   (row.package_id === 'double') || 
+                   (row.packageId === 'double') || 
+                   (String(row.package_title || row.packageTitle || '').includes('২টি'));
+
     return {
       orderId: row.order_id || row.orderId || (row.id ? 'LN-' + row.id : ''),
       customerName: row.customer_name || row.customerName || '',
@@ -125,12 +130,13 @@
       district: row.district || '',
       upazila: row.upazila || '',
       detailAddress: row.detail_address || row.detailAddress || '',
-      packageTitle: row.package_title || row.packageTitle || '১টি সম্পূর্ণ সেট (৬ পিস)',
-      packageId: row.package_id || row.packageId || 'single',
-      quantity: Number(row.quantity) || 1,
+      packageTitle: row.package_title || row.packageTitle || (is2Set ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)'),
+      packageId: is2Set ? 'double' : (row.package_id || row.packageId || 'single'),
+      packageType: is2Set ? 'double' : 'single',
+      quantity: is2Set ? 2 : (Number(row.quantity) || 1),
       selectedColor: row.selected_color || row.selectedColor || 'স্কাই ব্লু',
-      shippingCost: Number(row.shipping_cost !== undefined ? row.shipping_cost : row.shippingCost) || 0,
-      totalPrice: Number(row.total_price !== undefined ? row.total_price : row.totalPrice) || 0,
+      shippingCost: is2Set ? 0 : (Number(row.shipping_cost !== undefined ? row.shipping_cost : row.shippingCost) || 0),
+      totalPrice: Number(row.total_price !== undefined ? row.total_price : row.totalPrice) || (is2Set ? 2290 : 1260),
       orderDate: row.order_date || row.orderDate || (row.created_at ? new Date(row.created_at).toLocaleString('bn-BD') : ''),
       timestamp: Number(row.timestamp) || (row.created_at ? new Date(row.created_at).getTime() : Date.now()),
       status: row.status || 'New',
@@ -144,6 +150,12 @@
    */
   function mapOrderToRow(order) {
     if (!order) return {};
+    const is2Set = (Number(order.quantity) === 2) || 
+                   (order.packageId === 'double') || 
+                   (order.package_id === 'double') || 
+                   (order.packageType === 'double') || 
+                   (String(order.packageTitle || order.package_title || '').includes('২টি'));
+
     return {
       order_id: String(order.orderId || order.order_id),
       customer_name: String(order.customerName || order.customer_name || ''),
@@ -153,12 +165,12 @@
       district: String(order.district || ''),
       upazila: String(order.upazila || ''),
       detail_address: String(order.detailAddress || order.detail_address || ''),
-      package_title: String(order.packageTitle || order.package_title || '১টি সম্পূর্ণ সেট (৬ পিস)'),
-      package_id: String(order.packageId || order.package_id || 'single'),
-      quantity: Number(order.quantity) || 1,
+      package_title: String(order.packageTitle || order.package_title || (is2Set ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)')),
+      package_id: is2Set ? 'double' : String(order.packageId || order.package_id || 'single'),
+      quantity: is2Set ? 2 : (Number(order.quantity) || 1),
       selected_color: String(order.selectedColor || order.selected_color || 'স্কাই ব্লু'),
-      shipping_cost: Number(order.shippingCost !== undefined ? order.shippingCost : order.shipping_cost) || 0,
-      total_price: Number(order.totalPrice !== undefined ? order.totalPrice : order.total_price) || 0,
+      shipping_cost: is2Set ? 0 : (Number(order.shippingCost !== undefined ? order.shippingCost : order.shipping_cost) || 0),
+      total_price: is2Set ? 2290 : (Number(order.totalPrice !== undefined ? order.totalPrice : order.total_price) || 1260),
       order_date: String(order.orderDate || order.order_date || new Date().toLocaleString('bn-BD')),
       timestamp: Number(order.timestamp) || Date.now(),
       status: String(order.status || 'New'),

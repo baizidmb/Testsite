@@ -1085,12 +1085,19 @@
       }
     }
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       .metrics-summary-grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .metric-hero-card {
+        padding: 14px 10px;
       }
       .metric-number-big {
-        font-size: 1.45rem;
+        font-size: 1.3rem;
+      }
+      .metric-title {
+        font-size: 0.76rem;
       }
     }
 

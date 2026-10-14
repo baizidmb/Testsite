@@ -161,6 +161,32 @@
         grid-template-columns: repeat(5, 1fr);
       }
     }
+    @media (max-width: 480px) {
+      .admin-page-wrap {
+        padding: 16px 10px 48px;
+      }
+      .admin-card {
+        padding: 16px 12px;
+      }
+      .status-summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+      .status-stat-card {
+        padding: 10px 8px;
+      }
+      .stat-num {
+        font-size: 1.15rem;
+      }
+      .orders-toolbar-card {
+        padding: 12px 10px;
+      }
+      .table-responsive {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+    }
     .status-stat-card {
       background: #F8FAFC;
       border: 1px solid var(--border-color);

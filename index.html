@@ -520,9 +520,9 @@
 
         <!-- Package Selector (1 Set vs 2 Sets Free Shipping) -->
         <div class="package-selector-clean">
-          <label class="clean-field-label">প্যাকেজ নির্বাচন করুন:</label>
-          <div class="package-clean-options">
-            <div class="pkg-card-option selected" id="pkg-card-1" onclick="selectCleanPackage(1, 1190, 70)">
+          <label class="clean-field-label" id="pkg-group-label">প্যাকেজ নির্বাচন করুন:</label>
+          <div class="package-clean-options" role="radiogroup" aria-labelledby="pkg-group-label">
+            <div class="pkg-card-option selected" id="pkg-card-1" role="radio" aria-checked="true" tabindex="0" data-pkg-qty="1" data-pkg-price="1190" data-pkg-type="single" onclick="selectCleanPackage(1, 1190, 70)" onkeydown="if(event.key==='Enter'||event.key===' ')selectCleanPackage(1, 1190, 70)">
               <div class="pkg-radio-circle"></div>
               <div class="pkg-details">
                 <div class="pkg-title">১টি সম্পূর্ণ সেট (৬ পিস)</div>
@@ -534,7 +534,7 @@
               </div>
             </div>
 
-            <div class="pkg-card-option" id="pkg-card-2" onclick="selectCleanPackage(2, 2290, 0)">
+            <div class="pkg-card-option" id="pkg-card-2" role="radio" aria-checked="false" tabindex="0" data-pkg-qty="2" data-pkg-price="2290" data-pkg-type="double" onclick="selectCleanPackage(2, 2290, 0)" onkeydown="if(event.key==='Enter'||event.key===' ')selectCleanPackage(2, 2290, 0)">
               <div class="pkg-free-tag">🎁 ফ্রি ডেলিভারি</div>
               <div class="pkg-radio-circle"></div>
               <div class="pkg-details">
@@ -576,6 +576,12 @@
 
         <!-- The 3 Essential Form Fields Form -->
         <form id="checkout-order-form" onsubmit="handleCleanOrderSubmit(event)" novalidate>
+          <input type="hidden" id="selected-package-type" name="package_type" value="single">
+          <input type="hidden" id="selected-package-id" name="package_id" value="single">
+          <input type="hidden" id="selected-package-quantity" name="package_quantity" value="1">
+          <input type="hidden" id="selected-package-price" name="package_price" value="1190">
+          <input type="hidden" id="selected-package-shipping" name="package_shipping" value="70">
+          <input type="hidden" id="selected-package-title" name="package_title" value="১টি সম্পূর্ণ সেট (৬ পিস)">
           <input type="hidden" id="selected-color-input" name="selected_color" value="স্কাই ব্লু">
           
           <!-- Field 1: Name -->

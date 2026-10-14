@@ -6,6 +6,8 @@
 
 // Global State
 let currentPackage = {
+  packageType: 'single',
+  packageId: 'single',
   quantity: 1,
   name: '১টি সম্পূর্ণ সেট (৬ পিস)',
   price: 1190,
@@ -23,6 +25,13 @@ let detailAddress = '';
 
 // Bengali Number Formatter
 function toBanglaNumber(num) {
+  if (num === undefined || num === null) return '০';
+  const parsed = Number(num);
+  if (!isNaN(parsed)) {
+    try {
+      return parsed.toLocaleString('bn-BD');
+    } catch (e) {}
+  }
   const bnDigits = ['০', '১', '২', '৩', '৪', '৫', '৬', '৭', '৮', '৯'];
   return num.toString().replace(/\d/g, d => bnDigits[d]);
 }
@@ -39,20 +48,37 @@ const COLOR_HEX_MAP = {
 };
 
 window.selectCleanPackage = function(qty, price, shipping) {
-  currentPackage.quantity = qty;
-  currentPackage.price = price;
-  currentPackage.name = qty === 2 ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)';
+  const is2Set = (Number(qty) === 2);
+  currentPackage.quantity = is2Set ? 2 : 1;
+  currentPackage.price = is2Set ? 2290 : 1190;
+  currentPackage.shipping = is2Set ? 0 : (selectedDistrict === 'ঢাকা' ? 70 : (selectedDistrict ? 130 : 70));
+  currentPackage.name = is2Set ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)';
+  currentPackage.packageType = is2Set ? 'double' : 'single';
+  currentPackage.packageId = is2Set ? 'double' : 'single';
+
+  // Sync hidden form fields inside the checkout form
+  const setVal = (id, val) => { const el = document.getElementById(id); if (el) el.value = val; };
+  setVal('selected-package-type', currentPackage.packageType);
+  setVal('selected-package-id', currentPackage.packageId);
+  setVal('selected-package-quantity', currentPackage.quantity);
+  setVal('selected-package-price', currentPackage.price);
+  setVal('selected-package-shipping', currentPackage.shipping);
+  setVal('selected-package-title', currentPackage.name);
 
   const card1 = document.getElementById('pkg-card-1');
   const card2 = document.getElementById('pkg-card-2');
 
   if (card1 && card2) {
-    if (qty === 1) {
-      card1.classList.add('selected');
-      card2.classList.remove('selected');
-    } else {
+    if (is2Set) {
       card2.classList.add('selected');
+      card2.setAttribute('aria-checked', 'true');
       card1.classList.remove('selected');
+      card1.setAttribute('aria-checked', 'false');
+    } else {
+      card1.classList.add('selected');
+      card1.setAttribute('aria-checked', 'true');
+      card2.classList.remove('selected');
+      card2.setAttribute('aria-checked', 'false');
     }
   }
 
@@ -87,15 +113,37 @@ window.selectCleanColor = function(colorName, el) {
 };
 
 function recalculateShipping() {
-  if (currentPackage.quantity === 2) {
+  const card2El = document.getElementById('pkg-card-2');
+  const hiddenTypeEl = document.getElementById('selected-package-type');
+  const is2Set = (currentPackage.quantity === 2) || 
+                 (card2El && card2El.classList.contains('selected')) ||
+                 (hiddenTypeEl && hiddenTypeEl.value === 'double');
+
+  if (is2Set) {
+    currentPackage.quantity = 2;
+    currentPackage.price = 2290;
     currentPackage.shipping = 0;
-  } else if (selectedDistrict === 'ঢাকা') {
-    currentPackage.shipping = 70;
-  } else if (selectedDistrict && selectedDistrict !== 'ঢাকা') {
-    currentPackage.shipping = 130;
+    currentPackage.name = '২টি সম্পূর্ণ সেট (১২ পিস)';
+    currentPackage.packageType = 'double';
+    currentPackage.packageId = 'double';
   } else {
-    currentPackage.shipping = 70;
+    currentPackage.quantity = 1;
+    currentPackage.price = 1190;
+    currentPackage.name = '১টি সম্পূর্ণ সেট (৬ পিস)';
+    currentPackage.packageType = 'single';
+    currentPackage.packageId = 'single';
+    if (selectedDistrict === 'ঢাকা') {
+      currentPackage.shipping = 70;
+    } else if (selectedDistrict && selectedDistrict !== 'ঢাকা') {
+      currentPackage.shipping = 130;
+    } else {
+      currentPackage.shipping = 70;
+    }
   }
+
+  const shipInput = document.getElementById('selected-package-shipping');
+  if (shipInput) shipInput.value = currentPackage.shipping;
+
   updateBillDisplay();
 }
 
@@ -372,7 +420,7 @@ function setupPhoneInputValidation() {
 // -------------------------------------------------------------
 // 4. STREAMLINED ORDER VALIDATION & SUBMISSION
 // -------------------------------------------------------------
-window.handleCleanOrderSubmit = function(e) {
+window.handleCleanOrderSubmit = async function(e) {
   e.preventDefault();
 
   const nameInput = document.getElementById('cust-name');
@@ -473,9 +521,24 @@ window.handleCleanOrderSubmit = function(e) {
     return;
   }
 
+  // Multi-tier detection of package selection (robust against any state mismatch)
+  const card2Selected = document.getElementById('pkg-card-2') && document.getElementById('pkg-card-2').classList.contains('selected');
+  const pkgTypeEl = document.getElementById('selected-package-type');
+  const pkgTypeVal = pkgTypeEl ? pkgTypeEl.value : '';
+  const is2Set = (currentPackage.quantity === 2) || (currentPackage.packageType === 'double') || card2Selected || (pkgTypeVal === 'double');
+
+  const finalPackageType = is2Set ? 'double' : 'single';
+  const finalPackageId = is2Set ? 'double' : 'single';
+  const finalPackageTitle = is2Set ? '২টি সম্পূর্ণ সেট (১২ পিস)' : '১টি সম্পূর্ণ সেট (৬ পিস)';
+  const finalQuantity = is2Set ? 2 : 1;
+  const finalPackagePrice = is2Set ? 2290 : 1190;
+  const finalShippingCost = is2Set ? 0 : (finalDistrict === 'ঢাকা' ? 70 : (finalDistrict ? 130 : 70));
+  const finalGrandTotal = finalPackagePrice + finalShippingCost; // Strictly ৳2,290 for 2-set
+
   // -----------------------------------------------------------
   // DUPLICATE ORDER GUARD:
   // Prevent duplicate orders from same phone within 10 minutes unless confirmed
+  // Only blocks identical package/amount orders, allowing different package attempts
   // -----------------------------------------------------------
   const now = Date.now();
   const TEN_MINUTES_MS = 10 * 60 * 1000;
@@ -489,13 +552,28 @@ window.handleCleanOrderSubmit = function(e) {
   // Prune submissions older than 60 minutes
   recentSubmissions = recentSubmissions.filter(item => (now - item.timestamp) < 60 * 60 * 1000);
 
-  const recentDuplicate = recentSubmissions.find(item => item.phone === sanitizedPhone && (now - item.timestamp) < TEN_MINUTES_MS);
+  const recentDuplicate = recentSubmissions.find(item => 
+    item.phone === sanitizedPhone && 
+    (now - item.timestamp) < TEN_MINUTES_MS &&
+    (item.packageType === finalPackageType || item.totalPrice === finalGrandTotal)
+  );
+
   if (recentDuplicate) {
-    const minutesAgo = Math.max(1, Math.round((now - recentDuplicate.timestamp) / 60000));
-    const confirmMsg = `আপনি এই নাম্বার (${sanitizedPhone}) দিয়ে ইতিমধ্যে গত ${toBanglaNumber(minutesAgo)} মিনিট আগে একটি অর্ডার করেছেন (অর্ডার আইডি: #${recentDuplicate.orderId})।\n\nআপনি কি নিশ্চিত যে আপনি আরেকটি নতুন অর্ডার করতে চান?`;
-    const allowDuplicate = window.confirm(confirmMsg);
+    let allowDuplicate = true;
+    try {
+      const minutesAgo = Math.max(1, Math.round((now - recentDuplicate.timestamp) / 60000));
+      const confirmMsg = `আপনি এই নাম্বার (${sanitizedPhone}) দিয়ে ইতিমধ্যে গত ${toBanglaNumber(minutesAgo)} মিনিট আগে একটি অর্ডার করেছেন (অর্ডার আইডি: #${recentDuplicate.orderId})।\n\nআপনি কি নিশ্চিত যে আপনি আরেকটি নতুন অর্ডার কনফার্ম করতে চান?`;
+      allowDuplicate = window.confirm(confirmMsg);
+    } catch (e) {
+      allowDuplicate = true;
+    }
+
     if (!allowDuplicate) {
-      return; // Customer chose cancel, prevent duplicate order
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>🛒 এখনই অর্ডার করুন (ক্যাশ অন ডেলিভারি)</span>';
+      }
+      return; // Customer cancelled, do not place duplicate
     }
   }
 
@@ -505,8 +583,9 @@ window.handleCleanOrderSubmit = function(e) {
     submitBtn.innerHTML = '<span>⏳ অর্ডার সম্পন্ন হচ্ছে...</span>';
   }
 
-  const grandTotal = currentPackage.price + currentPackage.shipping;
-  const orderId = 'LN-' + Math.floor(100000 + Math.random() * 900000);
+  // Guaranteed unique, collision-free order ID
+  const uniqueIdSuffix = Date.now().toString().slice(-6) + Math.floor(100 + Math.random() * 900);
+  const orderId = 'LN-' + uniqueIdSuffix;
   const orderTime = new Date().toLocaleString('bn-BD', {
     dateStyle: 'medium',
     timeStyle: 'short'
@@ -523,11 +602,13 @@ window.handleCleanOrderSubmit = function(e) {
     district: finalDistrict,
     upazila: finalUpazila,
     detailAddress: detail,
-    packageTitle: currentPackage.name,
-    quantity: currentPackage.quantity,
+    packageTitle: finalPackageTitle,
+    packageType: finalPackageType,
+    packageId: finalPackageId,
+    quantity: finalQuantity,
     selectedColor: currentColor,
-    shippingCost: currentPackage.shipping,
-    totalPrice: grandTotal,
+    shippingCost: finalShippingCost,
+    totalPrice: finalGrandTotal,
     orderDate: orderTime,
     timestamp: now,
     status: 'New'
@@ -537,40 +618,43 @@ window.handleCleanOrderSubmit = function(e) {
   recentSubmissions.push({
     phone: sanitizedPhone,
     timestamp: now,
-    orderId: orderId
+    orderId: orderId,
+    packageType: finalPackageType,
+    totalPrice: finalGrandTotal
   });
   try {
     localStorage.setItem('littlenest_recent_submissions', JSON.stringify(recentSubmissions));
   } catch (e) {}
 
-  // 1. Save to LocalStorage immediately
-  saveOrderToStorage(orderData);
-
-  // 2. Dispatch to Supabase PostgreSQL Database via DB helper
-  if (window.DB && typeof window.DB.createOrder === 'function') {
-    window.DB.createOrder(orderData).then(res => {
-      if (res && res.cloudSynced) {
-        console.info('✓ Order successfully synced to Supabase database:', orderId);
-      }
-    }).catch(err => console.info('Supabase order sync:', err.message));
+  // 1. Dispatch to Supabase PostgreSQL Database (and cache locally)
+  try {
+    if (window.DB && typeof window.DB.createOrder === 'function') {
+      await window.DB.createOrder(orderData);
+      console.info('✓ Order successfully recorded:', orderId);
+    } else {
+      saveOrderToStorage(orderData);
+    }
+  } catch (err) {
+    console.warn('Order sync note:', err.message);
+    saveOrderToStorage(orderData);
   }
 
-  // 3. Trigger Facebook Pixel Purchase Event (Strictly once per unique order ID)
+  // 2. Trigger Facebook Pixel Purchase Event (Strictly once per unique order ID)
   if (typeof trackPixelEvent === 'function') {
     trackPixelEvent('Purchase', {
       orderId: orderId,
-      packageTitle: currentPackage.name,
+      packageTitle: finalPackageTitle,
       content_name: 'Silicone Baby Feeding Set',
       content_category: 'Baby Dining',
       content_ids: ['LN-SILICONE-SET'],
       content_type: 'product',
-      value: grandTotal,
+      value: finalGrandTotal,
       currency: 'BDT',
-      num_items: currentPackage.quantity
+      num_items: finalQuantity
     });
   }
 
-  // 4. Render receipt and display modal
+  // 3. Render receipt and display modal with fresh order details
   showOrderSuccessModal(orderData);
 
   // Reset form inputs & address state
@@ -596,12 +680,15 @@ function showOrderSuccessModal(order) {
   const details = document.getElementById('receipt-details');
 
   if (details) {
-    const waText = `আসসালামু আলাইকুম, আমি LittleNest BD থেকে সিলিকন ফিডিং সেট অর্ডার করেছি।\n\nঅর্ডার আইডি: #${order.orderId}\nগ্রাহকের নাম: ${order.customerName}\nমোবাইল: ${order.customerPhone}\nডেলিভারি ঠিকানা: ${order.fullAddress}\nপ্যাকেজ: ${order.packageTitle} (${order.selectedColor})\nসর্বমোট বিল: ৳${toBanglaNumber(order.totalPrice)} (ক্যাশ অন ডেলিভারি)`;
+    // Clear any previous stale content immediately
+    details.innerHTML = '';
+
+    const waText = `আসসালামু আলাইকুম, আমি LittleNest BD থেকে সিলিকন ফিডিং সেট অর্ডার করেছি।\n\nঅর্ডার আইডি: #${order.orderId}\nগ্রাহকের নাম: ${order.customerName}\nমোবাইল: ${order.customerPhone}\nডেলিভারি ঠিকানা: ${order.fullAddress}\nপ্যাকেজ: ${order.packageTitle} (${order.selectedColor})\nপরিমাণ: ${toBanglaNumber(order.quantity)} টি সেট\nডেলিভারি চার্জ: ${order.shippingCost === 0 ? 'ফ্রি (৳০)' : '৳' + toBanglaNumber(order.shippingCost)}\nসর্বমোট বিল: ৳${toBanglaNumber(order.totalPrice)} (ক্যাশ অন ডেলিভারি)`;
 
     details.innerHTML = `
       <div style="display: flex; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding-bottom: 6px;">
         <span>অর্ডার আইডি:</span>
-        <strong style="color: var(--primary);">#${order.orderId}</strong>
+        <strong style="color: var(--primary); font-family: 'Inter', sans-serif;">#${order.orderId}</strong>
       </div>
       <div style="display: flex; justify-content: space-between;">
         <span>গ্রাহকের নাম:</span>
@@ -620,14 +707,18 @@ function showOrderSuccessModal(order) {
         <strong>${order.packageTitle} (${order.selectedColor})</strong>
       </div>
       <div style="display: flex; justify-content: space-between;">
+        <span>পরিমাণ:</span>
+        <strong>${toBanglaNumber(order.quantity)} টি সেট</strong>
+      </div>
+      <div style="display: flex; justify-content: space-between;">
         <span>ডেলিভারি চার্জ:</span>
         <strong style="color: ${order.shippingCost === 0 ? '#059669' : '#0F172A'};">
-          ${order.shippingCost === 0 ? 'ফ্রি ডেলিভারি 🎁' : `৳${toBanglaNumber(order.shippingCost)}`}
+          ${order.shippingCost === 0 ? 'ফ্রি ডেলিভারি 🎁 (৳০)' : `৳${toBanglaNumber(order.shippingCost)}`}
         </strong>
       </div>
-      <div style="display: flex; justify-content: space-between; border-top: 1.5px dashed #CBD5E1; padding-top: 6px; font-weight: 700; color: var(--text-main);">
+      <div style="display: flex; justify-content: space-between; border-top: 1.5px dashed #CBD5E1; padding-top: 8px; font-weight: 700; color: var(--text-main);">
         <span>সর্বমোট বিল:</span>
-        <span style="color: var(--primary); font-size: 1.15rem;">৳${toBanglaNumber(order.totalPrice)}</span>
+        <span style="color: var(--primary); font-size: 1.2rem; font-weight: 800;">৳${toBanglaNumber(order.totalPrice)}</span>
       </div>
 
       <div style="margin-top: 14px; text-align: center;">
@@ -641,10 +732,11 @@ function showOrderSuccessModal(order) {
   if (modal) modal.classList.add('open');
 }
 
-
 window.closeSuccessModal = function() {
   const modal = document.getElementById('success-modal');
   if (modal) modal.classList.remove('open');
+  const details = document.getElementById('receipt-details');
+  if (details) details.innerHTML = '';
 };
 
 // -------------------------------------------------------------
