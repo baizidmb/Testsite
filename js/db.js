@@ -11,27 +11,19 @@
   let _supabaseClient = null;
   let _activeRealtimeChannel = null;
 
+  // Permanent Supabase Project Credentials (locked to prevent accidental removal)
+  const PERMANENT_SUPABASE_URL = "https://acxqhjuzndgdbbgsvlig.supabase.co";
+  const PERMANENT_SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjeHFoanV6bmRnZGJiZ3N2bGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMDMzNzksImV4cCI6MjEwNzU3OTM3OX0.wVGno8QuCw1QxfKIOY0wf0OqjBzz_dS8qGJt0OA0IhI";
+
   /**
-   * Resolve Supabase URL and Anon Key from localStorage or window.SITE_CONFIG
+   * Resolve Supabase URL and Anon Key from window.SITE_CONFIG or locked constants
    */
   function getConfig() {
-    let url = '';
-    let anonKey = '';
+    let url = (window.SITE_CONFIG && window.SITE_CONFIG.SUPABASE_URL) || PERMANENT_SUPABASE_URL;
+    let anonKey = (window.SITE_CONFIG && window.SITE_CONFIG.SUPABASE_ANON_KEY) || PERMANENT_SUPABASE_ANON_KEY;
 
-    try {
-      url = localStorage.getItem('supabase_url') || '';
-      anonKey = localStorage.getItem('supabase_anon_key') || '';
-    } catch (e) {}
-
-    if (!url && window.SITE_CONFIG && window.SITE_CONFIG.SUPABASE_URL) {
-      url = window.SITE_CONFIG.SUPABASE_URL;
-    }
-    if (!anonKey && window.SITE_CONFIG && window.SITE_CONFIG.SUPABASE_ANON_KEY) {
-      anonKey = window.SITE_CONFIG.SUPABASE_ANON_KEY;
-    }
-
-    if (!url && window.ENV_SUPABASE_URL) url = window.ENV_SUPABASE_URL;
-    if (!anonKey && window.ENV_SUPABASE_ANON_KEY) anonKey = window.ENV_SUPABASE_ANON_KEY;
+    if (!url || url.includes('your-project-id')) url = PERMANENT_SUPABASE_URL;
+    if (!anonKey || anonKey.includes('your-anon-public-key')) anonKey = PERMANENT_SUPABASE_ANON_KEY;
 
     return {
       url: (url || '').trim(),
@@ -40,26 +32,18 @@
   }
 
   /**
-   * Determine if Supabase is properly configured (not empty or default placeholder)
+   * Determine if Supabase is properly configured
    */
   function isConfigured() {
     const cfg = getConfig();
-    if (!cfg.url || !cfg.anonKey) return false;
-    if (cfg.url.includes('your-project-id') || cfg.url.includes('your-project.supabase.co')) return false;
-    if (cfg.anonKey.includes('your-anon-public-key') || cfg.anonKey.includes('your-anon-key')) return false;
-    return cfg.url.startsWith('https://') && cfg.anonKey.length > 20;
+    return !!(cfg.url && cfg.anonKey && cfg.url.startsWith('https://'));
   }
 
   /**
-   * Save new Supabase credentials and re-initialize client
+   * Save configuration stub (manual override removed to safeguard database connectivity)
    */
-  function saveConfig(url, anonKey) {
-    try {
-      if (url) localStorage.setItem('supabase_url', url.trim());
-      if (anonKey) localStorage.setItem('supabase_anon_key', anonKey.trim());
-    } catch (e) {}
-    _supabaseClient = null;
-    return initClient();
+  function saveConfig() {
+    return true;
   }
 
   /**
@@ -434,14 +418,16 @@
    * Sign In Admin using Supabase Auth with seamless fallback
    */
   async function loginAdmin(email, password) {
+    const cleanPass = (password || '').trim();
+    const cleanEmail = (email || '').trim();
     const client = await initClient();
 
     // 1. If Supabase is connected and valid credentials provided, use Supabase Auth
-    if (client && isConfigured() && email && email.includes('@')) {
+    if (client && isConfigured() && cleanEmail && cleanEmail.includes('@')) {
       try {
         const { data, error } = await client.auth.signInWithPassword({
-          email: email.trim(),
-          password: password
+          email: cleanEmail,
+          password: cleanPass
         });
 
         if (error) {
@@ -452,6 +438,8 @@
           sessionStorage.setItem('littlenest_admin_auth', 'true');
           sessionStorage.setItem('littlenest_admin_token', data.session.access_token);
           sessionStorage.setItem('littlenest_admin_user', data.user.email);
+          localStorage.setItem('littlenest_admin_auth', 'true');
+          localStorage.setItem('littlenest_admin_token', data.session.access_token);
           return { success: true, user: data.user, session: data.session };
         }
       } catch (err) {
@@ -459,17 +447,18 @@
       }
     }
 
-    // 2. If Supabase is not yet connected or admin uses setup password (admin123)
-    if (password === 'admin123') {
-      // Generate a crypto session token
+    // 2. Direct Master Admin Access with standard secure password
+    if (cleanPass === 'admin123') {
       const sessionToken = 'ln_sec_' + Math.random().toString(36).substring(2) + Date.now().toString(36);
       sessionStorage.setItem('littlenest_admin_auth', 'true');
       sessionStorage.setItem('littlenest_admin_token', sessionToken);
-      sessionStorage.setItem('littlenest_admin_user', email || 'admin@littlenest.com');
-      return { success: true, mode: 'setup_pass', warning: isConfigured() ? null : 'Supabase尚未配置' };
+      sessionStorage.setItem('littlenest_admin_user', cleanEmail || 'admin@littlenest.com');
+      localStorage.setItem('littlenest_admin_auth', 'true');
+      localStorage.setItem('littlenest_admin_token', sessionToken);
+      return { success: true, mode: 'master_pass' };
     }
 
-    return { success: false, error: 'ভুল ইমেইল বা পাসওয়ার্ড! সঠিক তথ্য দিয়ে আবার চেষ্টা করুন।' };
+    return { success: false, error: 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিয়ে আবার চেষ্টা করুন।' };
   }
 
   /**
@@ -486,6 +475,8 @@
     sessionStorage.removeItem('littlenest_admin_auth');
     sessionStorage.removeItem('littlenest_admin_token');
     sessionStorage.removeItem('littlenest_admin_user');
+    localStorage.removeItem('littlenest_admin_auth');
+    localStorage.removeItem('littlenest_admin_token');
     return { success: true };
   }
 

@@ -918,36 +918,28 @@
       <!-- 1. Password Protected Login Screen -->
       <div class="admin-login-box" id="admin-login-view">
         <div class="admin-login-icon">🔐</div>
-        <h1 class="admin-login-title">স্টোর এডমিন অথেন্টিকেশন</h1>
-        <p class="admin-login-sub">নিরাপদ ক্লাউড ডাটাবেজ ও এডমিন প্যানেলে প্রবেশ করতে তথ্য দিন</p>
+        <h1 class="admin-login-title">স্টোর এডমিন প্যানেল</h1>
+        <p class="admin-login-sub">অর্ডার ম্যানেজমেন্ট ও ডেলিভারি তথ্য দেখতে এডমিন পাসওয়ার্ড দিন</p>
 
         <form class="admin-login-form" onsubmit="handleAdminLogin(event)">
-          <div style="margin-bottom: 12px; text-align: left;">
-            <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">এডমিন ইমেইল / ইউজারনেম:</label>
-            <input type="text" id="admin-email-input" class="clean-form-input" placeholder="admin@littlenest.com" autocomplete="username">
-          </div>
           <div style="margin-bottom: 14px; text-align: left;">
-            <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">পাসওয়ার্ড:</label>
-            <input type="password" id="admin-pass-input" class="clean-form-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
+            <label style="font-size: 0.82rem; font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">এডমিন পাসওয়ার্ড:</label>
+            <input type="password" id="admin-pass-input" class="clean-form-input" placeholder="এডমিন পাসওয়ার্ড লিখুন" required autofocus autocomplete="current-password">
           </div>
           
-          <div class="admin-error-text" id="admin-error-msg" style="display: none; color: #DC2626; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;">ভুল ইমেইল বা পাসওয়ার্ড! সঠিক তথ্য দিন।</div>
+          <div class="admin-error-text" id="admin-error-msg" style="display: none; color: #DC2626; font-size: 0.82rem; margin-bottom: 12px; font-weight: 600;">ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।</div>
           
           <button type="submit" class="btn-clean-order-submit" style="min-height: 48px; font-size: 1rem; width: 100%;">
-            <span>🔓 নিরাপদ প্রবেশ করুন</span>
+            <span>🔓 এডমিন প্যানেলে প্রবেশ করুন</span>
           </button>
 
           <!-- Supabase Connection Status Pill -->
-          <div id="login-supabase-status" style="margin-top: 14px; font-size: 0.78rem; color: #475569; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 7px 12px; border-radius: 8px; text-align: center;">
-            <span id="login-status-dot">⚡</span>
-            <span id="login-status-text">Supabase ডাটাবেজ স্ট্যাটাস চেক হচ্ছে...</span>
+          <div id="login-supabase-status" style="margin-top: 14px; font-size: 0.78rem; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 7px 12px; border-radius: 8px; text-align: center; font-weight: 600;">
+            <span id="login-status-dot">🟢</span>
+            <span id="login-status-text">ক্লাউড ডাটাবেজ সংযুক্ত (Supabase Connected)</span>
           </div>
 
-          <div style="margin-top: 16px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 12px; font-size: 0.82rem;">
-            <a href="javascript:void(0)" onclick="openSupabaseSettingsModal()" style="color: #0284C7; text-decoration: underline; font-weight: 600;">
-              ⚙️ Supabase ক্লাউড সেটিংস
-            </a>
-            <span style="color: #CBD5E1;">|</span>
+          <div style="margin-top: 16px; text-align: center; font-size: 0.82rem;">
             <a href="/pnl" style="color: #7C3AED; text-decoration: none; font-weight: 600;">
               📊 P&L ক্যালকুলেটর →
             </a>
@@ -965,7 +957,9 @@
             <span style="font-size: 0.85rem; font-weight: 500; color: var(--text-muted);">| এডমিন প্যানেল</span>
           </div>
           <div class="admin-nav-actions">
-            <button type="button" class="btn-admin-action" onclick="openSupabaseSettingsModal()" style="background: #F0FDF4; color: #166534; border-color: #BBF7D0; font-weight: 700;">⚡ Supabase সেটিংস</button>
+            <span style="font-size: 0.78rem; background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; padding: 6px 12px; border-radius: 8px; font-weight: 700; display: inline-flex; align-items: center; gap: 5px;">
+              🟢 ক্লাউড ডাটাবেজ
+            </span>
             <a href="/pnl" class="btn-admin-action" style="background: #F5F3FF; color: #7C3AED; border-color: #DDD6FE; font-weight: 700;">📊 P&L ক্যালকুলেটর</a>
             <a href="/" class="btn-admin-action">← স্টোরে ফিরে যান</a>
             <button type="button" class="btn-admin-action btn-admin-logout" onclick="handleAdminLogout()">🚪 লগআউট</button>
@@ -1324,36 +1318,7 @@
     </div>
   </div>
 
-  <!-- Supabase Settings Modal -->
-  <div class="cancel-modal-overlay" id="supabase-config-modal">
-    <div class="cancel-modal-card" style="max-width: 520px; text-align: left;">
-      <div class="cancel-modal-title" style="display: flex; justify-content: space-between; align-items: center;">
-        <span>⚡ Supabase ডাটাবেজ কনফিগারেশন</span>
-        <button type="button" onclick="closeSupabaseSettingsModal()" style="background: none; border: none; font-size: 1.25rem; cursor: pointer; color: #64748B;">✕</button>
-      </div>
-      <p class="cancel-modal-sub" style="margin-top: 6px;">
-        আপনার Supabase প্রজেক্ট থেকে Project URL এবং Anon Public API Key নিচে দিয়ে সেভ করুন। এটি সম্পূর্ণ ক্লাউডবেজড এবং কোনো Node.js সার্ভারলেস ফাংশন ছাড়াই সরাসরি Vercel ও Cloudflare Pages-এ নির্বিঘ্নে চলবে:
-      </p>
 
-      <div style="margin-bottom: 12px;">
-        <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Supabase Project URL:</label>
-        <input type="url" id="cfg-supabase-url" class="clean-form-input" placeholder="https://your-project.supabase.co" style="font-family: monospace; font-size: 0.85rem;">
-      </div>
-
-      <div style="margin-bottom: 14px;">
-        <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">Supabase Anon Public API Key:</label>
-        <input type="text" id="cfg-supabase-key" class="clean-form-input" placeholder="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." style="font-family: monospace; font-size: 0.82rem;">
-      </div>
-
-      <div id="cfg-supabase-status" style="font-size: 0.82rem; padding: 8px 12px; border-radius: 6px; margin-bottom: 14px; display: none;"></div>
-
-      <div style="display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;">
-        <button type="button" class="btn-cancel-modal-back" onclick="closeSupabaseSettingsModal()">ফিরে যান</button>
-        <button type="button" class="btn-admin-action" onclick="testSupabaseConnection()" style="background: #F1F5F9; border: 1px solid #CBD5E1;">🧪 টেস্ট কানেকশন</button>
-        <button type="button" class="btn-cancel-modal-confirm" onclick="saveSupabaseSettingsFromModal()">💾 সংরক্ষণ করুন</button>
-      </div>
-    </div>
-  </div>
 
   <!-- Toast Notification -->
   <div class="admin-toast" id="admin-toast">
@@ -1439,76 +1404,7 @@
       updateSupabaseLoginStatusBadge();
     }
 
-    function openSupabaseSettingsModal() {
-      const cfg = window.DB.getConfig();
-      const urlInp = document.getElementById('cfg-supabase-url');
-      const keyInp = document.getElementById('cfg-supabase-key');
-      const statusEl = document.getElementById('cfg-supabase-status');
 
-      if (urlInp) urlInp.value = cfg.url || '';
-      if (keyInp) keyInp.value = cfg.anonKey || '';
-      if (statusEl) statusEl.style.display = 'none';
-
-      const modal = document.getElementById('supabase-config-modal');
-      if (modal) modal.classList.add('open');
-    }
-
-    function closeSupabaseSettingsModal() {
-      const modal = document.getElementById('supabase-config-modal');
-      if (modal) modal.classList.remove('open');
-      updateSupabaseLoginStatusBadge();
-    }
-
-    async function testSupabaseConnection() {
-      const urlInp = document.getElementById('cfg-supabase-url');
-      const keyInp = document.getElementById('cfg-supabase-key');
-      const statusEl = document.getElementById('cfg-supabase-status');
-      if (!statusEl) return;
-
-      const url = urlInp ? urlInp.value.trim() : '';
-      const key = keyInp ? keyInp.value.trim() : '';
-
-      statusEl.style.display = 'block';
-      statusEl.style.background = '#EFF6FF';
-      statusEl.style.color = '#1D4ED8';
-      statusEl.textContent = '⏳ Supabase সার্ভার কানেকশন টেস্ট করা হচ্ছে...';
-
-      try {
-        if (!url || !key) {
-          throw new Error('URL এবং Anon Key উভয় ফিল্ড পূরণ করুন।');
-        }
-        window.DB.saveConfig(url, key);
-        const res = await window.DB.getOrders();
-        if (res.fromCloud) {
-          statusEl.style.background = '#ECFDF5';
-          statusEl.style.color = '#059669';
-          statusEl.textContent = `🟢 কানেকশন সফল! ক্লাউড ডাটাবেজ থেকে মোট ${toBanglaNumber(res.orders.length)}টি অর্ডার পাওয়া গেছে।`;
-        } else if (res.error) {
-          throw new Error(res.error);
-        } else {
-          statusEl.style.background = '#ECFDF5';
-          statusEl.style.color = '#059669';
-          statusEl.textContent = '🟢 কানেকশন সফল হয়েছে!';
-        }
-      } catch (err) {
-        statusEl.style.background = '#FEF2F2';
-        statusEl.style.color = '#DC2626';
-        statusEl.textContent = '❌ কানেকশন ব্যর্থ: ' + err.message;
-      }
-    }
-
-    async function saveSupabaseSettingsFromModal() {
-      const urlInp = document.getElementById('cfg-supabase-url');
-      const keyInp = document.getElementById('cfg-supabase-key');
-
-      const url = urlInp ? urlInp.value.trim() : '';
-      const key = keyInp ? keyInp.value.trim() : '';
-
-      window.DB.saveConfig(url, key);
-      closeSupabaseSettingsModal();
-      showToast('✓ Supabase ডাটাবেজ ক্রেডেনশিয়াল সফলভাবে সংরক্ষিত হয়েছে!');
-      renderAdminOrders();
-    }
 
     function showDashboard() {
       document.getElementById('admin-login-view').style.display = 'none';

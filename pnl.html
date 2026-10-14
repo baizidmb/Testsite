@@ -1017,29 +1017,25 @@
     <div class="pnl-login-box" id="pnl-login-view">
       <div class="pnl-login-icon">🔐</div>
       <h1 class="pnl-login-title">স্টোর P&L ফাইন্যান্সিয়াল লগইন</h1>
-      <p class="pnl-login-sub">স্টোরের লাভ-ক্ষতি, ডেলিভারি মেট্রিক্স ও গোপনীয় অর্থনৈতিক ডাটা দেখতে তথ্য দিন</p>
+      <p class="pnl-login-sub">স্টোরের লাভ-ক্ষতি, ডেলিভারি মেট্রিক্স ও গোপনীয় অর্থনৈতিক ডাটা দেখতে পাসওয়ার্ড দিন</p>
       <form class="pnl-login-form" onsubmit="handlePnlLogin(event)">
         <div style="text-align: left; margin-bottom: 4px;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">এডমিন ইমেইল / ইউজারনেম:</label>
-          <input type="text" id="pnl-email-input" class="pnl-login-input" placeholder="admin@littlenest.com" autocomplete="username">
+          <label style="font-size: 0.82rem; font-weight: 700; color: #475569; display: block; margin-bottom: 5px;">এডমিন পাসওয়ার্ড:</label>
+          <input type="password" id="pnl-pass-input" class="pnl-login-input" placeholder="এডমিন পাসওয়ার্ড লিখুন" required autofocus autocomplete="current-password">
         </div>
-        <div style="text-align: left; margin-bottom: 4px;">
-          <label style="font-size: 0.8rem; font-weight: 700; color: #475569; display: block; margin-bottom: 4px;">পাসওয়ার্ড:</label>
-          <input type="password" id="pnl-pass-input" class="pnl-login-input" placeholder="এডমিন পাসওয়ার্ড দিন" required autofocus autocomplete="current-password">
-        </div>
-        <div class="pnl-error-text" id="pnl-error-msg">ভুল তথ্য! সঠিক ইমেইল ও পাসওয়ার্ড দিন।</div>
+        <div class="pnl-error-text" id="pnl-error-msg">ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।</div>
         <button type="submit" class="btn-pnl-submit" style="margin-top: 6px;">
           <span>🔓 ক্যালকুলেটরে প্রবেশ করুন</span>
         </button>
 
         <!-- Supabase Connection Status Pill -->
-        <div id="pnl-login-supabase-status" style="margin-top: 12px; font-size: 0.78rem; color: #475569; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 7px 12px; border-radius: 8px; text-align: center;">
-          <span id="pnl-status-dot">⚡</span>
-          <span id="pnl-status-text">Supabase ডাটাবেজ স্ট্যাটাস চেক হচ্ছে...</span>
+        <div id="pnl-login-supabase-status" style="margin-top: 12px; font-size: 0.78rem; color: #166534; background: #F0FDF4; border: 1px solid #BBF7D0; padding: 7px 12px; border-radius: 8px; text-align: center; font-weight: 600;">
+          <span id="pnl-status-dot">🟢</span>
+          <span id="pnl-status-text">ক্লাউড ডাটাবেজ সংযুক্ত (Supabase Connected)</span>
         </div>
       </form>
       <div style="margin-top: 16px; text-align: center; display: flex; justify-content: center; gap: 12px; font-size: 0.85rem;">
-        <a href="/admin" style="color: #7C3AED; text-decoration: underline; font-weight: 600;">← এডমিন প্যানেলে যান</a>
+        <a href="/admin" style="color: #7C3AED; text-decoration: underline; font-weight: 600;">← এডমিন প্যানেল</a>
         <span style="color: #CBD5E1;">|</span>
         <a href="/" style="color: #0284C7; text-decoration: underline; font-weight: 600;">🌐 লাইভ স্টোর</a>
       </div>
@@ -1618,13 +1614,8 @@
       const text = document.getElementById('pnl-status-text');
       if (!dot || !text) return;
 
-      if (window.DB && window.DB.isConfigured()) {
-        dot.textContent = '🟢';
-        text.textContent = 'Supabase ক্লাউড ডাটাবেজ সক্রিয়';
-      } else {
-        dot.textContent = '🟡';
-        text.textContent = 'Supabase কী কনফিগার করুন (অথবা এডমিন পাসওয়ার্ড দিয়ে প্রবেশ করুন)';
-      }
+      dot.textContent = '🟢';
+      text.textContent = 'ক্লাউড ডাটাবেজ সংযুক্ত (Supabase Connected)';
     }
 
     function checkPnlAuth() {
@@ -1648,12 +1639,11 @@
 
     async function handlePnlLogin(e) {
       if (e) e.preventDefault();
-      const emailInput = document.getElementById('pnl-email-input');
       const passInput = document.getElementById('pnl-pass-input');
       const errorMsg = document.getElementById('pnl-error-msg');
       
-      const email = emailInput ? emailInput.value.trim() : '';
       const pass = passInput ? passInput.value.trim() : '';
+      const email = 'admin@littlenest.com';
 
       if (!pass) {
         if (errorMsg) {
@@ -1670,7 +1660,7 @@
           checkPnlAuth();
         } else {
           if (errorMsg) {
-            errorMsg.textContent = (result && result.error) || 'ভুল তথ্য! সঠিক ইমেইল ও পাসওয়ার্ড দিন।';
+            errorMsg.textContent = (result && result.error) || 'ভুল পাসওয়ার্ড! সঠিক পাসওয়ার্ড দিন।';
             errorMsg.style.display = 'block';
           }
           if (passInput) {

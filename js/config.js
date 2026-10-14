@@ -15,9 +15,8 @@ const SITE_CONFIG = {
 
   // ⚡ Supabase PostgreSQL Database Configuration
   // 100% portable for Vercel, Cloudflare Pages, Netlify & local dev.
-  // Paste your Supabase project URL and anon public key below (or configure via Admin UI):
-  SUPABASE_URL: "https://your-project-id.supabase.co",
-  SUPABASE_ANON_KEY: "your-anon-public-key"
+  SUPABASE_URL: "https://acxqhjuzndgdbbgsvlig.supabase.co",
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImFjeHFoanV6bmRnZGJiZ3N2bGlnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIwMDMzNzksImV4cCI6MjEwNzU3OTM3OX0.wVGno8QuCw1QxfKIOY0wf0OqjBzz_dS8qGJt0OA0IhI"
 };
 
 // Expose globally
